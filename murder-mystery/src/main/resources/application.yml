@@ -1,2 +1,15 @@
 server:
   port: 8075
+
+spring:
+  datasource:
+    driver-class-name: com.alibaba.druid.proxy.DruidDriver
+    url: jdbc:postgresql://42.143.236.141:6543/ju
+    username: wyz
+    password: Xxzs990416
+
+
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true

@@ -1,25 +1,17 @@
-package cn.wyz.murdermystery.bean;
+package cn.wyz.murdermystery.bean.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * 
- * </p>
- *
- * @author wyzZzz
- * @since 2023-03-12 10:52:41
+ * @author wangnanxiang
  */
 @Data
-@ApiModel(value = "JuInfo对象", description = "")
-public class JuInfo implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@ApiModel(value = "JuInfoDTO", description = "")
+public class JuInfoDTO {
 
     @ApiModelProperty("id")
     private Long id;
@@ -36,14 +28,14 @@ public class JuInfo implements Serializable {
     @ApiModelProperty("预计结束时间")
     private LocalDateTime finish;
 
-    @ApiModelProperty("创建时间")
-    private LocalDateTime createTime;
-
     @ApiModelProperty("聚描述信息")
     private String description;
 
     @ApiModelProperty("创建者id")
     private Long userId;
+
+    @ApiModelProperty("创建时间")
+    private LocalDateTime createTime;
 
     @ApiModelProperty("更新时间")
     private LocalDateTime updateTime;

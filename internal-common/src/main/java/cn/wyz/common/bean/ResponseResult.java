@@ -3,6 +3,9 @@ package cn.wyz.common.bean;
 import cn.wyz.common.constant.CommonStatusEnum;
 import lombok.Data;
 
+/**
+ * @author wangnanxiang
+ */
 @Data
 public class ResponseResult<T> {
 
