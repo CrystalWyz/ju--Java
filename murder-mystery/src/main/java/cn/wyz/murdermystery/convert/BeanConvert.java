@@ -4,6 +4,7 @@ import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.User;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
 import cn.wyz.murdermystery.bean.dto.UserDTO;
+import cn.wyz.murdermystery.bean.response.UserPageInfo;
 import org.mapstruct.Mapper;
 
 /**
@@ -20,4 +21,8 @@ public interface BeanConvert {
      * @return
      */
     User userDTOToUser(UserDTO userDTO);
+
+    UserDTO userToUserDTO(User user);
+
+    UserPageInfo userTOUserPageInfo(User user);
 }

@@ -15,9 +15,9 @@ import lombok.NoArgsConstructor;
 @ApiModel(value = "PageVM", description = "分页查询请求")
 public class PageVM<T> {
 
-    private Integer pi;
+    private int pageSize;
 
-    private Integer ps;
+    private int pageNum;
 
     private T condition;
 }

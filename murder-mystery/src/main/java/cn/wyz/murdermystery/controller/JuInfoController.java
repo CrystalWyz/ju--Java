@@ -4,7 +4,7 @@ import cn.wyz.common.bean.ResponseResult;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
 import cn.wyz.murdermystery.bean.request.PageVM;
 import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
-import cn.wyz.murdermystery.bean.response.Page;
+import com.github.pagehelper.Page;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,5 +1,7 @@
 package cn.wyz.murdermystery.bean.dto;
 
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+import com.alibaba.fastjson2.annotation.JSONField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 @ApiModel(value = "UserDTO", description = "user 传输对象")
 public class UserDTO {
 
+    @JSONField(serializeUsing = ToStringSerializer.class)
     @ApiModelProperty("id")
     private Long id;
 
@@ -38,9 +41,11 @@ public class UserDTO {
     @ApiModelProperty("区号")
     private String phoneArea;
 
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
 
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty("修改时间")
     private LocalDateTime updateTime;
 }
