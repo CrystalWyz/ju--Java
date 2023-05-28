@@ -14,15 +14,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/murderMystery")
 public class MurderMysteryController {
 
-    private final JuInfoService juInfoService;
-
-    public MurderMysteryController(JuInfoService juInfoService) {
-        this.juInfoService = juInfoService;
-    }
-
-    @PostMapping("/create")
-    public ResponseResult<String> create(JuInfoDTO juInfoDTO) {
-        Long id = juInfoService.create(juInfoDTO);
-        return ResponseResult.success(String.valueOf(id));
-    }
 }

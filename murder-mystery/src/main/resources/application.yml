@@ -3,10 +3,13 @@ server:
 
 spring:
   datasource:
-    driver-class-name: com.alibaba.druid.proxy.DruidDriver
-    url: jdbc:postgresql://42.143.236.141:6543/ju
-    username: wyz
+    url: jdbc:postgresql://43.143.236.141:5432/ju?currentSchema=ju
+    username: postgres
     password: Xxzs990416
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      max-active: 5
+      initial-size: 3
 
 
 mybatis:

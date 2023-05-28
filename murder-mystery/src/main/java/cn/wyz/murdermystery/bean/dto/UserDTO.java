@@ -1,25 +1,21 @@
-package cn.wyz.murdermystery.bean;
+package cn.wyz.murdermystery.bean.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * 
- * </p>
- *
- * @author wyzZzz
- * @since 2023-03-12 10:52:41
+ * @author wnx
  */
 @Data
-@ApiModel(value = "User对象", description = "")
-public class User implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@NoArgsConstructor
+@AllArgsConstructor
+@ApiModel(value = "UserDTO", description = "user 传输对象")
+public class UserDTO {
 
     @ApiModelProperty("id")
     private Long id;
@@ -34,7 +30,7 @@ public class User implements Serializable {
     private Integer gender;
 
     @ApiModelProperty("污点")
-    private Integer blemish;
+    private Short blemish;
 
     @ApiModelProperty("手机号")
     private String phone;

@@ -1,5 +1,7 @@
 package cn.wyz.murdermystery.service;
 
+import cn.wyz.murdermystery.bean.dto.UserDTO;
+
 /**
  * <p>
  * 服务类
@@ -10,4 +12,10 @@ package cn.wyz.murdermystery.service;
  */
 public interface UserService {
 
+    /**
+     * 创建用户
+     * @param userDTO 新用户信息
+     * @return 用户id
+     */
+    Long createUser(UserDTO userDTO);
 }

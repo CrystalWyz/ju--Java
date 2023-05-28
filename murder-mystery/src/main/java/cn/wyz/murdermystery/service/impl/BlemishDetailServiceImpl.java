@@ -1,4 +1,4 @@
-package cn.wyz.murdermystery.serviceImpl;
+package cn.wyz.murdermystery.service.impl;
 
 import cn.wyz.murdermystery.service.BlemishDetailService;
 import org.springframework.stereotype.Service;
