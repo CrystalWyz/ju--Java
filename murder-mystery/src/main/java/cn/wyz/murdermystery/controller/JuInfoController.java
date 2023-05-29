@@ -1,12 +1,17 @@
 package cn.wyz.murdermystery.controller;
 
 import cn.wyz.common.bean.ResponseResult;
+import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
 import cn.wyz.murdermystery.bean.request.PageVM;
 import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
-import com.github.pagehelper.Page;
+import cn.wyz.murdermystery.convert.BeanConvert;
+import cn.wyz.murdermystery.service.JuInfoService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -20,27 +25,40 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/murderMystery/juInfo")
 public class JuInfoController {
 
+    private final BeanConvert beanConvert;
+
+    private final JuInfoService juInfoService;
+
+    public JuInfoController(BeanConvert beanConvert, JuInfoService juInfoService) {
+        this.beanConvert = beanConvert;
+        this.juInfoService = juInfoService;
+    }
+
     @ApiModelProperty("聚分页查询")
     @PostMapping("/page")
-    public ResponseResult<Page<JuInfoPageInfo>> detail(@RequestBody PageVM<JuInfoDTO> pageRequest) {
-        return null;
+    public ResponseResult<PageInfo<JuInfoPageInfo>> juInfoPage(@RequestBody PageVM<JuInfoDTO> pageRequest) {
+        List<JuInfoPageInfo> juInfoPageInfos =  juInfoService.juInfoPage(pageRequest);
+        return ResponseResult.success(new PageInfo<>(juInfoPageInfos));
     }
 
     @ApiModelProperty("查询聚详情")
     @GetMapping("/detail")
     public ResponseResult<JuInfoDTO> detail(@RequestParam Long juInfoId) {
-        return null;
+        JuInfo juInfo = juInfoService.juInfoDetail(juInfoId);
+        return ResponseResult.success(beanConvert.juInfoToJuInfoDTO(juInfo));
     }
 
     @ApiModelProperty("创建聚")
     @PostMapping("/create")
-    public ResponseResult<String> createUser(@RequestBody JuInfoDTO juInfoDTO) {
-        return null;
+    public ResponseResult<String> createJuInfo(@RequestBody JuInfoDTO juInfoDTO) {
+        Long id = juInfoService.createJuInfo(beanConvert.juInfoDTOToJuInfo(juInfoDTO));
+        return ResponseResult.success(String.valueOf(id));
     }
 
     @ApiModelProperty("删除聚")
     @PostMapping("/delete/{juInfoId}")
-    public ResponseResult<String> deleteUser(@PathVariable Long juInfoId) {
-        return null;
+    public ResponseResult<String> deleteJuInfo(@PathVariable Long juInfoId) {
+        juInfoService.deleteJuInfo(juInfoId);
+        return ResponseResult.success();
     }
 }

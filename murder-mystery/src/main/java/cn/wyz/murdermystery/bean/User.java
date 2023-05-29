@@ -33,6 +33,9 @@ public class User implements Serializable {
     @ApiModelProperty("性别")
     private Integer gender;
 
+    @ApiModelProperty("身份")
+    private Integer identity;
+
     @ApiModelProperty("污点")
     private Integer blemish;
 
