@@ -6,7 +6,6 @@
 		<groupId>cn.wyz</groupId>
 		<artifactId>ju--java</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>murder-mystery</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
