@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.wyz.murdermystery.mapper.BlemishDetailMapper">
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO blemish_detail
+        VALUES (DEFAULT,#{blemishDetail.userId}, #{blemishDetail.type}, #{blemishDetail.otherDescription}, #{blemishDetail.description}, #{blemishDetail.createTime})
+    </insert>
 
+    <delete id="delete">
+        DELETE FROM blemish_detail
+        WHERE id = #{blemishDetailId}
+    </delete>
+
+    <select id="list" resultType="cn.wyz.murdermystery.bean.BlemishDetail">
+        SELECT id, user_id, type, create_time
+        FROM blemish_detail
+    </select>
+    <select id="detail" resultType="cn.wyz.murdermystery.bean.BlemishDetail">
+        SELECT id, user_id, type, other_description, description, create_time
+        FROM blemish_detail
+        WHERE id = #{blemishDetailId}
+    </select>
 </mapper>

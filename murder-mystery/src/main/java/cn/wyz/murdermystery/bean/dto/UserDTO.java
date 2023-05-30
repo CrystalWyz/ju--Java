@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -17,7 +19,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "UserDTO", description = "user 传输对象")
-public class UserDTO {
+public class UserDTO  implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @JSONField(serializeUsing = ToStringSerializer.class)
     @ApiModelProperty("id")

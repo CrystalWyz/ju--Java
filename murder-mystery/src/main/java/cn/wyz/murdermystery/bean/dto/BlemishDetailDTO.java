@@ -1,25 +1,30 @@
-package cn.wyz.murdermystery.bean;
+package cn.wyz.murdermystery.bean.dto;
 
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+import com.alibaba.fastjson2.annotation.JSONField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * 
- * </p>
- *
- * @author wyzZzz
- * @since 2023-03-12 10:52:41
+ * @author wnx
  */
 @Data
-@ApiModel(value = "BlemishDetail对象", description = "")
-public class BlemishDetail {
+@NoArgsConstructor
+@AllArgsConstructor
+@ApiModel(value = "JuInfoDTO", description = "")
+public class BlemishDetailDTO implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @JSONField(serializeUsing = ToStringSerializer.class)
     @ApiModelProperty("id")
     private Long id;
 

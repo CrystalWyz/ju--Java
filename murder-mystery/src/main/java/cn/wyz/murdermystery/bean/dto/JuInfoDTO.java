@@ -1,12 +1,16 @@
 package cn.wyz.murdermystery.bean.dto;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+import com.alibaba.fastjson2.annotation.JSONField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,8 +21,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "JuInfoDTO", description = "")
-public class JuInfoDTO {
+public class JuInfoDTO implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @JSONField(serializeUsing = ToStringSerializer.class)
     @ApiModelProperty("id")
     private Long id;
 

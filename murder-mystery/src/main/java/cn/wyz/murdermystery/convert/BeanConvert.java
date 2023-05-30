@@ -1,9 +1,12 @@
 package cn.wyz.murdermystery.convert;
 
+import cn.wyz.murdermystery.bean.BlemishDetail;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.User;
+import cn.wyz.murdermystery.bean.dto.BlemishDetailDTO;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
 import cn.wyz.murdermystery.bean.dto.UserDTO;
+import cn.wyz.murdermystery.bean.response.BlemishDetailPageInfo;
 import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
 import cn.wyz.murdermystery.bean.response.UserPageInfo;
 import org.mapstruct.Mapper;
@@ -30,4 +33,10 @@ public interface BeanConvert {
     JuInfoDTO juInfoToJuInfoDTO(JuInfo juInfo);
 
     JuInfoPageInfo juInfoTOJuInfoPageInfo(JuInfo juInfo);
+
+    BlemishDetailDTO blemishDetailToBlemishDetailDTO(BlemishDetail blemishDetail);
+
+    BlemishDetail blemishDetailDTOToBlemishDetail(BlemishDetailDTO blemishDetailDTO);
+
+    BlemishDetailPageInfo blemishDetailToBlemishdetailPageInfo(BlemishDetail blemishDetail);
 }

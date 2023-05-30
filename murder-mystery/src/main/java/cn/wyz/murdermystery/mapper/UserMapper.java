@@ -1,8 +1,6 @@
 package cn.wyz.murdermystery.mapper;
 
 import cn.wyz.murdermystery.bean.User;
-import cn.wyz.murdermystery.bean.response.UserPageInfo;
-import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,7 +23,7 @@ public interface UserMapper {
      * @param user 新用户信息
      * @return 用户id
      */
-    Long create(@Param("user") User user);
+    Long save(@Param("user") User user);
 
     /**
      * 查询用户信息

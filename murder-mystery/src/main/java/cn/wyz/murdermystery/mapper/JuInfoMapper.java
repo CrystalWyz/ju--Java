@@ -1,7 +1,6 @@
 package cn.wyz.murdermystery.mapper;
 
 import cn.wyz.murdermystery.bean.JuInfo;
-import cn.wyz.murdermystery.bean.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -37,7 +36,7 @@ public interface JuInfoMapper {
      * @param juInfo 聚信息
      * @return 聚id
      */
-    Long create(@Param("juInfo") JuInfo juInfo);
+    Long save(@Param("juInfo") JuInfo juInfo);
 
     /**
      * 聚删除

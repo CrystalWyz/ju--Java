@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.wyz.murdermystery.mapper.UserMapper">
 
-    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO ju_user(id, name, nick_name, gender, blemish, phone, phone_area, create_time, update_time)
         VALUES (DEFAULT, #{user.name}, #{user.nickName}, #{user.gender}, #{user.blemish}, #{user.phone}, #{user.phoneArea}, #{user.createTime}, #{user.updateTime})
     </insert>

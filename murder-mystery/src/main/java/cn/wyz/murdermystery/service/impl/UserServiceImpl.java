@@ -7,7 +7,6 @@ import cn.wyz.murdermystery.bean.response.UserPageInfo;
 import cn.wyz.murdermystery.convert.BeanConvert;
 import cn.wyz.murdermystery.mapper.UserMapper;
 import cn.wyz.murdermystery.service.UserService;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
@@ -42,7 +41,7 @@ public class UserServiceImpl implements UserService {
         LocalDateTime now = LocalDateTime.now();
         user.setCreateTime(now);
         user.setUpdateTime(now);
-        userMapper.create(user);
+        userMapper.save(user);
 
         return user.getId();
     }

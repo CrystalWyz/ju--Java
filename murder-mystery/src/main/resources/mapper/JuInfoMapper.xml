@@ -18,7 +18,7 @@
         <result column="config" property="config" typeHandler="cn.wyz.murdermystery.handler.JsonTypeHandler"></result>
         <result column="type" property="type"></result>
     </resultMap>
-    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO ju_info(id, title, participant, begin, finish, create_time, description, user_id, update_time, scale, girl_participant_num, boy_participant_num, config, type)
         VALUES (DEFAULT, #{juInfo.title}, #{juInfo.participant,typeHandler=cn.wyz.murdermystery.handler.ListTypeHandler}, #{juInfo.begin}, #{juInfo.finish}, #{juInfo.createTime}, #{juInfo.description},
                 #{juInfo.userId}, #{juInfo.updateTime}, #{juInfo.scale}, #{juInfo.girlParticipantNum}, #{juInfo.boyParticipantNum}, #{juInfo.config,typeHandler=cn.wyz.murdermystery.handler.JsonTypeHandler}, #{juInfo.type})

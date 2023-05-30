@@ -1,7 +1,6 @@
 package cn.wyz.murdermystery.service.impl;
 
 import cn.wyz.murdermystery.bean.JuInfo;
-import cn.wyz.murdermystery.bean.User;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
 import cn.wyz.murdermystery.bean.request.PageVM;
 import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
@@ -68,7 +67,7 @@ public class JuInfoServiceImpl implements JuInfoService {
         juInfo.setCreateTime(now);
         juInfo.setUpdateTime(now);
 
-        return juInfoMapper.create(juInfo);
+        return juInfoMapper.save(juInfo);
     }
 
     @Override
