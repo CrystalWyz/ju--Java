@@ -33,6 +33,13 @@ public interface UserService {
     User userDetail(Long userId);
 
     /**
+     * 获取用户信息
+     * @param phone 用户手机号
+     * @return 用户详情
+     */
+    User userDetail(String phone);
+
+    /**
      * 删除用户
      * @param userId 用户id
      */

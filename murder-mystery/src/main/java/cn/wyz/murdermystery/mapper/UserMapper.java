@@ -31,14 +31,14 @@ public interface UserMapper {
      * @param userId 用户id
      * @return 用户信息
      */
-    User detail(@Param("userId") Long userId);
+    User detail(Long userId);
 
     /**
      * 删除用户
      *
      * @param userId 用户id
      */
-    void delete(@Param("userId") Long userId);
+    void delete(Long userId);
 
     /**
      * 用户列表查询
@@ -46,4 +46,6 @@ public interface UserMapper {
      * @param condition 搜索条件
      */
     List<User> list(@Param("condition") User condition);
+
+    User detailByPhone(String phone);
 }

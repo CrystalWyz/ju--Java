@@ -15,7 +15,7 @@
     <select id="detail" resultType="cn.wyz.murdermystery.bean.User">
         SELECT *
         FROM ju_user
-        WHERE id= #{userId}
+        WHERE id = #{userId}
     </select>
     <select id="list" resultType="cn.wyz.murdermystery.bean.User">
         SELECT id, name, nick_name, concat(phone_area, '-', phone) AS phone
@@ -23,18 +23,23 @@
         <where>
            <if test="condition != null">
                <if test="condition.name != null">
-                   name LIKE concat('%', #{condition.name},'%')
+                   AND name LIKE concat('%', #{condition.name},'%')
                </if>
                <if test="condition.nickName != null">
-                   nick_name LIKE concat('%', #{condition.nickName},'%')
+                   AND nick_name LIKE concat('%', #{condition.nickName},'%')
                </if>
                <if test="condition.gender != null">
-                   gender = #{condition.gender}
+                   AND gender = #{condition.gender}
                </if>
                <if test="condition.phone != null">
-                   phone LIKE concat('%', #{condition.phone},'%')
+                   AND phone LIKE concat('%', #{condition.phone},'%')
                </if>
            </if>
         </where>
+    </select>
+    <select id="detailByPhone" resultType="cn.wyz.murdermystery.bean.User">
+        SELECT *
+        FROM ju_user
+        WHERE phone = #{phone}
     </select>
 </mapper>

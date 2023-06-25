@@ -1,18 +1,19 @@
 package cn.wyz.murdermystery.service.impl;
 
-import cn.wyz.bean.response.TokenResponseDTO;
-import cn.wyz.insternalcommon.bean.ResponseResult;
-import cn.wyz.insternalcommon.bean.dto.TokenDTO;
-import cn.wyz.insternalcommon.bean.response.NumberCodeResponse;
-import cn.wyz.insternalcommon.constant.CommonStatusEnum;
-import cn.wyz.insternalcommon.constant.IdentityEnum;
-import cn.wyz.insternalcommon.constant.TokenTypeEnum;
-import cn.wyz.insternalcommon.exception.AppException;
-import cn.wyz.insternalcommon.util.JwtUtils;
-import cn.wyz.insternalcommon.util.RedisKeyUtils;
-import cn.wyz.remote.ServicePassengerUserClient;
-import cn.wyz.remote.ServiceVerificationCodeClient;
-import cn.wyz.service.VerificationCodeService;
+import cn.wyz.common.bean.ResponseResult;
+import cn.wyz.common.bean.dto.TokenDTO;
+import cn.wyz.common.bean.response.NumberCodeResponse;
+import cn.wyz.common.bean.response.TokenResponseDTO;
+import cn.wyz.common.constant.CommonStatusEnum;
+import cn.wyz.common.constant.IdentityEnum;
+import cn.wyz.common.constant.TokenTypeEnum;
+import cn.wyz.common.exception.AppException;
+import cn.wyz.common.util.JwtUtils;
+import cn.wyz.common.util.RedisKeyUtils;
+import cn.wyz.murdermystery.remote.ServiceVerificationCodeClient;
+import cn.wyz.murdermystery.service.UserService;
+import cn.wyz.murdermystery.service.VerificationCodeService;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -24,16 +25,19 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class VerificationCodeServiceImpl implements VerificationCodeService {
-    private final ServiceVerificationCodeClient serviceVerificationCodeClient;
 
-    private final ServicePassengerUserClient servicePassengerUserClient;
+
+    private final UserService userService;
 
     private final StringRedisTemplate stringRedisTemplate;
 
-    public VerificationCodeServiceImpl(ServiceVerificationCodeClient serviceVerificationCodeClient, ServicePassengerUserClient servicePassengerUserClient, StringRedisTemplate stringRedisTemplate) {
-        this.serviceVerificationCodeClient = serviceVerificationCodeClient;
-        this.servicePassengerUserClient = servicePassengerUserClient;
+    private final ServiceVerificationCodeClient serviceVerificationCodeClient;
+
+    public VerificationCodeServiceImpl(UserService userService, StringRedisTemplate stringRedisTemplate,
+                                       ServiceVerificationCodeClient serviceVerificationCodeClient) {
+        this.userService = userService;
         this.stringRedisTemplate = stringRedisTemplate;
+        this.serviceVerificationCodeClient = serviceVerificationCodeClient;
     }
 
     @Override
@@ -51,32 +55,34 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
     }
 
     @Override
-    public TokenResponseDTO checkVerificationCode(String passengerPhone, String verificationCode) {
+    public TokenResponseDTO checkVerificationCode(String userPhone, String verificationCode) {
         // 验证码校验
-        String key = RedisKeyUtils.generatorKey(passengerPhone);
+        String key = RedisKeyUtils.generatorKey(userPhone);
         String redisCode = stringRedisTemplate.opsForValue().get(key);
 
         if (StringUtils.isEmpty(redisCode)) {
-            throw new AppException(CommonStatusEnum.VERIFICATION_CODE_OVERDUE.getCode(), CommonStatusEnum.VERIFICATION_CODE_OVERDUE.getMessage());
+            throw new AppException(CommonStatusEnum.FAIL.getCode(), CommonStatusEnum.FAIL.getMessage());
         }
 
         if (!redisCode.equals(verificationCode.trim())) {
-            throw new AppException(CommonStatusEnum.VERIFICATION_CODE_ERROR.getCode(), CommonStatusEnum.VERIFICATION_CODE_ERROR.getMessage());
+            throw new AppException(CommonStatusEnum.FAIL.getCode(), CommonStatusEnum.FAIL.getMessage());
         }
         // 校验成功 删除验证码缓存
         stringRedisTemplate.delete(key);
 
-        // 用户判断
-        servicePassengerUserClient.login(passengerPhone);
+        // 用户存在判断
+        if (ObjectUtils.isEmpty(userService.userDetail(userPhone))) {
+            throw new AppException(CommonStatusEnum.FAIL.getCode(), "用户不存在");
+        }
 
         // 下发token
-        TokenDTO tokenDTO = TokenDTO.builder().phone(passengerPhone).identity(IdentityEnum.PASSENGER.getCode()).build();
+        TokenDTO tokenDTO = TokenDTO.builder().phone(userPhone).identity(IdentityEnum.PASSENGER.getCode()).build();
         String accessToken = JwtUtils.generatorToken(tokenDTO, TokenTypeEnum.ACCESS_TOKEN_TYPE.getCode());
         String refreshToken = JwtUtils.generatorToken(tokenDTO, TokenTypeEnum.REFRESH_TOKEN_TYPE.getCode());
 
         //服务器端存储token
-        String accessTokenKey = RedisKeyUtils.generatorTokenKey(passengerPhone, IdentityEnum.PASSENGER.getCode(),TokenTypeEnum.ACCESS_TOKEN_TYPE.getCode());
-        String refreshTokenKey = RedisKeyUtils.generatorTokenKey(passengerPhone, IdentityEnum.PASSENGER.getCode(),TokenTypeEnum.REFRESH_TOKEN_TYPE.getCode());
+        String accessTokenKey = RedisKeyUtils.generatorTokenKey(userPhone, IdentityEnum.PASSENGER.getCode(),TokenTypeEnum.ACCESS_TOKEN_TYPE.getCode());
+        String refreshTokenKey = RedisKeyUtils.generatorTokenKey(userPhone, IdentityEnum.PASSENGER.getCode(),TokenTypeEnum.REFRESH_TOKEN_TYPE.getCode());
         stringRedisTemplate.opsForValue().set(accessTokenKey, accessToken, 7, TimeUnit.DAYS);
         stringRedisTemplate.opsForValue().set(refreshTokenKey, refreshToken, 30, TimeUnit.DAYS);
 

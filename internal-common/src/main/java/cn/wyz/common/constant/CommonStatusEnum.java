@@ -21,7 +21,7 @@ public enum CommonStatusEnum {
      */
     FAIL(500, "fail");
 
-    private final int code;
+    private final Integer code;
 
     private final String message;
 }

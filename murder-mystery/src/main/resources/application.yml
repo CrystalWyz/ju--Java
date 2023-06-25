@@ -10,6 +10,11 @@ spring:
     druid:
       max-active: 5
       initial-size: 3
+  data:
+    redis:
+      database: 0
+      port: 6379
+      host: 43.143.236.141
 
 
 mybatis:

@@ -52,6 +52,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User userDetail(String phone) {
+        return userMapper.detailByPhone(phone);
+    }
+
+    @Override
     public void deleteUser(Long userId) {
         userMapper.delete(userId);
     }

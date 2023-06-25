@@ -1,6 +1,6 @@
 package cn.wyz.murdermystery.interceptor.config;
 
-import cn.wyz.interceptor.JwtInterceptor;
+import cn.wyz.murdermystery.interceptor.JwtInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

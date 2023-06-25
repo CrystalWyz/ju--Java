@@ -1,6 +1,6 @@
 package cn.wyz.murdermystery.service;
 
-import cn.wyz.bean.response.TokenResponseDTO;
+import cn.wyz.common.bean.response.TokenResponseDTO;
 
 /**
  * @author wangnanxiang

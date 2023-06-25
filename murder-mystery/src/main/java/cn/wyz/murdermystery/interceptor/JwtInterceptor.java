@@ -1,18 +1,17 @@
 package cn.wyz.murdermystery.interceptor;
 
-import cn.wyz.insternalcommon.bean.dto.TokenDTO;
-import cn.wyz.insternalcommon.constant.CommonStatusEnum;
-import cn.wyz.insternalcommon.constant.TokenTypeEnum;
-import cn.wyz.insternalcommon.exception.AppException;
-import cn.wyz.insternalcommon.util.JwtUtils;
-import cn.wyz.insternalcommon.util.RedisKeyUtils;
+import cn.wyz.common.bean.dto.TokenDTO;
+import cn.wyz.common.constant.CommonStatusEnum;
+import cn.wyz.common.constant.TokenTypeEnum;
+import cn.wyz.common.exception.AppException;
+import cn.wyz.common.util.JwtUtils;
+import cn.wyz.common.util.RedisKeyUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author wangnanxiang
