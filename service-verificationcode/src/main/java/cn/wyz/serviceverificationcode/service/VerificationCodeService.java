@@ -1,4 +1,4 @@
-package cn.wyz.murdermystery.service;
+package cn.wyz.serviceverificationcode.service;
 
 import cn.wyz.common.bean.response.TokenResponseDTO;
 

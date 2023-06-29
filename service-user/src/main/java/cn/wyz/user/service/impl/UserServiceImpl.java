@@ -1,12 +1,12 @@
-package cn.wyz.murdermystery.service.impl;
+package cn.wyz.user.service.impl;
 
-import cn.wyz.murdermystery.bean.User;
-import cn.wyz.murdermystery.bean.dto.UserDTO;
-import cn.wyz.murdermystery.bean.request.PageVM;
-import cn.wyz.murdermystery.bean.response.UserPageInfo;
-import cn.wyz.murdermystery.convert.BeanConvert;
-import cn.wyz.murdermystery.mapper.UserMapper;
-import cn.wyz.murdermystery.service.UserService;
+import cn.wyz.common.bean.request.PageVM;
+import cn.wyz.user.bean.User;
+import cn.wyz.common.bean.dto.UserDTO;
+import cn.wyz.user.bean.response.UserPageInfo;
+import cn.wyz.user.convert.UserBeanConvert;
+import cn.wyz.user.mapper.UserMapper;
+import cn.wyz.user.service.UserService;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Component;
@@ -22,19 +22,19 @@ import java.util.stream.Collectors;
 @Component
 public class UserServiceImpl implements UserService {
 
-    private final BeanConvert beanConvert;
+    private final UserBeanConvert userBeanConvert;
 
     private final UserMapper userMapper;
 
-    public UserServiceImpl(BeanConvert beanConvert, UserMapper userMapper) {
-        this.beanConvert = beanConvert;
+    public UserServiceImpl(UserBeanConvert userBeanConvert, UserMapper userMapper) {
+        this.userBeanConvert = userBeanConvert;
         this.userMapper = userMapper;
     }
 
     @Override
     public Long createUser(UserDTO userDTO) {
 
-        User user = beanConvert.userDTOToUser(userDTO);
+        User user = userBeanConvert.userDTOToUser(userDTO);
 
         // 填充必要信息
         user.setBlemish(0);
@@ -64,10 +64,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserPageInfo> userPage(PageVM<UserDTO> pageRequest) {
         PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
-        User condition = beanConvert.userDTOToUser(pageRequest.getCondition());
+        User condition = userBeanConvert.userDTOToUser(pageRequest.getCondition());
         List<User> userList = userMapper.list(condition);
         if (ObjectUtils.isNotEmpty(userList)) {
-            return userList.stream().map(beanConvert::userTOUserPageInfo).collect(Collectors.toList());
+            return userList.stream().map(userBeanConvert::userTOUserPageInfo).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }

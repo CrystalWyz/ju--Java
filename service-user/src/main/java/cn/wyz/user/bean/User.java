@@ -1,7 +1,6 @@
-package cn.wyz.murdermystery.bean;
+package cn.wyz.user.bean;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serial;
@@ -17,36 +16,36 @@ import java.time.LocalDateTime;
  * @since 2023-03-12 10:52:41
  */
 @Data
-@ApiModel(value = "User对象", description = "")
+@Schema(name = "User对象", description = "")
 public class User {
 
-    @ApiModelProperty("id")
+    @Schema(name = "id")
     private Long id;
 
-    @ApiModelProperty("用户名")
+    @Schema(name = "用户名")
     private String name;
 
-    @ApiModelProperty("昵称")
+    @Schema(name = "昵称")
     private String nickName;
 
-    @ApiModelProperty("性别")
+    @Schema(name = "性别")
     private Integer gender;
 
-    @ApiModelProperty("身份")
+    @Schema(name = "身份")
     private Integer identity;
 
-    @ApiModelProperty("污点")
+    @Schema(name = "污点")
     private Integer blemish;
 
-    @ApiModelProperty("手机号")
+    @Schema(name = "手机号")
     private String phone;
 
-    @ApiModelProperty("区号")
+    @Schema(name = "区号")
     private String phoneArea;
 
-    @ApiModelProperty("创建时间")
+    @Schema(name = "创建时间")
     private LocalDateTime createTime;
 
-    @ApiModelProperty("修改时间")
+    @Schema(name = "修改时间")
     private LocalDateTime updateTime;
 }

@@ -1,10 +1,10 @@
-package cn.wyz.murdermystery.service;
+package cn.wyz.user.service;
 
-import cn.wyz.murdermystery.bean.User;
-import cn.wyz.murdermystery.bean.dto.UserDTO;
-import cn.wyz.murdermystery.bean.request.PageVM;
-import cn.wyz.murdermystery.bean.response.UserPageInfo;
-import com.github.pagehelper.Page;
+
+import cn.wyz.common.bean.request.PageVM;
+import cn.wyz.user.bean.User;
+import cn.wyz.common.bean.dto.UserDTO;
+import cn.wyz.user.bean.response.UserPageInfo;
 
 import java.util.List;
 

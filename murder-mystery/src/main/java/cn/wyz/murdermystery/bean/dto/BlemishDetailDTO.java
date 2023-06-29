@@ -2,8 +2,7 @@ package cn.wyz.murdermystery.bean.dto;
 
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.alibaba.fastjson2.annotation.JSONField;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,31 +17,31 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "JuInfoDTO", description = "")
+@Schema(name = "JuInfoDTO", description = "")
 public class BlemishDetailDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     @JSONField(serializeUsing = ToStringSerializer.class)
-    @ApiModelProperty("id")
+    @Schema(name = "id")
     private Long id;
 
-    @ApiModelProperty("用户id")
+    @Schema(name = "用户id")
     private Long userId;
 
-    @ApiModelProperty("污点类型")
+    @Schema(name = "污点类型")
     private Short type;
 
-    @ApiModelProperty("其他——类型描述")
+    @Schema(name = "其他——类型描述")
     private String otherDescription;
 
-    @ApiModelProperty("描述信息")
+    @Schema(name = "描述信息")
     private String description;
 
-    @ApiModelProperty("创建时间")
+    @Schema(name = "创建时间")
     private LocalDateTime createTime;
 
-    @ApiModelProperty("聚id")
+    @Schema(name = "聚id")
     private Long juInfoId;
 }

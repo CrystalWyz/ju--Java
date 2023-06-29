@@ -1,6 +1,6 @@
-package cn.wyz.murdermystery.bean.request;
+package cn.wyz.common.bean.request;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "PageVM", description = "分页查询请求")
+@Schema(name = "PageVM", description = "分页查询请求")
 public class PageVM<T> {
 
     private int pageSize;

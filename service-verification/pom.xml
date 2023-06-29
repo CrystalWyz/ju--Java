@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>service-verification</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>service-verification</name>
 	<description>service-verification</description>
 	<properties>
@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>cn.wyz</groupId>
 			<artifactId>internal-common</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

@@ -1,4 +1,4 @@
-package cn.wyz.murdermystery.service.impl;
+package cn.wyz.serviceverificationcode.service.impl;
 
 import cn.wyz.common.bean.ResponseResult;
 import cn.wyz.common.bean.dto.TokenDTO;
@@ -10,9 +10,9 @@ import cn.wyz.common.constant.TokenTypeEnum;
 import cn.wyz.common.exception.AppException;
 import cn.wyz.common.util.JwtUtils;
 import cn.wyz.common.util.RedisKeyUtils;
-import cn.wyz.murdermystery.remote.ServiceVerificationCodeClient;
-import cn.wyz.murdermystery.service.UserService;
-import cn.wyz.murdermystery.service.VerificationCodeService;
+import cn.wyz.serviceverificationcode.remote.UserFeign;
+import cn.wyz.serviceverificationcode.remote.VerificationCodeFeign;
+import cn.wyz.serviceverificationcode.service.VerificationCodeService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -26,25 +26,24 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class VerificationCodeServiceImpl implements VerificationCodeService {
 
-
-    private final UserService userService;
+    private final UserFeign userFeign;
 
     private final StringRedisTemplate stringRedisTemplate;
 
-    private final ServiceVerificationCodeClient serviceVerificationCodeClient;
+    private final VerificationCodeFeign verificationCodeFeign;
 
-    public VerificationCodeServiceImpl(UserService userService, StringRedisTemplate stringRedisTemplate,
-                                       ServiceVerificationCodeClient serviceVerificationCodeClient) {
-        this.userService = userService;
+    public VerificationCodeServiceImpl(UserFeign userFeign, StringRedisTemplate stringRedisTemplate,
+                                       VerificationCodeFeign verificationCodeFeign) {
+        this.userFeign = userFeign;
         this.stringRedisTemplate = stringRedisTemplate;
-        this.serviceVerificationCodeClient = serviceVerificationCodeClient;
+        this.verificationCodeFeign = verificationCodeFeign;
     }
 
     @Override
     public void generatorVerificationCode(String passengerPhone) {
 
         // 生成验证码
-        ResponseResult<NumberCodeResponse> numberCodeResponse = serviceVerificationCodeClient.getNumberCode(6);
+        ResponseResult<NumberCodeResponse> numberCodeResponse = verificationCodeFeign.getNumberCode(6);
         Integer verificationCode = numberCodeResponse.getData().getNumberCode();
 
         // 存入redis
@@ -71,7 +70,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
         stringRedisTemplate.delete(key);
 
         // 用户存在判断
-        if (ObjectUtils.isEmpty(userService.userDetail(userPhone))) {
+        if (ObjectUtils.isEmpty(userFeign.userDetailByPhone(userPhone))) {
             throw new AppException(CommonStatusEnum.FAIL.getCode(), "用户不存在");
         }
 

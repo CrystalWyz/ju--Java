@@ -1,9 +1,9 @@
-package cn.wyz.murdermystery.controller;
+package cn.wyz.serviceverificationcode.controller;
 
 import cn.wyz.common.bean.ResponseResult;
 import cn.wyz.common.bean.dto.VerificationCodeDTO;
 import cn.wyz.common.bean.response.TokenResponseDTO;
-import cn.wyz.murdermystery.service.VerificationCodeService;
+import cn.wyz.serviceverificationcode.service.VerificationCodeService;
 import org.springframework.web.bind.annotation.*;
 
 /**

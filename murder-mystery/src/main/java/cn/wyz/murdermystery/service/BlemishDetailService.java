@@ -2,8 +2,7 @@ package cn.wyz.murdermystery.service;
 
 import cn.wyz.murdermystery.bean.BlemishDetail;
 import cn.wyz.murdermystery.bean.dto.BlemishDetailDTO;
-import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
-import cn.wyz.murdermystery.bean.request.PageVM;
+import cn.wyz.common.bean.request.PageVM;
 import cn.wyz.murdermystery.bean.response.BlemishDetailPageInfo;
 
 import java.util.List;

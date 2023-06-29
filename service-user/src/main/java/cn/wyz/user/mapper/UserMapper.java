@@ -1,6 +1,6 @@
-package cn.wyz.murdermystery.mapper;
+package cn.wyz.user.mapper;
 
-import cn.wyz.murdermystery.bean.User;
+import cn.wyz.user.bean.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

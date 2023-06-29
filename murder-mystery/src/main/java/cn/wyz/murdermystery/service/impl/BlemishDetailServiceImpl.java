@@ -1,9 +1,8 @@
 package cn.wyz.murdermystery.service.impl;
 
 import cn.wyz.murdermystery.bean.BlemishDetail;
-import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.BlemishDetailDTO;
-import cn.wyz.murdermystery.bean.request.PageVM;
+import cn.wyz.common.bean.request.PageVM;
 import cn.wyz.murdermystery.bean.response.BlemishDetailPageInfo;
 import cn.wyz.murdermystery.convert.BeanConvert;
 import cn.wyz.murdermystery.mapper.BlemishDetailMapper;

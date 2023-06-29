@@ -1,7 +1,6 @@
 package cn.wyz.murdermystery.bean;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serial;
@@ -17,27 +16,27 @@ import java.time.LocalDateTime;
  * @since 2023-03-12 10:52:41
  */
 @Data
-@ApiModel(value = "BlemishDetail对象", description = "")
+@Schema(name = "BlemishDetail对象", description = "")
 public class BlemishDetail {
 
-    @ApiModelProperty("id")
+    @Schema(name = "id")
     private Long id;
 
-    @ApiModelProperty("用户id")
+    @Schema(name = "用户id")
     private Long userId;
 
-    @ApiModelProperty("污点类型")
+    @Schema(name = "污点类型")
     private Short type;
 
-    @ApiModelProperty("其他——类型描述")
+    @Schema(name = "其他——类型描述")
     private String otherDescription;
 
-    @ApiModelProperty("描述信息")
+    @Schema(name = "描述信息")
     private String description;
 
-    @ApiModelProperty("创建时间")
+    @Schema(name = "创建时间")
     private LocalDateTime createTime;
 
-    @ApiModelProperty("聚id")
+    @Schema(name = "聚id")
     private Long juInfoId;
 }

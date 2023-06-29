@@ -1,11 +1,9 @@
-package cn.wyz.murdermystery.bean.response;
+package cn.wyz.user.bean.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 /**
  * @author wnx
@@ -14,14 +12,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(name = "UserPageInfo", description = "用户分页信息")
-public class BlemishDetailPageInfo {
+public class UserPageInfo {
 
     @Schema(name = "id")
     private Long id;
 
-    @Schema(name = "污点类型")
-    private Short type;
+    @Schema(name = "用户名")
+    private String name;
 
-    @Schema(name = "创建时间")
-    private LocalDateTime createTime;
+    @Schema(name = "昵称")
+    private String nickName;
+
+    @Schema(name = "手机号")
+    private String phone;
 }

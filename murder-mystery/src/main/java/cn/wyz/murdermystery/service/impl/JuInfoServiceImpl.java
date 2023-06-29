@@ -2,7 +2,7 @@ package cn.wyz.murdermystery.service.impl;
 
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
-import cn.wyz.murdermystery.bean.request.PageVM;
+import cn.wyz.common.bean.request.PageVM;
 import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
 import cn.wyz.murdermystery.convert.BeanConvert;
 import cn.wyz.murdermystery.mapper.JuInfoMapper;

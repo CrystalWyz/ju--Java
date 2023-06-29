@@ -3,12 +3,12 @@ package cn.wyz.murdermystery.controller;
 import cn.wyz.common.bean.ResponseResult;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
-import cn.wyz.murdermystery.bean.request.PageVM;
+import cn.wyz.common.bean.request.PageVM;
 import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
 import cn.wyz.murdermystery.convert.BeanConvert;
 import cn.wyz.murdermystery.service.JuInfoService;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,28 +34,28 @@ public class JuInfoController {
         this.juInfoService = juInfoService;
     }
 
-    @ApiModelProperty("聚分页查询")
+    @Operation(description = "聚分页查询")
     @PostMapping("/page")
     public ResponseResult<PageInfo<JuInfoPageInfo>> juInfoPage(@RequestBody PageVM<JuInfoDTO> pageRequest) {
         List<JuInfoPageInfo> juInfoPageInfos =  juInfoService.juInfoPage(pageRequest);
         return ResponseResult.success(new PageInfo<>(juInfoPageInfos));
     }
 
-    @ApiModelProperty("查询聚详情")
+    @Operation(description = "查询聚详情")
     @GetMapping("/detail")
     public ResponseResult<JuInfoDTO> detail(@RequestParam Long juInfoId) {
         JuInfo juInfo = juInfoService.juInfoDetail(juInfoId);
         return ResponseResult.success(beanConvert.juInfoToJuInfoDTO(juInfo));
     }
 
-    @ApiModelProperty("创建聚")
+    @Operation(description = "创建聚")
     @PostMapping("/create")
     public ResponseResult<String> createJuInfo(@RequestBody JuInfoDTO juInfoDTO) {
         Long id = juInfoService.createJuInfo(beanConvert.juInfoDTOToJuInfo(juInfoDTO));
         return ResponseResult.success(String.valueOf(id));
     }
 
-    @ApiModelProperty("删除聚")
+    @Operation(description = "删除聚")
     @PostMapping("/delete/{juInfoId}")
     public ResponseResult<String> deleteJuInfo(@PathVariable Long juInfoId) {
         juInfoService.deleteJuInfo(juInfoId);
