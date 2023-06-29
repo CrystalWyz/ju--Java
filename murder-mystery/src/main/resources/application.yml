@@ -15,6 +15,7 @@ spring:
       database: 0
       port: 6379
       host: 43.143.236.141
+      password: Xxzs990416
 
 
 mybatis:
