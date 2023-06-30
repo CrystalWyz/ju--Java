@@ -1,9 +1,9 @@
-package cn.wyz.murdermystery.controller;
+package cn.wyz.user.controller;
 
 import cn.wyz.common.bean.ResponseResult;
 import cn.wyz.common.bean.request.RefreshTokenDTO;
 import cn.wyz.common.bean.response.TokenResponseDTO;
-import cn.wyz.murdermystery.service.TokenService;
+import cn.wyz.user.service.TokenService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
