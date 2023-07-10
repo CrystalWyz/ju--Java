@@ -11,18 +11,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class JsonTypeHandler<T extends Object> extends BaseTypeHandler<T> {
-
-    private static final PGobject jsonObject = new PGobject();
-    private Class<T> clazz;
+/**
+ * @author wangnanxiang
+ */
+public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
+    private final Class<T> clazz;
 
     public JsonTypeHandler(Class<T> clazz) {
-        if (clazz == null) throw new IllegalArgumentException("Type argument cannot be null");
+        if (clazz == null) {
+            throw new IllegalArgumentException("Type argument cannot be null");
+        }
         this.clazz = clazz;
     }
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException {
+        PGobject jsonObject = new PGobject();
         jsonObject.setType("json");
         jsonObject.setValue(this.toJson(parameter));
         ps.setObject(i, jsonObject);
