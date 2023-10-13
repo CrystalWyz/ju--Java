@@ -1,13 +1,14 @@
 package cn.wyz.murdermystery.service.impl;
 
+import cn.wyz.common.bean.request.PageVM;
 import cn.wyz.murdermystery.bean.BlemishDetail;
 import cn.wyz.murdermystery.bean.dto.BlemishDetailDTO;
-import cn.wyz.common.bean.request.PageVM;
 import cn.wyz.murdermystery.bean.response.BlemishDetailPageInfo;
 import cn.wyz.murdermystery.convert.BeanConvert;
 import cn.wyz.murdermystery.mapper.BlemishDetailMapper;
 import cn.wyz.murdermystery.service.BlemishDetailService;
 import com.github.pagehelper.PageHelper;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +26,12 @@ import java.util.stream.Collectors;
  * @since 2023-03-12 10:52:41
  */
 @Service
+@AllArgsConstructor
 public class BlemishDetailServiceImpl implements BlemishDetailService {
 
     private final BeanConvert beanConvert;
 
     private final BlemishDetailMapper blemishDetailMapper;
-
-    public BlemishDetailServiceImpl(BeanConvert beanConvert, BlemishDetailMapper blemishDetailMapper) {
-        this.beanConvert = beanConvert;
-        this.blemishDetailMapper = blemishDetailMapper;
-    }
 
     @Override
     public List<BlemishDetailPageInfo> blemishDetailPage(PageVM<BlemishDetailDTO> pageRequest) {

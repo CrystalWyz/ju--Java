@@ -1,0 +1,7 @@
+POST http://localhost:8075/api/v1/murderMystery/user/page
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10
+}
