@@ -1,6 +1,6 @@
 package cn.wyz.serviceverificationcode.controller;
 
-import cn.wyz.common.bean.ResponseResult;
+import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.common.bean.response.NumberCodeResponse;
 import cn.wyz.serviceverificationcode.service.NumberCodeService;
 import org.springframework.web.bind.annotation.GetMapping;

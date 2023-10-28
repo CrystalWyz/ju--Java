@@ -1,51 +1,54 @@
 package cn.wyz.user.bean;
 
+import cn.wyz.mapper.bean.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 /**
- * <p>
- * 
- * </p>
+ * User对象
  *
  * @author wyzZzz
  * @since 2023-03-12 10:52:41
  */
 @Data
-@Schema(name = "User对象", description = "")
-public class User {
+@Schema(name = "User对象")
+@TableName("ju_user")
+public class User extends BaseEntity {
 
-    @Schema(name = "id")
-    private Long id;
-
-    @Schema(name = "用户名")
+    /**
+     * 用户名
+     */
     private String name;
 
-    @Schema(name = "昵称")
+    /**
+     * 昵称
+     */
     private String nickName;
 
-    @Schema(name = "性别")
+    /**
+     * 性别
+     */
     private Integer gender;
 
-    @Schema(name = "身份")
+    /**
+     * 身份
+     */
     private Integer identity;
 
-    @Schema(name = "污点")
+    /**
+     * 污点
+     */
     private Integer blemish;
 
-    @Schema(name = "手机号")
+    /**
+     * 手机号
+     */
     private String phone;
 
-    @Schema(name = "区号")
+    /**
+     * 区号
+     */
     private String phoneArea;
 
-    @Schema(name = "创建时间")
-    private LocalDateTime createTime;
-
-    @Schema(name = "修改时间")
-    private LocalDateTime updateTime;
 }

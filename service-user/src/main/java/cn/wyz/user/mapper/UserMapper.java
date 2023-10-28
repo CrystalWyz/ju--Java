@@ -1,10 +1,8 @@
 package cn.wyz.user.mapper;
 
+import cn.wyz.mapper.mapper.CrudMapper;
 import cn.wyz.user.bean.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * <p>
@@ -15,37 +13,6 @@ import java.util.List;
  * @since 2023-03-12 10:52:41
  */
 @Mapper
-public interface UserMapper {
+public interface UserMapper extends CrudMapper<User> {
 
-    /**
-     * 插入用户信息
-     *
-     * @param user 新用户信息
-     * @return 用户id
-     */
-    Long save(@Param("user") User user);
-
-    /**
-     * 查询用户信息
-     *
-     * @param userId 用户id
-     * @return 用户信息
-     */
-    User detail(Long userId);
-
-    /**
-     * 删除用户
-     *
-     * @param userId 用户id
-     */
-    void delete(Long userId);
-
-    /**
-     * 用户列表查询
-     *
-     * @param condition 搜索条件
-     */
-    List<User> list(@Param("condition") User condition);
-
-    User detailByPhone(String phone);
 }

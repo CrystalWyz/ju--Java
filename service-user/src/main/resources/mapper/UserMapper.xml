@@ -1,45 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.wyz.user.mapper.UserMapper">
-
-    <insert id="save" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO ju_user(id, name, nick_name, gender, blemish, phone, phone_area, create_time, update_time)
-        VALUES (DEFAULT, #{user.name}, #{user.nickName}, #{user.gender}, #{user.blemish}, #{user.phone}, #{user.phoneArea}, #{user.createTime}, #{user.updateTime})
-    </insert>
-
-    <delete id="delete">
-        DELETE FROM ju_user
-        WHERE id = #{userId}
-    </delete>
-
-    <select id="detail" resultType="cn.wyz.user.bean.User">
-        SELECT *
-        FROM ju_user
-        WHERE id = #{userId}
-    </select>
-    <select id="list" resultType="cn.wyz.user.bean.User">
-        SELECT id, name, nick_name, concat(phone_area, '-', phone) AS phone
-        FROM ju_user
-        <where>
-           <if test="condition != null">
-               <if test="condition.name != null">
-                   AND name LIKE concat('%', #{condition.name},'%')
-               </if>
-               <if test="condition.nickName != null">
-                   AND nick_name LIKE concat('%', #{condition.nickName},'%')
-               </if>
-               <if test="condition.gender != null">
-                   AND gender = #{condition.gender}
-               </if>
-               <if test="condition.phone != null">
-                   AND phone LIKE concat('%', #{condition.phone},'%')
-               </if>
-           </if>
-        </where>
-    </select>
-    <select id="detailByPhone" resultType="cn.wyz.user.bean.User">
-        SELECT *
-        FROM ju_user
-        WHERE phone = #{phone}
-    </select>
 </mapper>

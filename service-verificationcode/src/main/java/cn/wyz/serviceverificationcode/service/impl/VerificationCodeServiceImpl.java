@@ -1,7 +1,7 @@
 package cn.wyz.serviceverificationcode.service.impl;
 
-import cn.wyz.common.bean.ResponseResult;
 import cn.wyz.common.bean.dto.TokenDTO;
+import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.common.bean.response.NumberCodeResponse;
 import cn.wyz.common.bean.response.TokenResponseDTO;
 import cn.wyz.common.constant.CommonStatusEnum;
@@ -80,8 +80,8 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
         String refreshToken = JwtUtils.generatorToken(tokenDTO, TokenTypeEnum.REFRESH_TOKEN_TYPE.getCode());
 
         //服务器端存储token
-        String accessTokenKey = RedisKeyUtils.generatorTokenKey(userPhone, IdentityEnum.PASSENGER.getCode(),TokenTypeEnum.ACCESS_TOKEN_TYPE.getCode());
-        String refreshTokenKey = RedisKeyUtils.generatorTokenKey(userPhone, IdentityEnum.PASSENGER.getCode(),TokenTypeEnum.REFRESH_TOKEN_TYPE.getCode());
+        String accessTokenKey = RedisKeyUtils.generatorTokenKey(userPhone, IdentityEnum.PASSENGER.getCode(), TokenTypeEnum.ACCESS_TOKEN_TYPE.getCode());
+        String refreshTokenKey = RedisKeyUtils.generatorTokenKey(userPhone, IdentityEnum.PASSENGER.getCode(), TokenTypeEnum.REFRESH_TOKEN_TYPE.getCode());
         stringRedisTemplate.opsForValue().set(accessTokenKey, accessToken, 7, TimeUnit.DAYS);
         stringRedisTemplate.opsForValue().set(refreshTokenKey, refreshToken, 30, TimeUnit.DAYS);
 

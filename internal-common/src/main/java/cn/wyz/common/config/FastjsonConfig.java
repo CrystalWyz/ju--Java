@@ -1,4 +1,4 @@
-package cn.wyz.murdermystery.config;
+package cn.wyz.common.config;
 
 import com.alibaba.fastjson2.support.config.FastJsonConfig;
 import com.alibaba.fastjson2.support.spring6.http.converter.FastJsonHttpMessageConverter;

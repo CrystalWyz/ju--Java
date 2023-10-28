@@ -19,7 +19,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "JuInfoDTO", description = "")
+@Schema(name = "JuInfoDTO", description = "剧本杀发布记录DTO")
 public class JuInfoDTO implements Serializable {
 
     @Serial
@@ -40,6 +40,9 @@ public class JuInfoDTO implements Serializable {
 
     @Schema(name = "参与用户")
     private List<Long> participant;
+
+    @Schema(name = "状态")
+    private Integer status;
 
     @Schema(name = "规模")
     private Integer scale;

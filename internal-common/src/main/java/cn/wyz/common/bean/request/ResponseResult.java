@@ -1,4 +1,4 @@
-package cn.wyz.common.bean;
+package cn.wyz.common.bean.request;
 
 import cn.wyz.common.constant.CommonStatusEnum;
 import lombok.Data;
@@ -15,12 +15,23 @@ public class ResponseResult<T> {
 
     private T data;
 
+    private ResponseResult() {
+    }
+
+    protected ResponseResult(T data) {
+        this.data = data;
+    }
+
     public static <T> ResponseResult<T> success() {
         ResponseResult<T> result = new ResponseResult<>();
         result.setCode(CommonStatusEnum.SUCCESS.getCode());
         result.setMessage(CommonStatusEnum.SUCCESS.getMessage());
 
         return result;
+    }
+
+    public static <T> ResponseResult<T> ok(T data) {
+        return success(data);
     }
 
     public static <T> ResponseResult<T> success(T data) {

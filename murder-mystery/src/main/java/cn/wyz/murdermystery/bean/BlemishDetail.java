@@ -3,20 +3,18 @@ package cn.wyz.murdermystery.bean;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author wyzZzz
  * @since 2023-03-12 10:52:41
  */
 @Data
-@Schema(name = "BlemishDetail对象", description = "")
+@Schema(name = "BlemishDetail对象", description = "缺席记录表")
 public class BlemishDetail {
 
     @Schema(name = "id")

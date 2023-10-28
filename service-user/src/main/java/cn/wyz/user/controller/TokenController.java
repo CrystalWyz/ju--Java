@@ -1,7 +1,7 @@
 package cn.wyz.user.controller;
 
-import cn.wyz.common.bean.ResponseResult;
 import cn.wyz.common.bean.request.RefreshTokenDTO;
+import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.common.bean.response.TokenResponseDTO;
 import cn.wyz.user.service.TokenService;
 import org.springframework.web.bind.annotation.PostMapping;

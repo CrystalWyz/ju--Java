@@ -1,8 +1,8 @@
 package cn.wyz.murdermystery.service.impl;
 
+import cn.wyz.common.bean.request.PageVM;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
-import cn.wyz.common.bean.request.PageVM;
 import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
 import cn.wyz.murdermystery.convert.BeanConvert;
 import cn.wyz.murdermystery.mapper.JuInfoMapper;
@@ -40,7 +40,9 @@ public class JuInfoServiceImpl implements JuInfoService {
 
     @Override
     public Long create(JuInfoDTO juInfoDTO) {
-        return null;
+        LOGGER.info("创建聚信息，参数：{}", juInfoDTO);
+        JuInfo juInfo = beanConvert.juInfoDTOToJuInfo(juInfoDTO);
+        return createJuInfo(juInfo);
     }
 
     @Override

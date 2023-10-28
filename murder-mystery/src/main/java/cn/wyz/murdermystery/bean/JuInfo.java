@@ -4,21 +4,19 @@ import com.alibaba.fastjson.JSONObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author wyzZzz
  * @since 2023-03-12 10:52:41
  */
 @Data
-@Schema(name = "JuInfo对象", description = "")
+@Schema(name = "JuInfo对象", description = "剧本杀发布记录")
 public class JuInfo {
 
     @Schema(name = "id")
@@ -38,6 +36,9 @@ public class JuInfo {
 
     @Schema(name = "规模")
     private Integer scale;
+
+    @Schema(name = "状态")
+    private Integer status;
 
     @Schema(name = "小姐姐参与人数")
     private Integer girlParticipantNum;
