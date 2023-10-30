@@ -1,9 +1,11 @@
 package cn.wyz.user.controller;
 
 import cn.wyz.common.bean.request.ResponseResult;
+import cn.wyz.common.bean.response.TokenResponseDTO;
+import cn.wyz.user.constant.SecurityConstant;
 import cn.wyz.user.dto.LoginDTO;
 import cn.wyz.user.service.AuthorityService;
-import cn.wyz.user.vo.UserRoleVO;
+import cn.wyz.user.vo.UserInfoVO;
 import cn.wyz.user.vo.UserTokenVO;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,12 +49,25 @@ public class AuthorityController {
     }
 
     /**
+     * 刷新token
+     *
+     * @param request 请求
+     * @return 刷新结果
+     */
+    @PostMapping("/tokenRefresh")
+    public ResponseResult<TokenResponseDTO> refreshToken(HttpServletRequest request) {
+        String token = request.getHeader(SecurityConstant.HEADER_PARAMETER);
+        TokenResponseDTO tokenResponseDTO = authorityService.refreshToken(token);
+        return ResponseResult.success(tokenResponseDTO);
+    }
+
+    /**
      * 获取当前用户信息
      *
      * @return 当前用户信息
      */
-    @GetMapping("/current")
-    public ResponseResult<UserRoleVO> getUserPermission() {
+    @GetMapping
+    public ResponseResult<UserInfoVO> getUserPermission() {
         return ResponseResult.success(authorityService.getCurrentUserInfo());
     }
 
@@ -62,8 +77,9 @@ public class AuthorityController {
      * @return 登出结果
      */
     @PutMapping("/logout")
-    public ResponseEntity<?> logout() {
-        authorityService.logout();
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        String token = request.getHeader(SecurityConstant.HEADER_PARAMETER);
+        authorityService.logout(token);
         return ResponseEntity.ok().build();
     }
 

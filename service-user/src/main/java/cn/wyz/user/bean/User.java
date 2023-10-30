@@ -1,9 +1,11 @@
 package cn.wyz.user.bean;
 
 import cn.wyz.mapper.bean.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.apache.ibatis.type.JdbcType;
 
 /**
  * User对象
@@ -42,6 +44,22 @@ public class User extends BaseEntity {
     private Integer blemish;
 
     /**
+     * 账户名
+     */
+    private String username;
+
+    /**
+     * 登录密码
+     */
+    private String password;
+
+    /**
+     * 是否启用, 默认可用
+     */
+    @TableField(value = "enabled", jdbcType = JdbcType.BOOLEAN)
+    private Boolean enabled = true;
+
+    /**
      * 手机号
      */
     private String phone;
@@ -50,5 +68,6 @@ public class User extends BaseEntity {
      * 区号
      */
     private String phoneArea;
+
 
 }

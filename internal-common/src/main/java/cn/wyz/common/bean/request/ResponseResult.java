@@ -1,6 +1,7 @@
 package cn.wyz.common.bean.request;
 
 import cn.wyz.common.constant.CommonStatusEnum;
+import cn.wyz.common.exception.Code;
 import lombok.Data;
 
 /**
@@ -43,20 +44,18 @@ public class ResponseResult<T> {
         return result;
     }
 
-    public static ResponseResult<?> fail(int code, String message) {
-        ResponseResult<?> result = new ResponseResult<>();
+    public static ResponseResult<Void> fail(int code, String message) {
+        ResponseResult<Void> result = new ResponseResult<>();
         result.setCode(code);
         result.setMessage(message);
 
         return result;
     }
 
-    public static <T> ResponseResult<T> fail(T data) {
-        ResponseResult<T> result = new ResponseResult<>();
-        result.setCode(CommonStatusEnum.FAIL.getCode());
-        result.setMessage(CommonStatusEnum.FAIL.getMessage());
-        result.setData(data);
-
+    public static ResponseResult<Void> fail(Code code) {
+        ResponseResult<Void> result = new ResponseResult<>();
+        result.setCode(code.code());
+        result.setMessage(code.desc());
         return result;
     }
 

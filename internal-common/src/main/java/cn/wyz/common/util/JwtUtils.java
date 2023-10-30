@@ -18,6 +18,7 @@ import java.util.Map;
 /**
  * @author wangnanxiang
  */
+@Deprecated
 public class JwtUtils {
 
     private static final String SIGN = "CPFwyz@!##";
@@ -34,7 +35,7 @@ public class JwtUtils {
         Map<String, String> map = new HashMap<>(4);
         map.put(JWT_KEY_PHONE, tokenDTO.getPhone());
         map.put(JWT_KEY_IDENTITY, tokenDTO.getIdentity());
-        map.put(JWT_TOKEN_TYPE,tokenType);
+        map.put(JWT_TOKEN_TYPE, tokenType);
         map.put(JWT_GENERATE_TIME, String.valueOf(System.nanoTime()));
 
         // token生成

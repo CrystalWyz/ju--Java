@@ -14,7 +14,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TokenResponseDTO {
 
+    /**
+     * 新 token
+     */
     private String accessToken;
 
+    /**
+     * 旧 token
+     */
     private String refreshToken;
 }

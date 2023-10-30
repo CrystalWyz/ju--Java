@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @since 2023/5/21
  */
 @Data
-public class UserRoleVO implements Serializable {
+public class UserInfoVO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

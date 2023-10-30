@@ -14,4 +14,6 @@ import cn.wyz.user.bean.response.UserDTO;
  */
 public interface UserService extends MapperService<User, UserDTO> {
 
+    UserDTO queryByUsername(String username);
+
 }

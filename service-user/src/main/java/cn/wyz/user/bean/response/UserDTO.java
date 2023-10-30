@@ -23,6 +23,15 @@ public class UserDTO extends BaseDTO {
     @Schema(name = "身份")
     private Integer identity;
 
+    @Schema(name = "账户名")
+    private String username;
+
+    @Schema(name = "登录密码")
+    private String password;
+
+    @Schema(name = "是否启用")
+    private Boolean enabled;
+
     @Schema(name = "污点")
     private Integer blemish;
 
@@ -31,5 +40,11 @@ public class UserDTO extends BaseDTO {
 
     @Schema(name = "区号")
     private String phoneArea;
+
+    /**
+     * 是否是超级管理员
+     */
+    @Schema(name = "是否是超级管理员")
+    private Boolean isSupperAdmin = false;
 
 }

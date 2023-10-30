@@ -1,1 +1,33 @@
-GET http://localhost:8075/api/v1/users
+### 用户列表查询
+GET {{host}}users
+
+### 用户列表查询（分页）
+GET {{host}}users?page=1&size=10
+
+### 用户详情查询
+GET {{host}}users/1
+
+### 用户新增
+POST {{host}}users
+Content-Type: application/json
+
+{
+  "blemish": 0,
+  "enabled": true,
+  "gender": 1,
+  "identity": 2,
+  "isSupperAdmin": false,
+  "name": "Admin",
+  "nickName": "pigWei",
+  "password": "123456",
+  "phone": "19954246098",
+  "phoneArea": "86",
+  "username": "admin",
+  "version": 0
+}
+
+### 用户修改
+PUT {{host}}users/1
+
+### 用户删除
+DELETE {{host}}users/1

@@ -1,16 +1,34 @@
 package cn.wyz.user.service;
 
-import cn.wyz.common.bean.response.TokenResponseDTO;
-
 /**
- * @author wangnanxiang
- */
+ * @author zhouzhitong
+ * @since 2023-10-28
+ **/
 public interface TokenService {
 
     /**
-     * 刷新token
-     * @param refreshToken refreshToken
-     * @return new accessToken
+     * 获取 token
+     *
+     * @param username 用户名
+     * @return token
      */
-    TokenResponseDTO refreshToken(String refreshToken);
+    String getToken(String username);
+
+    /**
+     * 保存或刷新 token
+     *
+     * @param username 用户名
+     * @param token    token
+     * @return token
+     */
+    String saveOrRefreshToken(String username, String token);
+
+    /**
+     * 删除 token
+     *
+     * @param username 用户名
+     * @return 是否删除成功
+     */
+    boolean deleteToken(String username);
+
 }
