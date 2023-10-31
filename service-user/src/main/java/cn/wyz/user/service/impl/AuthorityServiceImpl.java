@@ -2,7 +2,7 @@ package cn.wyz.user.service.impl;
 
 import cn.wyz.common.bean.response.TokenResponseDTO;
 import cn.wyz.common.util.EncryptUtils;
-import cn.wyz.user.bean.response.UserDTO;
+import cn.wyz.user.bean.dto.UserDTO;
 import cn.wyz.user.config.LibSecurityProperties;
 import cn.wyz.user.context.TokenInfo;
 import cn.wyz.user.dto.LoginDTO;

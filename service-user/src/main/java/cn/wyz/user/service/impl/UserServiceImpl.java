@@ -3,7 +3,7 @@ package cn.wyz.user.service.impl;
 import cn.wyz.common.util.EncryptUtils;
 import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import cn.wyz.user.bean.User;
-import cn.wyz.user.bean.response.UserDTO;
+import cn.wyz.user.bean.dto.UserDTO;
 import cn.wyz.user.mapper.UserMapper;
 import cn.wyz.user.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

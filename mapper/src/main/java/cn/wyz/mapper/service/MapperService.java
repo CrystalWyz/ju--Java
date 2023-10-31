@@ -111,10 +111,7 @@ public interface MapperService<
      * @param id 编号
      * @return 是否成功
      */
-    default boolean remove(Long id) {
-
-        return removeById(id);
-    }
+    boolean remove(Long id);
 
     /**
      * Entity转DTO
@@ -143,7 +140,7 @@ public interface MapperService<
     }
 
     /**
-     * DTO转Entity
+     * DTO转Entity(允许设置为null属性)
      *
      * @param dto    DTO
      * @param entity Entity

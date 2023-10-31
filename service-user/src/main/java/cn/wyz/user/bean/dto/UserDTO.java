@@ -1,4 +1,4 @@
-package cn.wyz.user.bean.response;
+package cn.wyz.user.bean.dto;
 
 import cn.wyz.mapper.bean.dto.BaseDTO;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -2,8 +2,8 @@ package cn.wyz.user.controller;
 
 import cn.wyz.mapper.controller.BaseController;
 import cn.wyz.user.bean.User;
+import cn.wyz.user.bean.dto.UserDTO;
 import cn.wyz.user.bean.req.UserQuery;
-import cn.wyz.user.bean.response.UserDTO;
 import cn.wyz.user.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;

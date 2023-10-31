@@ -1,6 +1,6 @@
-package cn.wyz.user.bean;
+package cn.wyz.user.bean.req;
 
-import cn.wyz.mapper.bean.BaseEntity;
+import cn.wyz.mapper.req.BaseRequest;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,14 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @TableName("user_game")
-public class UserGame extends BaseEntity {
-
-    /**
-     * 用户ID
-     *
-     * @see User#getId()
-     */
-    private Long userId;
+public class UserGameQuery extends BaseRequest {
 
     /**
      * 剧本杀游戏等级

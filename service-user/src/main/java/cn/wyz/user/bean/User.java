@@ -3,7 +3,6 @@ package cn.wyz.user.bean;
 import cn.wyz.mapper.bean.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.apache.ibatis.type.JdbcType;
 
@@ -14,7 +13,6 @@ import org.apache.ibatis.type.JdbcType;
  * @since 2023-03-12 10:52:41
  */
 @Data
-@Schema(name = "User对象")
 @TableName("ju_user")
 public class User extends BaseEntity {
 

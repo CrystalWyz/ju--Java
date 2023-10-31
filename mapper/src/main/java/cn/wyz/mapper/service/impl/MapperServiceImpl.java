@@ -77,6 +77,12 @@ public abstract class MapperServiceImpl
     }
 
     @Override
+    public boolean remove(Long id) {
+        LOGGER.info("remove request: {}", id);
+        return removeById(id);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public DTO update(Long id, DTO dto) {
         LOGGER.info("update request: {}", dto);
