@@ -3,6 +3,7 @@ package cn.wyz.mapper.type;
 import cn.wyz.common.base.BaseEnum;
 import cn.wyz.common.util.EnumUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 import java.io.Serial;
@@ -47,6 +48,7 @@ public enum QueryType implements BaseEnum {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @JsonValue
     private final Integer code;
 
     private final String desc;

@@ -2,6 +2,7 @@ package cn.wyz.mapper.req;
 
 import cn.wyz.mapper.bean.dto.ExtensibleProperties;
 import cn.wyz.mapper.bean.dto.Sort;
+import cn.wyz.mapper.type.QueryType;
 import cn.wyz.mapper.utils.MybatisPlusWrapperUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
@@ -50,7 +51,7 @@ public class BaseRequest extends ExtensibleProperties implements Serializable {
     private List<FiledQuery> filedQueries;
 
     public boolean isPage() {
-        return page != null && size != null;
+        return page != null || size != null;
     }
 
     public List<Sort> getSorts() {
@@ -85,7 +86,8 @@ public class BaseRequest extends ExtensibleProperties implements Serializable {
         this.filedQueries = Lists.newArrayList();
         for (String query : filedQueries.split(",")) {
             String[] s = query.split(" ");
-//            FiledQuery filedQuery = FiledQuery.of(s[0], s[1], QueryType.of(Integer.parseInt(s[2])));
+            FiledQuery filedQuery = FiledQuery.of(s[0], s[1], QueryType.of(Integer.parseInt(s[2])));
+            this.filedQueries.add(filedQuery);
         }
     }
 

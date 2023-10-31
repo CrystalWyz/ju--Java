@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -77,6 +78,26 @@ public class MybatisPlusWrapperUtils implements CommandLineRunner {
             }
         });
 
+        Class<? extends BaseRequest> c = query.getClass();
+        if (c != BaseRequest.class) {
+            Field[] declaredFields = c.getDeclaredFields();
+            for (Field field : declaredFields) {
+                String name = field.getName();
+                try {
+                    field.setAccessible(true);
+                    Object value = field.get(query);
+                    if (value != null) {
+                        wrapper.eq(name, value);
+                    }
+                    field.setAccessible(false);
+                } catch (IllegalAccessException e) {
+                    LOGGER.error("buildQueryWrapper error", e);
+                }
+            }
+        }
+        if (!query.extraProperties().isEmpty()) {
+            query.extraProperties().forEach(wrapper::eq);
+        }
         return wrapper;
     }
 }
