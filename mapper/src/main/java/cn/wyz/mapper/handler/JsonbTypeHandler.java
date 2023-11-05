@@ -1,4 +1,4 @@
-package cn.wyz.murdermystery.handler;
+package cn.wyz.mapper.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class JsonbTypeHandler<T extends Object> extends BaseTypeHandler<T> {
 
-    private Class<T> clazz;
+    private final Class<T> clazz;
 
     public JsonbTypeHandler(Class<T> clazz) {
         if (clazz == null) throw new IllegalArgumentException("Type argument cannot be null");
@@ -57,7 +57,7 @@ public class JsonbTypeHandler<T extends Object> extends BaseTypeHandler<T> {
     private T toObject(String content, Class<?> clazz) {
         if (content != null && !content.isEmpty()) {
             try {
-                return (T) JSON.parseObject(content,clazz);
+                return (T) JSON.parseObject(content, clazz);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

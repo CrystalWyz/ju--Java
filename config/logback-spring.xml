@@ -39,7 +39,7 @@
         <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <!-- 定义com.zhouzhitong.lib下的日志记录器 -->
+    <!-- 定义 cn.wyz 下的日志记录器 -->
     <logger name="cn.wyz" level="DEBUG" additivity="false">
         <appender-ref ref="FILE"/>
         <appender-ref ref="CONSOLE"/>

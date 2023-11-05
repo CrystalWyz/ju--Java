@@ -1,24 +1,20 @@
 package cn.wyz.murdermystery.bean;
 
+import cn.wyz.mapper.bean.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-
-import java.time.LocalDateTime;
+import lombok.ToString;
 
 /**
- * <p>
- *
- * </p>
+ * 缺席记录表
  *
  * @author wyzZzz
  * @since 2023-03-12 10:52:41
  */
 @Data
+@ToString(callSuper = true)
 @Schema(name = "BlemishDetail对象", description = "缺席记录表")
-public class BlemishDetail {
-
-    @Schema(name = "id")
-    private Long id;
+public class BlemishDetail extends BaseEntity {
 
     @Schema(name = "用户id")
     private Long userId;
@@ -32,9 +28,11 @@ public class BlemishDetail {
     @Schema(name = "描述信息")
     private String description;
 
-    @Schema(name = "创建时间")
-    private LocalDateTime createTime;
-
+    /**
+     * 聚id
+     *
+     * @see JuInfo#getId()
+     */
     @Schema(name = "聚id")
     private Long juInfoId;
 }

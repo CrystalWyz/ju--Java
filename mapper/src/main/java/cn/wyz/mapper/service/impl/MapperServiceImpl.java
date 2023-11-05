@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
+ * 数据库的 CRUD 基础服务实现类
+ *
  * @author zhouzhitong
  * @since 2022/9/28
  */

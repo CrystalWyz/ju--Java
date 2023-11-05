@@ -1,7 +1,6 @@
 package cn.wyz.common.util;
 
 import cn.wyz.common.base.BaseEnum;
-import cn.wyz.common.exception.EnumNotFindException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,7 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EnumUtils {
 
-    public static <T extends BaseEnum> T codeOf(Class<T> c, int code) {
+    public static <T extends BaseEnum> T codeOf(Class<T> c, Integer code) {
+        if (code == null) {
+            return null;
+        }
         T[] enumConstants = c.getEnumConstants();
         for (T e : enumConstants) {
             if (e.getCode() == code) {
@@ -21,7 +23,8 @@ public class EnumUtils {
             }
         }
         LOGGER.error("enum type {} don't have code {}.", c, code);
-        throw EnumNotFindException.instant(c, code);
+//        throw EnumNotFindException.instant(c, code);
+        return null;
     }
 
 }

@@ -24,10 +24,9 @@ public interface AuthorityService {
     /**
      * 刷新token
      *
-     * @param refreshToken refreshToken
      * @return new accessToken
      */
-    TokenResponseDTO refreshToken(String refreshToken);
+    TokenResponseDTO refreshToken();
 
     /**
      * 退出登录

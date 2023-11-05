@@ -1,42 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.wyz.murdermystery.mapper.JuInfoMapper">
-    
-    <resultMap id="CompleteResultMap" type="cn.wyz.murdermystery.bean.JuInfo">
-        <id column="id" property="id"></id>
-        <result column="title" property="title"></result>
-        <result column="participant" property="participant" jdbcType="ARRAY" typeHandler="cn.wyz.murdermystery.handler.ListTypeHandler"></result>
-        <result column="begin" property="begin"></result>
-        <result column="finish" property="finish"></result>
-        <result column="create_time" property="createTime"></result>
-        <result column="description" property="description"></result>
-        <result column="user_id" property="userId"></result>
-        <result column="update_time" property="updateTime"></result>
-        <result column="scale" property="scale"></result>
-        <result column="girl_participant_num" property="girlParticipantNum"></result>
-        <result column="boy_participant_num" property="boyParticipantNum"></result>
-        <result column="config" property="config" typeHandler="cn.wyz.murdermystery.handler.JsonTypeHandler"></result>
-        <result column="type" property="type"></result>
-    </resultMap>
-    <insert id="save" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO ju_info(id, title, participant, begin, finish, create_time, description, user_id, update_time, scale, girl_participant_num, boy_participant_num, config, type)
-        VALUES (DEFAULT, #{juInfo.title}, #{juInfo.participant,typeHandler=cn.wyz.murdermystery.handler.ListTypeHandler}, #{juInfo.begin}, #{juInfo.finish}, #{juInfo.createTime}, #{juInfo.description},
-                #{juInfo.userId}, #{juInfo.updateTime}, #{juInfo.scale}, #{juInfo.girlParticipantNum}, #{juInfo.boyParticipantNum}, #{juInfo.config,typeHandler=cn.wyz.murdermystery.handler.JsonTypeHandler}, #{juInfo.type})
-    </insert>
-    <delete id="delete">
-        DELETE FROM ju_info
-        WHERE id = #{juInfoId}
-    </delete>
-
-    <select id="list" resultType="cn.wyz.murdermystery.bean.JuInfo">
-        SELECT id, title, type, description, begin, user_id, girl_participant_num, boy_participant_num, scale
-        FROM ju_info
-        ORDER BY create_time DESC
-    </select>
-
-    <select id="detail" resultMap="CompleteResultMap">
-        SELECT id, title, participant, begin, finish, create_time, description, user_id, update_time, scale, girl_participant_num, boy_participant_num, config, type
-        FROM ju_info
-        WHERE id = #{juInfoId}
-    </select>
+    <!--    <resultMap id="JuInfoMap" type="cn.wyz.murdermystery.bean.JuInfo">-->
+    <!--        <id column="id" property="id"/>-->
+    <!--        <result property="createTime" column="create_time"-->
+    <!--                jdbcType="TIMESTAMP"/>-->
+    <!--        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>-->
+    <!--        <result property="createdBy" column="created_by" jdbcType="VARCHAR"/>-->
+    <!--        <result property="lastModifiedBy" column="last_modified_by" jdbcType="VARCHAR"/>-->
+    <!--        <result column="title" property="title"/>-->
+    <!--        <result column="participant_2" property="participant"-->
+    <!--                typeHandler="cn.wyz.mapper.handler.ListTypeHandler"/>-->
+    <!--        <result column="begin" property="begin"/>-->
+    <!--        <result column="finish" property="finish"/>-->
+    <!--        <result column="description" property="description"/>-->
+    <!--        <result column="user_id" property="userId"/>-->
+    <!--        <result column="scale" property="scale"/>-->
+    <!--        <result column="girl_participant_num" property="girlParticipantNum"/>-->
+    <!--        <result column="boy_participant_num" property="boyParticipantNum"/>-->
+    <!--        <result column="config" property="config" typeHandler="cn.wyz.mapper.handler.JsonTypeHandler"/>-->
+    <!--        <result column="type" property="type"/>-->
+    <!--    </resultMap>-->
 </mapper>

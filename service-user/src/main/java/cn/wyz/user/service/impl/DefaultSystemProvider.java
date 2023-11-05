@@ -1,6 +1,7 @@
 package cn.wyz.user.service.impl;
 
 import cn.wyz.common.service.SystemProvider;
+import cn.wyz.user.holder.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,7 +13,7 @@ public class DefaultSystemProvider implements SystemProvider {
 
     @Override
     public String getCurrentAuditor() {
-        return null;
+        return SecurityContextHolder.getContext().getUsername();
     }
 
     @Override

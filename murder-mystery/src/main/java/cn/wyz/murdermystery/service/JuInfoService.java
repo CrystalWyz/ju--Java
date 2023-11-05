@@ -1,11 +1,8 @@
 package cn.wyz.murdermystery.service;
 
+import cn.wyz.mapper.service.MapperService;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
-import cn.wyz.common.bean.request.PageVM;
-import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
-
-import java.util.List;
 
 /**
  * <p>
@@ -15,41 +12,51 @@ import java.util.List;
  * @author wyzZzz
  * @since 2023-03-12 10:52:41
  */
-public interface JuInfoService {
+public interface JuInfoService extends MapperService<JuInfo, JuInfoDTO> {
 
     /**
-     * 聚--创建
+     * 参加聚本杀
      *
-     * @param juInfoDTO juInfoDTO
-     * @return id
+     * @param juInfoId 聚Id
+     * @param userId   需要参加的用户
      */
-    Long create(JuInfoDTO juInfoDTO);
+    void join(Long juInfoId, Long userId);
 
     /**
-     * 聚--分页查询
-     * @param pageRequest 分页请求
-     * @return 分页数据
+     * 退出游戏
+     * <p>
+     * TODO 这里可以考虑其他的配置参数
+     *
+     * @param juInfoId 聚Id
+     * @param userId   需要退出的用户
+     * @param isForce  是否强制退出
+     * @return 是否成功
      */
-    List<JuInfoPageInfo> juInfoPage(PageVM<JuInfoDTO> pageRequest);
+    boolean outGame(Long juInfoId, Long userId, Boolean isForce);
 
     /**
-     * 聚--详细信息查询
-     * @param juInfoId id
-     * @return 聚详情
+     * 解散聚本杀
+     *
+     * @param juInfoId 聚Id
+     * @param userId   解散操作人
      */
-    JuInfo juInfoDetail(Long juInfoId);
+    void dismiss(Long juInfoId, Long userId);
 
     /**
-     * 聚--创建
-     * @param juInfo 聚信息
-     * @return 聚id
+     * 开始游戏
+     *
+     * @param juInfoId 聚Id
+     * @param userId   操作人Id
      */
-    Long createJuInfo(JuInfo juInfo);
+    void startGame(Long juInfoId, Long userId);
 
     /**
-     * 聚删除
-     * @param juInfoId 聚id
-     * @return 删除结果
+     * 结束游戏
+     *
+     * @param juInfoId 聚Id
+     * @param userId   操作人Id
      */
-    int deleteJuInfo(Long juInfoId);
+    void finishGame(Long juInfoId, Long userId);
+
+
 }

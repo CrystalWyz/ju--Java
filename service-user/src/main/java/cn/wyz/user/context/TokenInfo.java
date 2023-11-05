@@ -1,5 +1,6 @@
 package cn.wyz.user.context;
 
+import cn.wyz.user.type.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,9 +15,19 @@ import lombok.Getter;
 public class TokenInfo {
 
     /**
+     * 用户Id
+     */
+    private Long userId;
+
+    /**
      * 用户名
      */
     private String username;
+
+    /**
+     * 性别
+     */
+    private Gender gender;
 
     /**
      * 用户登录 IP

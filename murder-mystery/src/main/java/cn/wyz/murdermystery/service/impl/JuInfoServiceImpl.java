@@ -1,80 +1,108 @@
 package cn.wyz.murdermystery.service.impl;
 
-import cn.wyz.common.bean.request.PageVM;
+import cn.wyz.common.exception.BaseException;
+import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
-import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
-import cn.wyz.murdermystery.convert.BeanConvert;
 import cn.wyz.murdermystery.mapper.JuInfoMapper;
 import cn.wyz.murdermystery.service.JuInfoService;
-import com.github.pagehelper.PageHelper;
+import cn.wyz.murdermystery.type.JuInfoStatus;
+import cn.wyz.user.bean.dto.UserDTO;
+import cn.wyz.user.context.LoginContext;
+import cn.wyz.user.holder.SecurityContextHolder;
+import cn.wyz.user.service.UserService;
+import cn.wyz.user.type.Gender;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * <p>
- * 服务实现类
- * </p>
- *
  * @author wyzZzz
  * @since 2023-03-12 10:52:41
  */
 @Slf4j
 @Service
-public class JuInfoServiceImpl implements JuInfoService {
+@AllArgsConstructor
+public class JuInfoServiceImpl
+        extends MapperServiceImpl<JuInfoMapper, JuInfo, JuInfoDTO>
+        implements JuInfoService {
 
-    private final BeanConvert beanConvert;
+    private final UserService userService;
 
-    private final JuInfoMapper juInfoMapper;
-
-    public JuInfoServiceImpl(BeanConvert beanConvert, JuInfoMapper juInfoMapper) {
-        this.beanConvert = beanConvert;
-        this.juInfoMapper = juInfoMapper;
+    @Override
+    public JuInfoDTO add(JuInfoDTO dto) {
+        LoginContext context = SecurityContextHolder.getContext();
+        dto.setUserId(context.getUserId());
+        dto.setStatus(JuInfoStatus.NEW);
+        return super.add(dto);
     }
 
     @Override
-    public Long create(JuInfoDTO juInfoDTO) {
-        LOGGER.info("创建聚信息，参数：{}", juInfoDTO);
-        JuInfo juInfo = beanConvert.juInfoDTOToJuInfo(juInfoDTO);
-        return createJuInfo(juInfo);
-    }
-
-    @Override
-    public List<JuInfoPageInfo> juInfoPage(PageVM<JuInfoDTO> pageRequest) {
-        PageHelper.startPage(pageRequest.getPageNum(), pageRequest.getPageSize());
-        JuInfo condition = beanConvert.juInfoDTOToJuInfo(pageRequest.getCondition());
-        List<JuInfo> juInfoList = juInfoMapper.list(condition);
-        if (ObjectUtils.isNotEmpty(juInfoList)) {
-            return juInfoList.stream().map(beanConvert::juInfoTOJuInfoPageInfo).collect(Collectors.toList());
+    @Transactional(rollbackFor = Exception.class)
+    public void join(Long juInfoId, Long userId) {
+        LOGGER.info("[juInfo#join] user [id: {}] want joint juInfo [id: {}]", userId, juInfoId);
+        UserDTO user = userService.get(userId);
+        JuInfoDTO juInfo = this.get(juInfoId);
+        // TODO 应该使用全局锁
+        JuInfoStatus status = juInfo.getStatus();
+        if (!status.enableJoin()) {
+            throw new BaseException("当前剧本杀的状态不可加入成员");
         }
-        return Collections.emptyList();
+
+        Gender gender = user.getGender();
+        switch (gender) {
+            case MAN -> juInfo.setBoyParticipantNum(juInfo.getBoyParticipantNum() + 1);
+            case WOMAN -> juInfo.setGirlParticipantNum(juInfo.getGirlParticipantNum() + 1);
+        }
+        if (juInfo.full()) {
+            juInfo.setStatus(JuInfoStatus.FULL);
+        }
+        juInfo.getParticipant().add(userId);
+        this.update(juInfoId, juInfo);
+        // FIXME 是否应该通知发起者
     }
 
     @Override
-    public JuInfo juInfoDetail(Long juInfoId) {
-        return juInfoMapper.detail(juInfoId);
+    public boolean outGame(Long juInfoId, Long userId, Boolean isForce) {
+        LOGGER.info("[juInfo#outGame] user [id: {}] want out juInfo [id: {}]", userId, juInfoId);
+        JuInfoDTO juInfo = this.get(juInfoId);
+        // TODO 应该使用全局锁
+        JuInfoStatus status = juInfo.getStatus();
+        if (!status.canOut()) {
+            throw new BaseException("当前游戏状态不支持退出");
+        }
+        if (!juInfo.getParticipant().remove(userId)) {
+            throw new BaseException("你已经不在当前游戏中了, 请勿重复操作");
+        }
+        // TODO
+        // TODO
+        // TODO
+        return false;
     }
 
     @Override
-    public Long createJuInfo(JuInfo juInfo) {
+    public void dismiss(Long juInfoId, Long userId) {
 
-        // 属性填充
-        LocalDateTime now = LocalDateTime.now();
-        juInfo.setCreateTime(now);
-        juInfo.setUpdateTime(now);
-
-        return juInfoMapper.save(juInfo);
     }
 
     @Override
-    public int deleteJuInfo(Long juInfoId) {
+    public void startGame(Long juInfoId, Long userId) {
 
-        return juInfoMapper.delete(juInfoId);
+    }
+
+    @Override
+    public void finishGame(Long juInfoId, Long userId) {
+
+    }
+
+    @Override
+    public JuInfoDTO newDTO() {
+        return new JuInfoDTO();
+    }
+
+    @Override
+    public JuInfo newEntity() {
+        return new JuInfo();
     }
 }

@@ -1,72 +1,95 @@
 package cn.wyz.murdermystery.controller;
 
-import cn.wyz.common.bean.request.PageVM;
 import cn.wyz.common.bean.request.ResponseResult;
+import cn.wyz.mapper.controller.BaseController;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
-import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
-import cn.wyz.murdermystery.convert.BeanConvert;
+import cn.wyz.murdermystery.bean.request.JuInfoRequest;
 import cn.wyz.murdermystery.service.JuInfoService;
-import com.github.pagehelper.PageInfo;
-import io.swagger.v3.oas.annotations.Operation;
+import cn.wyz.user.context.LoginContext;
+import cn.wyz.user.holder.SecurityContextHolder;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 /**
- * <p>
- * 前端控制器
- * </p>
- *
  * @author wyzZzz
  * @since 2023-03-12 10:52:41
  */
 @RestController
-@RequestMapping("/api/v1/murderMystery/juInfo")
+@RequestMapping("/api/v1/murderMystery/juInfos")
 @Tag(name = "聚接口样例", description = "聚接口样例")
-public class JuInfoController {
+public class JuInfoController
+        extends BaseController<JuInfo, JuInfoDTO, JuInfoRequest, JuInfoService> {
 
-    private final BeanConvert beanConvert;
-
-    private final JuInfoService juInfoService;
-
-    public JuInfoController(BeanConvert beanConvert, JuInfoService juInfoService) {
-        this.beanConvert = beanConvert;
-        this.juInfoService = juInfoService;
+    /**
+     * 加入聚
+     *
+     * @param juInfoId 聚id
+     * @return ResponseResult<Void>
+     */
+    @PatchMapping("/join/{juInfoId}")
+    public ResponseResult<Void> join(@PathVariable("juInfoId") Long juInfoId) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        service().join(juInfoId, userId);
+        return ResponseResult.success();
     }
 
-    @Operation(description = "聚分页查询")
-    @PostMapping("/page")
-    public ResponseResult<PageInfo<JuInfoPageInfo>> juInfoPage(@RequestBody PageVM<JuInfoDTO> pageRequest) {
-        List<JuInfoPageInfo> juInfoPageInfos = juInfoService.juInfoPage(pageRequest);
-        return ResponseResult.success(new PageInfo<>(juInfoPageInfos));
+    /**
+     * 退出游戏
+     *
+     * @param juInfoId 聚id
+     * @param isForce  是否强制退出
+     */
+    @PatchMapping("/outGame/{juInfoId}")
+    public ResponseResult<Void> outGame(@PathVariable("juInfoId") Long juInfoId,
+                                        @RequestParam(value = "isForce", required = false) Boolean isForce) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        service().outGame(juInfoId, userId, isForce);
+        return ResponseResult.success();
     }
 
-    @Operation(description = "查询聚详情")
-    @GetMapping("/detail")
-    public ResponseResult<JuInfoDTO> detail(@RequestParam Long juInfoId) {
-        JuInfo juInfo = juInfoService.juInfoDetail(juInfoId);
-        return ResponseResult.success(beanConvert.juInfoToJuInfoDTO(juInfo));
+    /**
+     * 开始游戏
+     *
+     * @param juInfoId 聚id
+     */
+    @PatchMapping("/start/{juInfoId}")
+    public ResponseResult<Void> start(@PathVariable("juInfoId") Long juInfoId) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        service().startGame(juInfoId, userId);
+        return ResponseResult.success();
     }
 
-    @Operation(description = "创建聚")
-    @PostMapping("/create")
-    public ResponseResult<String> createJuInfo(@RequestBody JuInfoDTO juInfoDTO) {
-        Long id = juInfoService.createJuInfo(beanConvert.juInfoDTOToJuInfo(juInfoDTO));
-        return ResponseResult.success(String.valueOf(id));
+    /**
+     * 结束游戏
+     *
+     * @param juInfoId 聚id
+     */
+    @PatchMapping("/finish/{juInfoId}")
+    public ResponseResult<Void> finish(@PathVariable("juInfoId") Long juInfoId) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        service().finishGame(juInfoId, userId);
+        return ResponseResult.success();
     }
 
-    @Operation(description = "删除聚")
-    @PostMapping("/delete/{juInfoId}")
-    public ResponseResult<String> deleteJuInfo(@PathVariable Long juInfoId) {
-        juInfoService.deleteJuInfo(juInfoId);
+    /**
+     * 结束游戏
+     *
+     * @param juInfoId 聚id
+     */
+    @PatchMapping("/dismiss/{juInfoId}")
+    public ResponseResult<Void> dismiss(@PathVariable("juInfoId") Long juInfoId) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        service().dismiss(juInfoId, userId);
         return ResponseResult.success();
     }
 }

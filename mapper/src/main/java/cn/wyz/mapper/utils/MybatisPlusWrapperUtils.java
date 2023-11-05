@@ -46,6 +46,7 @@ public class MybatisPlusWrapperUtils implements CommandLineRunner {
             return wrapper;
         }
 
+        // 1. 处理排序参数
         List<Sort> sorts = query.getSorts();
         sorts.forEach(sort -> {
             if (sort.isAsc()) {
@@ -55,6 +56,7 @@ public class MybatisPlusWrapperUtils implements CommandLineRunner {
             }
         });
 
+        // 2. 处理字段查询列表参数(这个可以满足大部分的查询需求)
         List<FiledQuery> fieldQueries = query.getFiledQueries();
         fieldQueries.forEach(filedQuery -> {
             String fieldName = filedQuery.getFiledName();
@@ -78,6 +80,7 @@ public class MybatisPlusWrapperUtils implements CommandLineRunner {
             }
         });
 
+        // 3. 处理额外参数
         Class<? extends BaseRequest> c = query.getClass();
         if (c != BaseRequest.class) {
             Field[] declaredFields = c.getDeclaredFields();
@@ -95,6 +98,7 @@ public class MybatisPlusWrapperUtils implements CommandLineRunner {
                 }
             }
         }
+        // 4. 处理额外参数
         if (!query.extraProperties().isEmpty()) {
             query.extraProperties().forEach(wrapper::eq);
         }

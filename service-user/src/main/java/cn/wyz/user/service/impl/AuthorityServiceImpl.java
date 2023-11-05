@@ -4,11 +4,13 @@ import cn.wyz.common.bean.response.TokenResponseDTO;
 import cn.wyz.common.util.EncryptUtils;
 import cn.wyz.user.bean.dto.UserDTO;
 import cn.wyz.user.config.LibSecurityProperties;
+import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.context.TokenInfo;
 import cn.wyz.user.dto.LoginDTO;
 import cn.wyz.user.exception.UserDisableException;
 import cn.wyz.user.exception.UserNotFoundException;
 import cn.wyz.user.exception.UserPasswordNotMatchException;
+import cn.wyz.user.holder.SecurityContextHolder;
 import cn.wyz.user.service.AuthorityService;
 import cn.wyz.user.service.TokenService;
 import cn.wyz.user.service.UserService;
@@ -41,6 +43,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public UserTokenVO login(LoginDTO param) {
+        LOGGER.debug("login param username: {}", param.getUsername());
         String username = param.getUsername();
         String rawPassword = param.getPassword();
         // 获取用户
@@ -61,6 +64,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         String encrypt = EncryptUtils.encrypt16(rawPassword);
         String password = user.getPassword();
 
+        // 匹配密码
         String encodePwd = passwordEncoder.encode(password);
         if (!passwordEncoder.matches(encrypt, encodePwd)) {
             throw new UserPasswordNotMatchException(username);
@@ -68,7 +72,12 @@ public class AuthorityServiceImpl implements AuthorityService {
 
         String token;
         if ((token = tokenService.getToken(username)) == null) {
-            token = JwtTokenUtils.generatorToken(username);
+            TokenInfo tokenInfo = TokenInfo.builder()
+                    .userId(user.getId())
+                    .username(username)
+                    .gender(user.getGender())
+                    .build();
+            token = JwtTokenUtils.generatorToken(tokenInfo);
             tokenService.saveOrRefreshToken(username, token);
         }
         UserTokenVO res = new UserTokenVO();
@@ -79,10 +88,12 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public TokenResponseDTO refreshToken(String refreshToken) {
+    public TokenResponseDTO refreshToken() {
+        LoginContext context = SecurityContextHolder.getContext();
+        String refreshToken = context.getToken();
         TokenInfo claims = JwtTokenUtils.parseToken(refreshToken);
         String username = claims.getUsername();
-        String newToken = JwtTokenUtils.generatorToken(username);
+        String newToken = JwtTokenUtils.generatorToken(claims);
         tokenService.saveOrRefreshToken(username, newToken);
         return new TokenResponseDTO(newToken, refreshToken);
     }

@@ -1,6 +1,8 @@
 package cn.wyz.user.type;
 
 import cn.wyz.common.base.BaseEnum;
+import cn.wyz.common.util.EnumUtils;
+import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
@@ -15,14 +17,19 @@ public enum Gender implements BaseEnum {
     WOMAN(2, "女"),
     ;
 
-    @JsonValue
+    @EnumValue
     private final Integer code;
 
+    @JsonValue
     private final String desc;
 
     Gender(int code, String desc) {
         this.code = code;
         this.desc = desc;
+    }
+
+    public static Gender of(Integer code) {
+        return EnumUtils.codeOf(Gender.class, code);
     }
 
 

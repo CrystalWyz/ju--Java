@@ -26,7 +26,7 @@ public class SecurityContextHolder implements Serializable {
     public static LoginContext getContext() {
         LoginContext loginContext = CONTEXT_HOLDER.get();
         if (loginContext == null) {
-            loginContext = new LoginContext("anonymous");
+            loginContext = new LoginContext(-1L, "anonymous");
         }
         return loginContext;
     }

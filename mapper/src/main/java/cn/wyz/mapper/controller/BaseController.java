@@ -6,8 +6,8 @@ import cn.wyz.mapper.bean.dto.BaseDTO;
 import cn.wyz.mapper.req.BaseRequest;
 import cn.wyz.mapper.service.MapperService;
 import cn.wyz.mapper.vo.PageResultVO;
-import jakarta.annotation.Resource;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,11 +37,16 @@ public abstract class BaseController
                 , Service extends MapperService<Entity, DTO>> {
 
     @Getter
-    @Resource
+    @Autowired
     private Service service;
 
     @Value("${lib.mapper.size-limit:1000}")
     private Integer sizeLimit;
+
+    public Service service() {
+        return service;
+    }
+
 
     /**
      * 查询所有(如果带了分页参数,则分页查询, 否则查询所有)
@@ -53,18 +58,21 @@ public abstract class BaseController
      */
     @GetMapping
     @ResponseStatus(HttpStatus.PARTIAL_CONTENT)
-    public PageResultVO<DTO> page(Query page) {
-        if (page.isPage()) {
-            return service.page(page);
-        } else {
-            // 为了安全起见, 查询所有的时候还是限制一千条
-            if (page.getSize() == null) {
-                page.setSize(sizeLimit);
-            }
-            List<DTO> resList = service.queryAll(page);
-            return PageResultVO.ok(resList, null);
+    public ResponseResult<List<DTO>> list(Query page) {
+        // 为了安全起见, 查询所有的时候还是限制一千条
+        if (page.getSize() == null) {
+            page.setSize(sizeLimit);
         }
+        List<DTO> resList = service.queryAll(page);
+        return ResponseResult.ok(resList);
     }
+
+    @PostMapping("/page")
+    @ResponseStatus(HttpStatus.PARTIAL_CONTENT)
+    public PageResultVO<DTO> page(@RequestBody Query page) {
+        return service.page(page);
+    }
+
 
     /**
      * 通过主键查询单条数据

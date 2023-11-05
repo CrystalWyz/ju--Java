@@ -9,7 +9,6 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <groupId>cn.wyz</groupId>
     <artifactId>mapper</artifactId>
 
     <dependencies>
@@ -24,11 +23,22 @@
             <artifactId>postgresql</artifactId>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jdbc</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
+        <!--mybatis-plus依赖-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -47,10 +57,6 @@
             <version>0.2.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -60,12 +66,6 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-        </dependency>
-
-        <!--mybatis-plus依赖-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
 
     </dependencies>

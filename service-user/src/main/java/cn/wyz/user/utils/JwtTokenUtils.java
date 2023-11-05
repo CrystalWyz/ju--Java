@@ -6,6 +6,7 @@ import cn.wyz.common.util.IpUtils;
 import cn.wyz.user.constant.SecurityConstant;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.context.TokenInfo;
+import cn.wyz.user.type.Gender;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -27,18 +28,25 @@ public class JwtTokenUtils {
 
     private static final String SIGN = "CPFwyz@!##";
 
+    private static final String JWT_KEY_USER_ID = "userId";
     private static final String JWT_KEY_USERNAME = "username";
+    private static final String JWT_KEY_USER_GENDER = "gender";
+
     private static final String JWT_KEY_IP = "ip";
 
     private static final String JWT_GENERATE_TIME = "generateTime";
 
     public static LoginContext getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(SecurityConstant.HEADER_PARAMETER);
+        String token = SecurityUtils.getToken(request);
         if (token != null) {
             TokenInfo claims = parseToken(token);
             String user = claims.getUsername();
-            LoginContext loginContext = new LoginContext(user);
+            Long userId = claims.getUserId();
+            Gender gender = claims.getGender();
+            LoginContext loginContext = new LoginContext(userId, user);
             loginContext.setToken(token);
+            loginContext.setUserId(userId);
+            loginContext.setGender(gender);
 //            LocalDateTime loginTime = (LocalDateTime) claims.get(SecurityConstant.LOGIN_TIME);
 //            loginContext.setLoginTime(loginTime);
             // 获取用户当前IP
@@ -49,9 +57,11 @@ public class JwtTokenUtils {
         return null;
     }
 
-    public static String generatorToken(String username) {
+    public static String generatorToken(TokenInfo user) {
         Map<String, String> map = new HashMap<>(4);
-        map.put(JWT_KEY_USERNAME, username);
+        map.put(JWT_KEY_USER_ID, String.valueOf(user.getUserId()));
+        map.put(JWT_KEY_USERNAME, user.getUsername());
+        map.put(JWT_KEY_USER_GENDER, String.valueOf(user.getGender().getCode()));
         map.put(JWT_KEY_IP, IpUtils.getIpAddr());
         map.put(JWT_GENERATE_TIME, String.valueOf(System.currentTimeMillis()));
 
@@ -68,17 +78,17 @@ public class JwtTokenUtils {
     }
 
     public static TokenInfo parseToken(String token) {
-        DecodedJWT decodedJWT = JWT
-                .require(Algorithm.HMAC256(SIGN))
-                .build()
-                .verify(token);
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(SIGN)).build().verify(token);
         Claim username = decodedJWT.getClaim(JWT_KEY_USERNAME);
+        Claim userId = decodedJWT.getClaim(JWT_KEY_USER_ID);
+        Claim gender = decodedJWT.getClaim(JWT_KEY_USER_GENDER);
         Claim ip = decodedJWT.getClaim(JWT_KEY_IP);
         Claim generateTime = decodedJWT.getClaim(JWT_GENERATE_TIME);
         return TokenInfo.builder()
+                .userId(Long.valueOf(userId.asString()))
                 .username(username.asString())
-                .ip(ip.asString())
-                .token(token)
+                .gender(Gender.of(Integer.parseInt(gender.asString())))
+                .ip(ip.asString()).token(token)
                 .tokenCreateTime(decodedJWT.getExpiresAt().getTime())
                 .build();
     }

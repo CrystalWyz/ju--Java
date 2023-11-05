@@ -22,15 +22,15 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public String getToken(String username) {
-        String token = redisTemplate.opsForValue().get(username);
-        return token;
+        return redisTemplate.opsForValue().get(username);
     }
 
     @Override
     public String saveOrRefreshToken(String username, String token) {
         LOGGER.debug("saveOrRefreshToken username: {}, token: {}", username, token);
+        // FIXME 时间取值不够严谨
         long tokenExpiration = SecurityConstant.TOKEN_EXPIRATION;
-        redisTemplate.opsForValue().set(username, token, tokenExpiration, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(username, token, tokenExpiration, TimeUnit.MINUTES);
         return token;
     }
 

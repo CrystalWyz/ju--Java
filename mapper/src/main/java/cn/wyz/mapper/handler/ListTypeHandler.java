@@ -27,7 +27,7 @@ public class ListTypeHandler extends BaseTypeHandler<List<Object>> {
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, List<Object> parameter, JdbcType jdbcType) throws SQLException {
         // 如果是空数组的话也给它塞个空数组进去，在 PostgreSQL 中是 {} 这种，应该可以根据业务上的需求调整
-        if (parameter.size() == 0) {
+        if (parameter.isEmpty()) {
             Connection conn = ps.getConnection();
             Array array = conn.createArrayOf(JDBCType.BIGINT.getName(), new Long[0]);
             ps.setArray(i, array);

@@ -23,6 +23,10 @@ public class SecurityUtils {
 
     public static String getToken() {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        return getToken(request);
+    }
+
+    public static String getToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
             if (SecurityConstant.HEADER_PARAMETER.equals(cookie.getName())) {

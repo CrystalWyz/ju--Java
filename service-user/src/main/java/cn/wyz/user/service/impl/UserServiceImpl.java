@@ -8,12 +8,12 @@ import cn.wyz.user.mapper.UserMapper;
 import cn.wyz.user.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @author wnx
  */
-@Component
+@Service
 @Slf4j
 public class UserServiceImpl
         extends MapperServiceImpl<UserMapper, User, UserDTO>

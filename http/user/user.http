@@ -3,6 +3,7 @@ GET {{host}}users
 
 ### 用户列表查询（分页）
 GET {{host}}users?page=1&size=10
+Cookie: Authorization={{token}}
 
 ### 用户详情查询
 GET {{host}}users/1

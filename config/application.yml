@@ -1,33 +1,11 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://43.143.236.141:5432/ju?currentSchema=ju
-    username: postgres
-    password: Xxzs990416
-    type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      max-active: 5
-      initial-size: 3
-  data:
-    redis:
-      database: 0
-      port: 6379
-      host: 43.143.236.141
-      password: Xxzs990416
-
-
-mybatis:
-  mapper-locations: classpath:/mapper/*.xml
-  configuration:
-    map-underscore-to-camel-case: true
-
-pagehelper:
-  helper-dialect: postgresql
-  reasonable: true
-  support-methods-arguments: true
-  close-conn: true
-  offset-as-page-num: true
-
+  profiles:
+    include: jdbc
 map:
   api-key:
     - 608d75903d29ad471362f8c58c550daf # 高德地图api key
     - 1bca1463cddb6a7c6906aae053e256ad # 自己的高德地图api key
+
+# ======================= 日志配置 ========================= #
+#logging:
+#  config: config/logback-spring.xml

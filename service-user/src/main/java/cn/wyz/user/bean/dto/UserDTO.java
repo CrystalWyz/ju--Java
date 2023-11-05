@@ -1,6 +1,7 @@
 package cn.wyz.user.bean.dto;
 
 import cn.wyz.mapper.bean.dto.BaseDTO;
+import cn.wyz.user.type.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -18,7 +19,7 @@ public class UserDTO extends BaseDTO {
     private String nickName;
 
     @Schema(name = "性别")
-    private Integer gender;
+    private Gender gender;
 
     @Schema(name = "身份")
     private Integer identity;

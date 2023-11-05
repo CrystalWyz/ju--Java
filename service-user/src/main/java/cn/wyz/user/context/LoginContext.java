@@ -1,6 +1,7 @@
 package cn.wyz.user.context;
 
 import cn.wyz.common.context.SystemContext;
+import cn.wyz.user.type.Gender;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,10 +20,17 @@ public class LoginContext {
 
     private static final long serialVersionUID = -12312312345324L;
 
+    private Long userId = -1L;
+
     /**
      * 账户名
      */
     private String username;
+
+    /**
+     * 性别
+     */
+    private Gender gender;
 
     /**
      * 登录IP
@@ -44,7 +52,8 @@ public class LoginContext {
      */
     private LocalDateTime loginTime;
 
-    public LoginContext(String username) {
+    public LoginContext(Long userId, String username) {
+        this.userId = userId;
         this.username = username;
     }
 

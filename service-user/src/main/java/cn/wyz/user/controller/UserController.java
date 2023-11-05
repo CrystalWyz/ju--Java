@@ -4,7 +4,7 @@ import cn.wyz.mapper.controller.BaseController;
 import cn.wyz.user.bean.User;
 import cn.wyz.user.bean.dto.UserDTO;
 import cn.wyz.user.bean.req.UserQuery;
-import cn.wyz.user.service.impl.UserServiceImpl;
+import cn.wyz.user.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "UserController", description = "用户接口")
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserController extends BaseController<User, UserDTO, UserQuery, UserServiceImpl> {
+public class UserController extends BaseController<User, UserDTO, UserQuery, UserService> {
 
 
 }

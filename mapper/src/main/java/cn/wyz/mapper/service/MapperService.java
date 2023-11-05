@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 
 /**
- * CRUD 基础服务类
+ * 数据库的 CRUD 基础服务接口
  *
  * @author zhouzhitong
  * @since 2022/9/28

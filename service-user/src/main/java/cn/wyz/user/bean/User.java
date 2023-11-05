@@ -1,6 +1,7 @@
 package cn.wyz.user.bean;
 
 import cn.wyz.mapper.bean.BaseEntity;
+import cn.wyz.user.type.Gender;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -13,7 +14,7 @@ import org.apache.ibatis.type.JdbcType;
  * @since 2023-03-12 10:52:41
  */
 @Data
-@TableName("ju_user")
+@TableName(value = "ju_user", resultMap = "JuUserMap")
 public class User extends BaseEntity {
 
     /**
@@ -28,8 +29,10 @@ public class User extends BaseEntity {
 
     /**
      * 性别
+     *
+     * @see Gender 性别
      */
-    private Integer gender;
+    private Gender gender;
 
     /**
      * 身份

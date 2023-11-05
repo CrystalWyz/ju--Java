@@ -1,4 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.wyz.user.mapper.UserMapper">
+    <resultMap type="cn.wyz.user.bean.User" id="JuUserMap">
+        <result property="id" column="id"
+                jdbcType="INTEGER"/>
+        <result property="name" column="name"
+                jdbcType="VARCHAR"/>
+        <result property="nickName" column="nick_name"
+                jdbcType="VARCHAR"/>
+        <result property="gender" column="gender"
+                jdbcType="INTEGER"/>
+        <result property="blemish" column="blemish"
+                jdbcType="INTEGER"/>
+        <result property="phone" column="phone"
+                jdbcType="VARCHAR"/>
+        <result property="phoneArea" column="phone_area"
+                jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time"
+                jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time"
+                jdbcType="TIMESTAMP"/>
+        <result property="identity" column="identity"
+                jdbcType="INTEGER"/>
+        <result property="createdBy" column="created_by"
+                jdbcType="VARCHAR"/>
+        <result property="lastModifiedBy" column="last_modified_by"
+                jdbcType="VARCHAR"/>
+        <result property="username" column="username"
+                jdbcType="VARCHAR"/>
+        <result property="password" column="password"
+                jdbcType="VARCHAR"/>
+        <result property="enabled" column="enabled"
+                jdbcType="BOOLEAN"/>
+    </resultMap>
+
+    <sql id="column">
+        `id`,
+ `name`,
+ `nick_name`,
+ 
+ `gender`,
+ 
+ `blemish`,
+ 
+ `phone`,
+ 
+ `phone_area`,
+ 
+ `create_time`,
+ 
+ `update_time`,
+ 
+ `identity`,
+ 
+ `created_by`,
+ 
+ `last_modified_by`,
+ 
+ `username`,
+ 
+ `password`,
+ 
+ `enabled`
+    </sql>
+
+    <sql id="where">
+        <where>
+            <if test="id != null">
+                and `id` = #{id}
+            </if>
+            <if test="name != null">
+                and `name` = #{name}
+            </if>
+            <if test="nickName != null">
+                and `nick_name` = #{nickName}
+            </if>
+            <if test="gender != null">
+                and `gender` = #{gender}
+            </if>
+            <if test="blemish != null">
+                and `blemish` = #{blemish}
+            </if>
+            <if test="phone != null">
+                and `phone` = #{phone}
+            </if>
+            <if test="phoneArea != null">
+                and `phone_area` = #{phoneArea}
+            </if>
+            <if test="createTime != null">
+                and `create_time` = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and `update_time` = #{updateTime}
+            </if>
+            <if test="identity != null">
+                and `identity` = #{identity}
+            </if>
+            <if test="createdBy != null">
+                and `created_by` = #{createdBy}
+            </if>
+            <if test="lastModifiedBy != null">
+                and `last_modified_by` = #{lastModifiedBy}
+            </if>
+            <if test="username != null">
+                and `username` = #{username}
+            </if>
+            <if test="password != null">
+                and `password` = #{password}
+            </if>
+            <if test="enabled != null">
+                and `enabled` = #{enabled}
+            </if>
+            <if test="sorts != null and sorts.size > 0)">
+                order by
+                <foreach collection="sorts" item="sort" separator=", ">
+                    `#{sort.column}` #{sort.sort}
+                </foreach>
+            </if>
+
+            <if test="size != null and current != null">
+                limit #{current},#{size}
+            </if>
+        </where>
+    </sql>
 </mapper>
+

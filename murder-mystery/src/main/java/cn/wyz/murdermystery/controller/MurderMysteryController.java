@@ -4,7 +4,6 @@ import cn.wyz.common.bean.request.PageVM;
 import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.murdermystery.bean.bo.MurderMysteryBO;
 import cn.wyz.murdermystery.bean.request.MurderMysteryPageRequest;
-import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
 import cn.wyz.murdermystery.bean.response.MurderMysteryPageResponse;
 import cn.wyz.murdermystery.convert.BeanConvert;
 import cn.wyz.murdermystery.service.MurderMysteryService;
@@ -17,14 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * @author wnx
  */
 @RestController
-@RequestMapping("/api/v1/murderMystery")
+@RequestMapping("/api/v1/murderMysteries")
 @Tag(name = "剧本杀接口", description = "剧本杀接口")
 public class MurderMysteryController {
 
