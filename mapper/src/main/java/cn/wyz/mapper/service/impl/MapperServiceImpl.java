@@ -94,6 +94,7 @@ public abstract class MapperServiceImpl
         entity.setUpdateTime(LocalDateTime.now());
         entity.setLastModifiedBy(systemProvider.getCurrentAuditor());
 
+        super.update(new QueryWrapper<>(entity));
         boolean update = this.updateById(entity);
         return update
                 ? toDTO(entity)

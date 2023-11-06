@@ -1,0 +1,4 @@
+ju:
+  security:
+    loginUrl: '/**/login'
+    logoutUrl: '/**/logout'

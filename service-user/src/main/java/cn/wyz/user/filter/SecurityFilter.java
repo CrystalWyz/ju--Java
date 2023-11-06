@@ -33,18 +33,10 @@ public class SecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+
+
         LoginContext loginContext = resolveToken((HttpServletRequest) request);
         if (loginContext != null) {
-            // ip 检验
-//            if (securityProperties.isCheckIp()) {
-//                String ip = loginContext.getIp();
-//                String ipAddr = IpUtils.getIpAddr((HttpServletRequest) request);
-//                if (!StringUtils.equals(ip, ipAddr)) {
-//                    LOGGER.warn("ip 不一致, token {} ip: {}, request ip: {}", loginContext, ip, ipAddr);
-//                    ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "token 无效, 请重新登录");
-//                    return;
-//                }
-//            }
             SecurityContextHolder.setContext(loginContext);
         }
 
@@ -64,7 +56,12 @@ public class SecurityFilter implements Filter {
     }
 
     private LoginContext resolveToken(HttpServletRequest request) {
-        return JwtTokenUtils.getAuthentication(request);
+        try {
+            return JwtTokenUtils.getAuthentication(request);
+        } catch (Exception e) {
+            LOGGER.debug("resolve token error", e);
+        }
+        return null;
     }
 
 }

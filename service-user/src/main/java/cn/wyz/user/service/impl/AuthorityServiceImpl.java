@@ -78,8 +78,11 @@ public class AuthorityServiceImpl implements AuthorityService {
                     .gender(user.getGender())
                     .build();
             token = JwtTokenUtils.generatorToken(tokenInfo);
+            // 不管怎样刷新下 token
             tokenService.saveOrRefreshToken(username, token);
         }
+
+
         UserTokenVO res = new UserTokenVO();
         res.setUsername(username);
         res.setToken(token);

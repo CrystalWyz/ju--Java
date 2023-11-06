@@ -1,17 +1,15 @@
 package cn.wyz.mapper.utils;
 
 import cn.wyz.common.exception.AppException;
-import cn.wyz.common.service.ApplicationContextProvider;
-import cn.wyz.common.service.SystemProvider;
 import cn.wyz.mapper.bean.dto.Sort;
 import cn.wyz.mapper.req.BaseRequest;
 import cn.wyz.mapper.req.FiledQuery;
 import cn.wyz.mapper.type.QueryType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -21,14 +19,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class MybatisPlusWrapperUtils implements CommandLineRunner {
-
-    private static SystemProvider systemProvider;
-
-    @Override
-    public void run(String... args) throws Exception {
-        systemProvider = ApplicationContextProvider.getBean(SystemProvider.class);
-    }
+public class MybatisPlusWrapperUtils {
 
     public static <T> QueryWrapper<T> simpleQuery() {
         QueryWrapper<T> wrapper = new QueryWrapper<>();
@@ -36,7 +27,7 @@ public class MybatisPlusWrapperUtils implements CommandLineRunner {
         return wrapper;
     }
 
-    public static <T> QueryWrapper<T> simpleQuery(BaseRequest query) {
+    public static <T> QueryWrapper<T> simpleQuery(@Nullable BaseRequest query) {
         QueryWrapper<T> wrapper = simpleQuery();
         return buildQueryWrapper(wrapper, query);
     }
@@ -62,7 +53,6 @@ public class MybatisPlusWrapperUtils implements CommandLineRunner {
             String fieldName = filedQuery.getFiledName();
             Object value = filedQuery.getValue();
             QueryType type = filedQuery.getType();
-
             switch (type) {
                 case EQ -> wrapper.eq(fieldName, value);
                 case NE -> wrapper.ne(fieldName, value);

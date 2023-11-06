@@ -52,6 +52,9 @@ public class LoginContext {
      */
     private LocalDateTime loginTime;
 
+    public LoginContext() {
+    }
+
     public LoginContext(Long userId, String username) {
         this.userId = userId;
         this.username = username;
@@ -63,8 +66,13 @@ public class LoginContext {
         }
     }
 
+    /**
+     * 是否是登录用户
+     *
+     * @return true: 是登录用户, false: 匿名用户
+     */
     public boolean isLoginUser() {
-        return StringUtils.equals(SystemContext.DEFAULT_OPERATOR, getUsername());
+        return token != null && username != null;
     }
 
 }

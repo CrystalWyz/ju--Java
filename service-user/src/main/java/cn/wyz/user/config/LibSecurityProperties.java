@@ -11,7 +11,7 @@ import java.util.List;
  * @since 2023/5/16
  */
 @Component
-@ConfigurationProperties(prefix = "lib.security")
+@ConfigurationProperties(prefix = "ju.security")
 @Data
 public class LibSecurityProperties {
 

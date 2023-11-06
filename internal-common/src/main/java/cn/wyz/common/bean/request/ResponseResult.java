@@ -59,6 +59,13 @@ public class ResponseResult<T> {
         return result;
     }
 
+    public static ResponseResult<Void> fail(Code code, String msg) {
+        ResponseResult<Void> result = new ResponseResult<>();
+        result.setCode(code.code());
+        result.setMessage(msg);
+        return result;
+    }
+
     public static <T> ResponseResult<T> fail(int code, String message, T data) {
         ResponseResult<T> result = new ResponseResult<>();
         result.setCode(code);

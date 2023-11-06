@@ -2,24 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.wyz.murdermystery.mapper.JuInfoMapper">
-    <!--    <resultMap id="JuInfoMap" type="cn.wyz.murdermystery.bean.JuInfo">-->
-    <!--        <id column="id" property="id"/>-->
-    <!--        <result property="createTime" column="create_time"-->
-    <!--                jdbcType="TIMESTAMP"/>-->
-    <!--        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>-->
-    <!--        <result property="createdBy" column="created_by" jdbcType="VARCHAR"/>-->
-    <!--        <result property="lastModifiedBy" column="last_modified_by" jdbcType="VARCHAR"/>-->
-    <!--        <result column="title" property="title"/>-->
-    <!--        <result column="participant_2" property="participant"-->
-    <!--                typeHandler="cn.wyz.mapper.handler.ListTypeHandler"/>-->
-    <!--        <result column="begin" property="begin"/>-->
-    <!--        <result column="finish" property="finish"/>-->
-    <!--        <result column="description" property="description"/>-->
-    <!--        <result column="user_id" property="userId"/>-->
-    <!--        <result column="scale" property="scale"/>-->
-    <!--        <result column="girl_participant_num" property="girlParticipantNum"/>-->
-    <!--        <result column="boy_participant_num" property="boyParticipantNum"/>-->
-    <!--        <result column="config" property="config" typeHandler="cn.wyz.mapper.handler.JsonTypeHandler"/>-->
-    <!--        <result column="type" property="type"/>-->
-    <!--    </resultMap>-->
+    <resultMap id="JuInfoMap" type="cn.wyz.murdermystery.bean.JuInfo">
+        <id column="id" property="id"/>
+        <result property="createTime" column="create_time"
+                jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createdBy" column="created_by" jdbcType="VARCHAR"/>
+        <result property="lastModifiedBy" column="last_modified_by" jdbcType="VARCHAR"/>
+        <result column="title" property="title"/>
+        <result column="participant_2" property="participant"
+                typeHandler="cn.wyz.mapper.handler.ListTypeHandler"/>
+        <result column="begin" property="begin"/>
+        <result column="finish" property="finish"/>
+        <result column="description" property="description"/>
+        <result column="user_id" property="userId"/>
+        <result column="scale" property="scale"/>
+        <result column="girl_participant_num" property="girlParticipantNum"/>
+        <result column="boy_participant_num" property="boyParticipantNum"/>
+        <result column="config" property="config" typeHandler="cn.wyz.mapper.handler.JsonTypeHandler"/>
+        <result column="type" property="type"/>
+    </resultMap>
 </mapper>

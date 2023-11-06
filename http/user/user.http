@@ -1,5 +1,6 @@
 ### 用户列表查询
 GET {{host}}users
+Cookie: Authorization={{token}}
 
 ### 用户列表查询（分页）
 GET {{host}}users?page=1&size=10

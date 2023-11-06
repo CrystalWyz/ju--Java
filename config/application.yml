@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: jdbc
+    include: jdbc, ju
 map:
   api-key:
     - 608d75903d29ad471362f8c58c550daf # 高德地图api key

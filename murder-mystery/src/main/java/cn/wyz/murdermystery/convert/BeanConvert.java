@@ -18,6 +18,7 @@ import org.mapstruct.Mappings;
 /**
  * @author wangnanxiang
  */
+@Deprecated
 @Mapper(componentModel = "spring")
 public interface BeanConvert {
 
