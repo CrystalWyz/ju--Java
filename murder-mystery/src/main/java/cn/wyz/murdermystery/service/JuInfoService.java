@@ -14,6 +14,15 @@ import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
  */
 public interface JuInfoService extends MapperService<JuInfo, JuInfoDTO> {
 
+
+    /**
+     * 参加聚本杀
+     *
+     * @param juInfoId 聚Id
+     * @param userId   需要参加的用户
+     */
+    void applyJoin(Long juInfoId, Long userId);
+
     /**
      * 参加聚本杀
      *

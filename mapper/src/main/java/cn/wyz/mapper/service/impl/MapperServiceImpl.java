@@ -89,12 +89,11 @@ public abstract class MapperServiceImpl
     public DTO update(Long id, DTO dto) {
         LOGGER.info("update request: {}", dto);
         Entity entity = getEntity(id);
-        copyAllowNullProperties(dto, entity);
+        copyProperties(dto, entity);
 
         entity.setUpdateTime(LocalDateTime.now());
         entity.setLastModifiedBy(systemProvider.getCurrentAuditor());
 
-        super.update(new QueryWrapper<>(entity));
         boolean update = this.updateById(entity);
         return update
                 ? toDTO(entity)

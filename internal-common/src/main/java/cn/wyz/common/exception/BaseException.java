@@ -14,7 +14,7 @@ public class BaseException extends RuntimeException {
     private final Code code;
 
     public BaseException(String message) {
-        this(message, CodeConstant.UN_KNOW_ERROR);
+        this(message, CodeConstant.FAIL);
     }
 
     public BaseException(Exception e) {

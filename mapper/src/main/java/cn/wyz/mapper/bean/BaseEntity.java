@@ -1,6 +1,7 @@
 package cn.wyz.mapper.bean;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.OrderBy;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class BaseEntity extends Model<BaseEntity> implements Serializable {
     /**
      * 更新时间
      */
+    @OrderBy
     protected LocalDateTime updateTime;
 
     /**

@@ -42,3 +42,6 @@ GET {{host}}murderMystery/juInfos/1
 GET {{host}}murderMystery/juInfos
 Cookie: Authorization={{token}}
 
+### 6. 加入剧本杀
+PATCH {{host}}murderMystery/juInfos/join/3
+Cookie: Authorization={{token-test}}

@@ -14,8 +14,7 @@ import lombok.Getter;
 public enum JuInfoStatus implements BaseEnum {
 
     // 创建, 可以加入, 人数已满, 准备状态, 已开始, 已结束, 解散
-    NEW(1, "创建", false),
-    ENABLE_JOIN(2, "可以加入", true),
+    NEW(1, "创建", true),
     FULL(3, "人数已满", false),
     // 下面的状态, 是不可以退出的
     PREPARE(4, "准备状态", false),
@@ -42,7 +41,7 @@ public enum JuInfoStatus implements BaseEnum {
     }
 
     public boolean canOut() {
-        return this == NEW || this == ENABLE_JOIN || this == FULL;
+        return this == NEW || this == FULL;
     }
 
 }

@@ -15,6 +15,7 @@ import cn.wyz.user.type.Gender;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -34,22 +35,32 @@ public class JuInfoServiceImpl
     public JuInfoDTO add(JuInfoDTO dto) {
         LoginContext context = SecurityContextHolder.getContext();
         dto.setUserId(context.getUserId());
+        // FIXME 把自己添加进去
+        dto.getParticipant().add(context.getUserId());
         dto.setStatus(JuInfoStatus.NEW);
         return super.add(dto);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    public void applyJoin(Long juInfoId, Long userId) {
+
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
     public void join(Long juInfoId, Long userId) {
         LOGGER.info("[juInfo#join] user [id: {}] want joint juInfo [id: {}]", userId, juInfoId);
         UserDTO user = userService.get(userId);
         JuInfoDTO juInfo = this.get(juInfoId);
+        if (juInfo.getParticipant().contains(userId)) {
+            throw new BaseException("你已经加入, 请勿重复操作");
+        }
         // TODO 应该使用全局锁
         JuInfoStatus status = juInfo.getStatus();
         if (!status.enableJoin()) {
             throw new BaseException("当前剧本杀的状态不可加入成员");
         }
-
+        juInfo.getParticipant().add(userId);
         Gender gender = user.getGender();
         switch (gender) {
             case MAN -> juInfo.setBoyParticipantNum(juInfo.getBoyParticipantNum() + 1);
@@ -58,12 +69,12 @@ public class JuInfoServiceImpl
         if (juInfo.full()) {
             juInfo.setStatus(JuInfoStatus.FULL);
         }
-        juInfo.getParticipant().add(userId);
         this.update(juInfoId, juInfo);
         // FIXME 是否应该通知发起者
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
     public boolean outGame(Long juInfoId, Long userId, Boolean isForce) {
         LOGGER.info("[juInfo#outGame] user [id: {}] want out juInfo [id: {}]", userId, juInfoId);
         JuInfoDTO juInfo = this.get(juInfoId);
@@ -75,9 +86,17 @@ public class JuInfoServiceImpl
         if (!juInfo.getParticipant().remove(userId)) {
             throw new BaseException("你已经不在当前游戏中了, 请勿重复操作");
         }
-        // TODO
-        // TODO
-        // TODO
+        UserDTO user = userService.get(userId);
+        Gender gender = user.getGender();
+        switch (gender) {
+            case MAN -> juInfo.setBoyParticipantNum(juInfo.getBoyParticipantNum() - 1);
+            case WOMAN -> juInfo.setGirlParticipantNum(juInfo.getGirlParticipantNum() - 1);
+        }
+        if (juInfo.getStatus() == JuInfoStatus.FULL) {
+            juInfo.setStatus(JuInfoStatus.NEW);
+        }
+
+        update(juInfoId, juInfo);
         return false;
     }
 

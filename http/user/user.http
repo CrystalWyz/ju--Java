@@ -12,20 +12,19 @@ GET {{host}}users/1
 ### 用户新增
 POST {{host}}users
 Content-Type: application/json
+Cookie: Authorization={{token}}
 
 {
   "blemish": 0,
   "enabled": true,
   "gender": 1,
   "identity": 2,
-  "isSupperAdmin": false,
-  "name": "Admin",
-  "nickName": "pigWei",
-  "password": "123456",
+  "name": "test1",
+  "nickName": "test1",
+  "password": "123",
   "phone": "19954246098",
   "phoneArea": "86",
-  "username": "admin",
-  "version": 0
+  "username": "test1"
 }
 
 ### 用户修改

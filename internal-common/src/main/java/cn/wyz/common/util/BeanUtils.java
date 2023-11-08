@@ -22,7 +22,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     }
 
     public static void copyForUpdate(Object source, Object target) throws BeansException {
-        copyProperties(source, target, getFields(source));
+        copyProperties(source, target);
     }
 
     private static String[] getFields(Object source) {
