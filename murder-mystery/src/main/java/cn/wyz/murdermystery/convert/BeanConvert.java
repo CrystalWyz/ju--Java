@@ -6,6 +6,7 @@ import cn.wyz.murdermystery.bean.MurderMystery;
 import cn.wyz.murdermystery.bean.bo.MurderMysteryBO;
 import cn.wyz.murdermystery.bean.dto.BlemishDetailDTO;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
+import cn.wyz.murdermystery.bean.dto.MurderMysteryCreateDTO;
 import cn.wyz.murdermystery.bean.request.MurderMysteryPageRequest;
 import cn.wyz.murdermystery.bean.response.BlemishDetailPageInfo;
 import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
@@ -46,4 +47,8 @@ public interface BeanConvert {
             @Mapping(expression = "java(murderMysteryBO.getBoyParticipant() == null ? 0 : murderMysteryBO.getBoyParticipant().size())", target = "boyParticipant")
     })
     MurderMysteryPageResponse murderMysteryToMurderMysteryPageResponse(MurderMysteryBO murderMysteryBO);
+
+    MurderMysteryBO murderMysteryCreateDTOToMurderMysteryBO(MurderMysteryCreateDTO createDTO);
+
+    MurderMystery murderMysteryBOToMurderMystery(MurderMysteryBO murderMysteryBO);
 }

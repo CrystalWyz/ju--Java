@@ -50,7 +50,8 @@ public class MurderMysteryController {
     @Operation(description = "聚--创建剧本杀")
     @PostMapping("/create")
     public ResponseResult<String> murderMysteryCreate(@RequestBody MurderMysteryCreateDTO createDTO) {
-        return ResponseResult.success(null);
+        Long id = murderMysteryService.murderMysteryCreate(beanConvert.murderMysteryCreateDTOToMurderMysteryBO(createDTO));
+        return ResponseResult.success(String.valueOf(id));
     }
 
     @Operation(description = "聚--获取剧本杀详情")

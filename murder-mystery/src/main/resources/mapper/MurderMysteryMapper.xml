@@ -21,6 +21,13 @@
         <result column="address" property="address"/>
         <result column="shop_name" property="shopName"/>
     </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO murder_mystery
+        VALUES (DEFAULT, #{title}, #{begin}, #{finish},#{createTime}, #{description}, #{userId},#{updateTime},#{scale},
+                #{girlParticipantNum},#{boyParticipantNum},#{config, typeHandler=cn.wyz.mapper.handler.JsonbTypeHandler},
+               #{girlParticipant, typeHandler=cn.wyz.mapper.handler.ListTypeHandler},#{boyParticipant, typeHandler=cn.wyz.mapper.handler.ListTypeHandler},
+                #{area, typeHandler=cn.wyz.mapper.handler.ListTypeHandler},#{address},#{shopName})
+    </insert>
 
     <select id="list" resultMap="CompleteResultMap">
         SELECT id,

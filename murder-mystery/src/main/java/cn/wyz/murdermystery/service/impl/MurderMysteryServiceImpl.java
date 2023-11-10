@@ -16,6 +16,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,5 +48,18 @@ public class MurderMysteryServiceImpl implements MurderMysteryService {
             boPage.setList(murderMysteryList.stream().map(beanConvert::murderMysteryToMurderMysteryBO).collect(Collectors.toList()));
         }
         return boPage;
+    }
+
+    @Override
+    public Long murderMysteryCreate(MurderMysteryBO murderMysteryBO) {
+
+        MurderMystery murderMystery = beanConvert.murderMysteryBOToMurderMystery(murderMysteryBO);
+
+        // 必要属性补充
+        LocalDateTime now = LocalDateTime.now();
+        murderMystery.setCreateTime(now);
+        murderMystery.setUpdateTime(now);
+        murderMysteryMapper.insert(murderMystery);
+        return murderMystery.getId();
     }
 }

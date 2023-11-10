@@ -12,4 +12,6 @@ import java.util.List;
 public interface MurderMysteryMapper {
 
     List<MurderMystery> list(MurderMystery condition);
+
+    void insert(MurderMystery murderMystery);
 }
