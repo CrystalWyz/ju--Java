@@ -13,7 +13,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -59,7 +58,6 @@ public abstract class MapperServiceImpl
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public DTO add(DTO dto) {
         LOGGER.info("add request: {}", dto);
         // 创建一个实体
@@ -85,7 +83,6 @@ public abstract class MapperServiceImpl
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public DTO update(Long id, DTO dto) {
         LOGGER.info("update request: {}", dto);
         Entity entity = getEntity(id);

@@ -3,6 +3,7 @@ package cn.wyz.murdermystery.bean;
 import cn.wyz.mapper.bean.BaseEntity;
 import cn.wyz.mapper.handler.JsonTypeHandler;
 import cn.wyz.mapper.handler.ListTypeHandler;
+import cn.wyz.murdermystery.bean.constance.JuInfoConfigConstance;
 import cn.wyz.murdermystery.type.JuInfoStatus;
 import cn.wyz.user.bean.User;
 import com.alibaba.fastjson.JSONObject;
@@ -85,6 +86,8 @@ public class JuInfo extends BaseEntity {
 
     /**
      * 活动配置
+     *
+     * @see JuInfoConfigConstance 所有关键key
      */
     @TableField(typeHandler = JsonTypeHandler.class)
     private JSONObject config;

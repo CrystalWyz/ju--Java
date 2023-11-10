@@ -9,6 +9,7 @@ import cn.wyz.mapper.utils.MybatisPlusWrapperUtils;
 import cn.wyz.mapper.vo.PageResultVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -57,6 +58,7 @@ public interface MapperService<
      * @param dto DTO
      * @return DTO
      */
+    @Transactional(rollbackFor = Exception.class)
     DTO add(DTO dto);
 
     /**
@@ -66,6 +68,7 @@ public interface MapperService<
      * @param dto DTO
      * @return DTO
      */
+    @Transactional(rollbackFor = Exception.class)
     DTO update(Long id, DTO dto);
 
     /**
@@ -75,6 +78,7 @@ public interface MapperService<
      * @param dto DTO
      * @return DTO
      */
+    @Transactional(rollbackFor = Exception.class)
     DTO edit(Long id, DTO dto);
 
     /**
@@ -111,6 +115,7 @@ public interface MapperService<
      * @param id 编号
      * @return 是否成功
      */
+    @Transactional(rollbackFor = Exception.class)
     boolean remove(Long id);
 
     /**

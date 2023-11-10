@@ -27,11 +27,10 @@
         </encoder>
     </appender>
 
-    <!-- 定义根记录器 -->
-    <!--    <root level="DEBUG">-->
-    <!--        <appender-ref ref="FILE"/>-->
-    <!--        <appender-ref ref="CONSOLE"/>-->
-    <!--    </root>-->
+    <!-- 定义根记录器-->
+    <root level="DEBUG">
+        <appender-ref ref="FILE"/>
+    </root>
 
     <!-- 定义Spring相关的日志记录器 -->
     <logger name="org.springframework" level="INFO" additivity="false">

@@ -3,6 +3,9 @@ package cn.wyz.murdermystery.service;
 import cn.wyz.mapper.service.MapperService;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
+import cn.wyz.murdermystery.bean.request.JuInfoJoinGameReq;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -18,18 +21,10 @@ public interface JuInfoService extends MapperService<JuInfo, JuInfoDTO> {
     /**
      * 参加聚本杀
      *
-     * @param juInfoId 聚Id
-     * @param userId   需要参加的用户
+     * @param req 参加剧本杀请求参数
      */
-    void applyJoin(Long juInfoId, Long userId);
-
-    /**
-     * 参加聚本杀
-     *
-     * @param juInfoId 聚Id
-     * @param userId   需要参加的用户
-     */
-    void join(Long juInfoId, Long userId);
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
+    void join(JuInfoJoinGameReq req);
 
     /**
      * 退出游戏
@@ -41,6 +36,7 @@ public interface JuInfoService extends MapperService<JuInfo, JuInfoDTO> {
      * @param isForce  是否强制退出
      * @return 是否成功
      */
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
     boolean outGame(Long juInfoId, Long userId, Boolean isForce);
 
     /**
@@ -49,6 +45,7 @@ public interface JuInfoService extends MapperService<JuInfo, JuInfoDTO> {
      * @param juInfoId 聚Id
      * @param userId   解散操作人
      */
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
     void dismiss(Long juInfoId, Long userId);
 
     /**
@@ -57,6 +54,7 @@ public interface JuInfoService extends MapperService<JuInfo, JuInfoDTO> {
      * @param juInfoId 聚Id
      * @param userId   操作人Id
      */
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
     void startGame(Long juInfoId, Long userId);
 
     /**
@@ -65,6 +63,7 @@ public interface JuInfoService extends MapperService<JuInfo, JuInfoDTO> {
      * @param juInfoId 聚Id
      * @param userId   操作人Id
      */
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
     void finishGame(Long juInfoId, Long userId);
 
 

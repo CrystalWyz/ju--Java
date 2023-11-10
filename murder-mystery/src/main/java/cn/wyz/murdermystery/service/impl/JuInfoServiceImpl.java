@@ -3,9 +3,13 @@ package cn.wyz.murdermystery.service.impl;
 import cn.wyz.common.exception.BaseException;
 import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import cn.wyz.murdermystery.bean.JuInfo;
+import cn.wyz.murdermystery.bean.dto.JuInfoApplyDTO;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
+import cn.wyz.murdermystery.bean.request.JuInfoJoinGameReq;
 import cn.wyz.murdermystery.mapper.JuInfoMapper;
+import cn.wyz.murdermystery.service.JuInfoApplyService;
 import cn.wyz.murdermystery.service.JuInfoService;
+import cn.wyz.murdermystery.type.ApplyStatus;
 import cn.wyz.murdermystery.type.JuInfoStatus;
 import cn.wyz.user.bean.dto.UserDTO;
 import cn.wyz.user.context.LoginContext;
@@ -15,8 +19,8 @@ import cn.wyz.user.type.Gender;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 /**
  * @author wyzZzz
@@ -31,6 +35,8 @@ public class JuInfoServiceImpl
 
     private final UserService userService;
 
+    private final JuInfoApplyService juInfoApplyService;
+
     @Override
     public JuInfoDTO add(JuInfoDTO dto) {
         LoginContext context = SecurityContextHolder.getContext();
@@ -42,13 +48,9 @@ public class JuInfoServiceImpl
     }
 
     @Override
-    public void applyJoin(Long juInfoId, Long userId) {
-
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
-    public void join(Long juInfoId, Long userId) {
+    public void join(JuInfoJoinGameReq req) {
+        Long juInfoId = req.getJuInfoId();
+        Long userId = req.getUserId();
         LOGGER.info("[juInfo#join] user [id: {}] want joint juInfo [id: {}]", userId, juInfoId);
         UserDTO user = userService.get(userId);
         JuInfoDTO juInfo = this.get(juInfoId);
@@ -74,7 +76,6 @@ public class JuInfoServiceImpl
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
     public boolean outGame(Long juInfoId, Long userId, Boolean isForce) {
         LOGGER.info("[juInfo#outGame] user [id: {}] want out juInfo [id: {}]", userId, juInfoId);
         JuInfoDTO juInfo = this.get(juInfoId);
@@ -102,12 +103,39 @@ public class JuInfoServiceImpl
 
     @Override
     public void dismiss(Long juInfoId, Long userId) {
-
+        LOGGER.info("[juInfo#dismiss] user [id: {}] want dismiss juInfo [id: {}]", userId, juInfoId);
+        JuInfoDTO juInfo = this.get(juInfoId);
+        // 判断 发起者是否是创建者
+        if (!Objects.equals(userId, juInfo.getUserId())) {
+            throw new BaseException("你不是创建者, 无法解散");
+        }
+        // 检查状态
+        if (juInfo.getStatus() == JuInfoStatus.DISMISS) {
+            throw new BaseException("当前游戏已经解散, 请勿重复操作");
+        }
+        if (!juInfo.getStatus().canOut()) {
+            throw new BaseException("当前游戏状态不支持解散");
+        }
+        // 开始数据库操作
+        juInfo.setStatus(JuInfoStatus.DISMISS);
+        update(juInfoId, juInfo);
     }
 
     @Override
     public void startGame(Long juInfoId, Long userId) {
-
+        LOGGER.info("[juInfo#startGame] user [id: {}] want startGame juInfo [id: {}]", userId, juInfoId);
+        JuInfoDTO juInfo = this.get(juInfoId);
+        // 判断 发起者是否是创建者
+        if (!Objects.equals(userId, juInfo.getUserId())) {
+            throw new BaseException("你不是创建者, 无法开始游戏");
+        }
+        // 检查状态
+        if (juInfo.getStatus() != JuInfoStatus.FULL) {
+            throw new BaseException("当前游戏状态不支持开始游戏");
+        }
+        // 开始数据库操作
+        juInfo.setStatus(JuInfoStatus.STARTING);
+        update(juInfoId, juInfo);
     }
 
     @Override
@@ -124,4 +152,14 @@ public class JuInfoServiceImpl
     public JuInfo newEntity() {
         return new JuInfo();
     }
+
+    private void addApplyNotice(Long juInfoId, Long userId, String applyReason) {
+        JuInfoApplyDTO ja = new JuInfoApplyDTO();
+        ja.setJuInfoId(juInfoId);
+        ja.setUserId(userId);
+        ja.setApplyReason(applyReason);
+        ja.setApplyStatus(ApplyStatus.NEW);
+        juInfoApplyService.add(ja);
+    }
+
 }
