@@ -3,6 +3,9 @@ package cn.wyz.murdermystery.controller;
 import cn.wyz.common.bean.request.PageVM;
 import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.murdermystery.bean.bo.MurderMysteryBO;
+import cn.wyz.murdermystery.bean.dto.MurderMysteryCreateDTO;
+import cn.wyz.murdermystery.bean.dto.MurderMysteryDTO;
+import cn.wyz.murdermystery.bean.dto.MurderMysteryParticipateDTO;
 import cn.wyz.murdermystery.bean.request.MurderMysteryPageRequest;
 import cn.wyz.murdermystery.bean.response.MurderMysteryPageResponse;
 import cn.wyz.murdermystery.convert.BeanConvert;
@@ -11,10 +14,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @author wnx
  */
 @RestController
-@RequestMapping("/api/v1/murderMysteries")
+@RequestMapping("/api/v1/murderMystery")
 @Tag(name = "剧本杀接口", description = "剧本杀接口")
 public class MurderMysteryController {
 
@@ -45,5 +45,29 @@ public class MurderMysteryController {
         }
 
         return ResponseResult.success(resPage);
+    }
+
+    @Operation(description = "聚--创建剧本杀")
+    @PostMapping("/create")
+    public ResponseResult<String> murderMysteryCreate(@RequestBody MurderMysteryCreateDTO createDTO) {
+        return ResponseResult.success(null);
+    }
+
+    @Operation(description = "聚--获取剧本杀详情")
+    @GetMapping("/detail")
+    public ResponseResult<MurderMysteryDTO> murderMysteryDetail(@RequestParam Long id) {
+        return ResponseResult.success(null);
+    }
+
+    @Operation(description = "聚--删除剧本杀")
+    @PostMapping("/delete/{id}")
+    public ResponseResult<String> murderMysteryDelete(@PathVariable("id") Long id) {
+        return ResponseResult.success(null);
+    }
+
+    @Operation(description = "聚--参与剧本杀")
+    @PostMapping("/participate")
+    public ResponseResult<String> murderMysteryParticipate(@RequestBody MurderMysteryParticipateDTO participateDTO) {
+        return ResponseResult.success(null);
     }
 }
