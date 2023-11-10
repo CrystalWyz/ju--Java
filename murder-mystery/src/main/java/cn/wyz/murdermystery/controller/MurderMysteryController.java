@@ -57,7 +57,10 @@ public class MurderMysteryController {
     @Operation(description = "聚--获取剧本杀详情")
     @GetMapping("/detail")
     public ResponseResult<MurderMysteryDTO> murderMysteryDetail(@RequestParam Long id) {
-        return ResponseResult.success(null);
+
+        MurderMysteryBO murderMysteryBO = murderMysteryService.murderMysteryDetail(id);
+
+        return ResponseResult.success(beanConvert.murderMysteryBOToMurderMysteryDTO(murderMysteryBO));
     }
 
     @Operation(description = "聚--删除剧本杀")

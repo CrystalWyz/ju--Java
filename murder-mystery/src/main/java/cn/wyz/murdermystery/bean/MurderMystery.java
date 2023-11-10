@@ -16,9 +16,13 @@ public class MurderMystery {
 
     private String title;
 
-    private LocalDateTime begin;
+    private LocalDateTime beginExpected;
 
-    private LocalDateTime finish;
+    private LocalDateTime finishExpected;
+
+    private LocalDateTime beginActual;
+
+    private LocalDateTime finishActual;
 
     private LocalDateTime createTime;
 

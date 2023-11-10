@@ -27,4 +27,6 @@ public interface MurderMysteryService {
      * @return id
      */
     Long murderMysteryCreate(MurderMysteryBO murderMysteryBO);
+
+    MurderMysteryBO murderMysteryDetail(Long id);
 }

@@ -7,6 +7,7 @@ import cn.wyz.murdermystery.bean.bo.MurderMysteryBO;
 import cn.wyz.murdermystery.bean.dto.BlemishDetailDTO;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryCreateDTO;
+import cn.wyz.murdermystery.bean.dto.MurderMysteryDTO;
 import cn.wyz.murdermystery.bean.request.MurderMysteryPageRequest;
 import cn.wyz.murdermystery.bean.response.BlemishDetailPageInfo;
 import cn.wyz.murdermystery.bean.response.JuInfoPageInfo;
@@ -51,4 +52,6 @@ public interface BeanConvert {
     MurderMysteryBO murderMysteryCreateDTOToMurderMysteryBO(MurderMysteryCreateDTO createDTO);
 
     MurderMystery murderMysteryBOToMurderMystery(MurderMysteryBO murderMysteryBO);
+
+    MurderMysteryDTO murderMysteryBOToMurderMysteryDTO(MurderMysteryBO murderMysteryBO);
 }

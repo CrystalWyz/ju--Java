@@ -62,4 +62,9 @@ public class MurderMysteryServiceImpl implements MurderMysteryService {
         murderMysteryMapper.insert(murderMystery);
         return murderMystery.getId();
     }
+
+    @Override
+    public MurderMysteryBO murderMysteryDetail(Long id) {
+        return null;
+    }
 }

@@ -37,20 +37,20 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object handler) throws Exception {
-        if (ignore(request)) {
-            LOGGER.debug("ignore url {}", request.getRequestURI());
-            return true;
-        }
-        LoginContext context = SecurityContextHolder.getContext();
-        if (!context.isLoginUser()) {
-            throw new UserTokenExpiredException();
-        }
-        String username = context.getUsername();
-        String tokenRedis = tokenService.getToken(username);
-        String token = context.getToken();
-        if (StringUtils.isEmpty(tokenRedis) || !token.trim().equals(tokenRedis.trim())) {
-            throw new BaseUserException(CodeConstant.USER_TOKEN_INVALID_ERROR);
-        }
+//        if (ignore(request)) {
+//            LOGGER.debug("ignore url {}", request.getRequestURI());
+//            return true;
+//        }
+//        LoginContext context = SecurityContextHolder.getContext();
+//        if (!context.isLoginUser()) {
+//            throw new UserTokenExpiredException();
+//        }
+//        String username = context.getUsername();
+//        String tokenRedis = tokenService.getToken(username);
+//        String token = context.getToken();
+//        if (StringUtils.isEmpty(tokenRedis) || !token.trim().equals(tokenRedis.trim())) {
+//            throw new BaseUserException(CodeConstant.USER_TOKEN_INVALID_ERROR);
+//        }
         return true;
     }
 

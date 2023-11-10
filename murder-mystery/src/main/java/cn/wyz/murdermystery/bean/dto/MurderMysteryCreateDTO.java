@@ -27,13 +27,13 @@ public class MurderMysteryCreateDTO {
     @Schema(name = "标题")
     private String title;
 
-    @JSONField(format = "yyyy-MM-dd")
+    @JSONField(format = "yyyy-MM-dd HH:mm")
     @Schema(name = "预计开始时间")
-    private LocalDateTime begin;
+    private LocalDateTime beginExpected;
 
-    @JSONField(format = "yyyy-MM-dd")
+    @JSONField(format = "yyyy-MM-dd HH:mm")
     @Schema(name = "预计结束时间")
-    private LocalDateTime finish;
+    private LocalDateTime finishExpected;
 
     @Schema(name = "聚描述信息")
     private String description;
