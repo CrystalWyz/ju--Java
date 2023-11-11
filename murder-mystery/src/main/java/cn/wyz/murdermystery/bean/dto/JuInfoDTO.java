@@ -2,7 +2,7 @@ package cn.wyz.murdermystery.bean.dto;
 
 import cn.wyz.mapper.bean.dto.BaseDTO;
 import cn.wyz.murdermystery.bean.constance.JuInfoConfigConstance;
-import cn.wyz.murdermystery.type.JuInfoStatus;
+import cn.wyz.murdermystery.type.GameStatus;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
@@ -43,7 +43,7 @@ public class JuInfoDTO extends BaseDTO {
     private List<Long> participant;
 
     @Schema(name = "状态")
-    private JuInfoStatus status;
+    private GameStatus status;
 
     @Schema(name = "规模")
     private Integer scale;

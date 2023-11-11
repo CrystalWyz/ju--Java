@@ -13,8 +13,8 @@ import lombok.Getter;
 @Getter
 public enum Gender implements BaseEnum {
 
-    MAN(1, "男"),
-    WOMAN(2, "女"),
+    BOY(1, "男"),
+    GIRL(2, "女"),
     ;
 
     @EnumValue

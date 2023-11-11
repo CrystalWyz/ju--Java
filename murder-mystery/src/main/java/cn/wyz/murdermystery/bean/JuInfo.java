@@ -4,7 +4,7 @@ import cn.wyz.mapper.bean.BaseEntity;
 import cn.wyz.mapper.handler.JsonTypeHandler;
 import cn.wyz.mapper.handler.ListTypeHandler;
 import cn.wyz.murdermystery.bean.constance.JuInfoConfigConstance;
-import cn.wyz.murdermystery.type.JuInfoStatus;
+import cn.wyz.murdermystery.type.GameStatus;
 import cn.wyz.user.bean.User;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -19,6 +19,7 @@ import java.util.List;
  * @since 2023-03-12 10:52:41
  */
 @Data
+@Deprecated
 @TableName(value = "ju_info", autoResultMap = true)
 public class JuInfo extends BaseEntity {
 
@@ -55,9 +56,9 @@ public class JuInfo extends BaseEntity {
     /**
      * 活动状态
      *
-     * @see JuInfoStatus
+     * @see GameStatus
      */
-    private JuInfoStatus status;
+    private GameStatus status;
 
     /**
      * 女生参加人数

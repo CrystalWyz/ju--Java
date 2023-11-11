@@ -3,14 +3,14 @@ package cn.wyz.murdermystery.service.impl;
 import cn.wyz.common.exception.BaseException;
 import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import cn.wyz.murdermystery.bean.JuInfo;
-import cn.wyz.murdermystery.bean.dto.JuInfoApplyDTO;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
-import cn.wyz.murdermystery.bean.request.JuInfoJoinGameReq;
+import cn.wyz.murdermystery.bean.dto.MurderMysteryApplyDTO;
+import cn.wyz.murdermystery.bean.request.JoinGameReq;
 import cn.wyz.murdermystery.mapper.JuInfoMapper;
-import cn.wyz.murdermystery.service.JuInfoApplyService;
 import cn.wyz.murdermystery.service.JuInfoService;
+import cn.wyz.murdermystery.service.MurderMysteryApplyService;
 import cn.wyz.murdermystery.type.ApplyStatus;
-import cn.wyz.murdermystery.type.JuInfoStatus;
+import cn.wyz.murdermystery.type.GameStatus;
 import cn.wyz.user.bean.dto.UserDTO;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.holder.SecurityContextHolder;
@@ -35,7 +35,7 @@ public class JuInfoServiceImpl
 
     private final UserService userService;
 
-    private final JuInfoApplyService juInfoApplyService;
+    private final MurderMysteryApplyService juInfoApplyService;
 
     @Override
     public JuInfoDTO add(JuInfoDTO dto) {
@@ -43,13 +43,13 @@ public class JuInfoServiceImpl
         dto.setUserId(context.getUserId());
         // FIXME 把自己添加进去
         dto.getParticipant().add(context.getUserId());
-        dto.setStatus(JuInfoStatus.NEW);
+        dto.setStatus(GameStatus.NEW);
         return super.add(dto);
     }
 
     @Override
-    public void join(JuInfoJoinGameReq req) {
-        Long juInfoId = req.getJuInfoId();
+    public void join(JoinGameReq req) {
+        Long juInfoId = req.getGameId();
         Long userId = req.getUserId();
         LOGGER.info("[juInfo#join] user [id: {}] want joint juInfo [id: {}]", userId, juInfoId);
         UserDTO user = userService.get(userId);
@@ -58,18 +58,18 @@ public class JuInfoServiceImpl
             throw new BaseException("你已经加入, 请勿重复操作");
         }
         // TODO 应该使用全局锁
-        JuInfoStatus status = juInfo.getStatus();
+        GameStatus status = juInfo.getStatus();
         if (!status.enableJoin()) {
             throw new BaseException("当前剧本杀的状态不可加入成员");
         }
         juInfo.getParticipant().add(userId);
         Gender gender = user.getGender();
         switch (gender) {
-            case MAN -> juInfo.setBoyParticipantNum(juInfo.getBoyParticipantNum() + 1);
-            case WOMAN -> juInfo.setGirlParticipantNum(juInfo.getGirlParticipantNum() + 1);
+            case BOY -> juInfo.setBoyParticipantNum(juInfo.getBoyParticipantNum() + 1);
+            case GIRL -> juInfo.setGirlParticipantNum(juInfo.getGirlParticipantNum() + 1);
         }
         if (juInfo.full()) {
-            juInfo.setStatus(JuInfoStatus.FULL);
+            juInfo.setStatus(GameStatus.FULL);
         }
         this.update(juInfoId, juInfo);
         // FIXME 是否应该通知发起者
@@ -80,7 +80,7 @@ public class JuInfoServiceImpl
         LOGGER.info("[juInfo#outGame] user [id: {}] want out juInfo [id: {}]", userId, juInfoId);
         JuInfoDTO juInfo = this.get(juInfoId);
         // TODO 应该使用全局锁
-        JuInfoStatus status = juInfo.getStatus();
+        GameStatus status = juInfo.getStatus();
         if (!status.canOut()) {
             throw new BaseException("当前游戏状态不支持退出");
         }
@@ -90,11 +90,11 @@ public class JuInfoServiceImpl
         UserDTO user = userService.get(userId);
         Gender gender = user.getGender();
         switch (gender) {
-            case MAN -> juInfo.setBoyParticipantNum(juInfo.getBoyParticipantNum() - 1);
-            case WOMAN -> juInfo.setGirlParticipantNum(juInfo.getGirlParticipantNum() - 1);
+            case BOY -> juInfo.setBoyParticipantNum(juInfo.getBoyParticipantNum() - 1);
+            case GIRL -> juInfo.setGirlParticipantNum(juInfo.getGirlParticipantNum() - 1);
         }
-        if (juInfo.getStatus() == JuInfoStatus.FULL) {
-            juInfo.setStatus(JuInfoStatus.NEW);
+        if (juInfo.getStatus() == GameStatus.FULL) {
+            juInfo.setStatus(GameStatus.NEW);
         }
 
         update(juInfoId, juInfo);
@@ -110,14 +110,14 @@ public class JuInfoServiceImpl
             throw new BaseException("你不是创建者, 无法解散");
         }
         // 检查状态
-        if (juInfo.getStatus() == JuInfoStatus.DISMISS) {
+        if (juInfo.getStatus() == GameStatus.DISMISS) {
             throw new BaseException("当前游戏已经解散, 请勿重复操作");
         }
         if (!juInfo.getStatus().canOut()) {
             throw new BaseException("当前游戏状态不支持解散");
         }
         // 开始数据库操作
-        juInfo.setStatus(JuInfoStatus.DISMISS);
+        juInfo.setStatus(GameStatus.DISMISS);
         update(juInfoId, juInfo);
     }
 
@@ -130,11 +130,11 @@ public class JuInfoServiceImpl
             throw new BaseException("你不是创建者, 无法开始游戏");
         }
         // 检查状态
-        if (juInfo.getStatus() != JuInfoStatus.FULL) {
+        if (juInfo.getStatus() != GameStatus.FULL) {
             throw new BaseException("当前游戏状态不支持开始游戏");
         }
         // 开始数据库操作
-        juInfo.setStatus(JuInfoStatus.STARTING);
+        juInfo.setStatus(GameStatus.STARTING);
         update(juInfoId, juInfo);
     }
 
@@ -154,7 +154,7 @@ public class JuInfoServiceImpl
     }
 
     private void addApplyNotice(Long juInfoId, Long userId, String applyReason) {
-        JuInfoApplyDTO ja = new JuInfoApplyDTO();
+        MurderMysteryApplyDTO ja = new MurderMysteryApplyDTO();
         ja.setJuInfoId(juInfoId);
         ja.setUserId(userId);
         ja.setApplyReason(applyReason);

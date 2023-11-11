@@ -16,10 +16,13 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ApplyStatus implements BaseEnum {
 
-    // 创建, 通过, 不通过
+    // 撤销, 创建, 通过, 不通过, 失效
+    CANCEL(-1, "撤销"),
     NEW(1, "创建"),
     PASS(2, "通过"),
-    NOT_PASS(3, "不通过");
+    NOT_PASS(3, "不通过"),
+    INVALID(4, "失效"),
+    ;
 
     @EnumValue
     private final Integer code;

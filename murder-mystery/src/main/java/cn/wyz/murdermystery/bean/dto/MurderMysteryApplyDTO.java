@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class JuInfoApplyDTO extends BaseDTO {
+public class MurderMysteryApplyDTO extends BaseDTO {
 
     /**
      * 申请人

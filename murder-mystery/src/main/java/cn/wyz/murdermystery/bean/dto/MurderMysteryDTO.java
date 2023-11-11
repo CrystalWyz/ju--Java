@@ -1,7 +1,11 @@
 package cn.wyz.murdermystery.bean.dto;
 
+import cn.wyz.mapper.bean.dto.BaseDTO;
+import cn.wyz.murdermystery.bean.constance.MurderConfigConstance;
+import cn.wyz.murdermystery.type.GameStatus;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson2.JSONObject;
+import com.google.common.collect.Lists;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,10 +23,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(name = "MurderMysteryDTO", description = "聚--剧本杀dto")
-public class MurderMysteryDTO {
-
-    @Schema(name = "id")
-    private Long id;
+public class MurderMysteryDTO extends BaseDTO {
 
     @Schema(name = "标题")
     private String title;
@@ -49,23 +50,39 @@ public class MurderMysteryDTO {
     @Schema(name = "创建者id")
     private Long userId;
 
+    /**
+     * 游戏状态
+     */
+    @Schema(name = "游戏状态")
+    private GameStatus status;
+
     @Schema(name = "规模")
     private Integer scale;
 
-    @Schema(name = "女生参与人数")
+    @Schema(name = "需要女生参与人数")
     private Integer girlParticipantNum;
 
-    @Schema(name = "男生参与人数")
+    @Schema(name = "需要男生参与人数")
     private Integer boyParticipantNum;
 
+    /**
+     * @see MurderConfigConstance MurderConfigConstance
+     */
     @Schema(name = "配置信息")
     private JSONObject config;
 
     @Schema(name = "女生参与列表")
-    private List<Long> girlParticipant;
+    private List<Long> girlParticipant = Lists.newLinkedList();
 
     @Schema(name = "男生参与列表")
-    private List<Long> boyParticipant;
+    private List<Long> boyParticipant = Lists.newLinkedList();
+
+    @Schema(name = "申请参与列表")
+    private List<Long> applyParticipant = Lists.newLinkedList();
+
+    @Schema(name = "签到列表")
+    private List<Long> signInParticipant = Lists.newLinkedList();
+
 
     @Schema(name = "所属地区")
     private List<Integer> area;
@@ -76,11 +93,11 @@ public class MurderMysteryDTO {
     @Schema(name = "店铺名")
     private String shopName;
 
-    @JSONField(format = "yyyy-MM-dd HH:mm")
-    @Schema(name = "创建时间")
-    private LocalDateTime createTime;
+    public boolean needApply() {
+        if (config == null) {
+            return false;
+        }
+        return config.getBooleanValue(MurderConfigConstance.ENABLE_APPLY);
+    }
 
-    @JSONField(format = "yyyy-MM-dd HH:mm")
-    @Schema(name = "更新时间")
-    private LocalDateTime updateTime;
 }

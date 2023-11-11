@@ -25,6 +25,7 @@ public interface BeanConvert {
 
     JuInfo juInfoDTOToJuInfo(JuInfoDTO juInfoDTO);
 
+
     JuInfoDTO juInfoToJuInfoDTO(JuInfo juInfo);
 
     JuInfoPageInfo juInfoTOJuInfoPageInfo(JuInfo juInfo);

@@ -4,18 +4,13 @@ import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.mapper.controller.BaseController;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
-import cn.wyz.murdermystery.bean.request.JuInfoJoinGameReq;
+import cn.wyz.murdermystery.bean.request.JoinGameReq;
 import cn.wyz.murdermystery.bean.request.JuInfoRequest;
 import cn.wyz.murdermystery.service.JuInfoService;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.holder.SecurityContextHolder;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author wyzZzz
@@ -35,10 +30,10 @@ public class JuInfoController
      */
     @PatchMapping("/join/{juInfoId}")
     public ResponseResult<Void> join(@PathVariable("juInfoId") Long juInfoId,
-                                     @RequestBody JuInfoJoinGameReq req) {
+                                     @RequestBody JoinGameReq req) {
         LoginContext context = SecurityContextHolder.getContext();
         Long userId = context.getUserId();
-        req.setJuInfoId(juInfoId);
+        req.setGameId(juInfoId);
         req.setUserId(userId);
         service().join(req);
         return ResponseResult.success();

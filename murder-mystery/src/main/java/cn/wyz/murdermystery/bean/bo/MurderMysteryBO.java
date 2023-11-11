@@ -1,5 +1,7 @@
 package cn.wyz.murdermystery.bean.bo;
 
+import cn.wyz.mapper.bean.bo.BaseBO;
+import cn.wyz.murdermystery.type.GameStatus;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,11 +16,11 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MurderMysteryBO {
-
-    private Long id;
+public class MurderMysteryBO extends BaseBO {
 
     private String title;
+
+    private GameStatus status;
 
     private LocalDateTime beginExpected;
 
@@ -28,13 +30,9 @@ public class MurderMysteryBO {
 
     private LocalDateTime finishActual;
 
-    private LocalDateTime createTime;
-
     private String description;
 
     private Long userId;
-
-    private LocalDateTime updateTime;
 
     private Integer scale;
 

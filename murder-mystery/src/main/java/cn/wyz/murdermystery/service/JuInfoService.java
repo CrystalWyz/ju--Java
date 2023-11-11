@@ -3,7 +3,7 @@ package cn.wyz.murdermystery.service;
 import cn.wyz.mapper.service.MapperService;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
-import cn.wyz.murdermystery.bean.request.JuInfoJoinGameReq;
+import cn.wyz.murdermystery.bean.request.JoinGameReq;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author wyzZzz
  * @since 2023-03-12 10:52:41
  */
+@Deprecated
 public interface JuInfoService extends MapperService<JuInfo, JuInfoDTO> {
 
 
@@ -24,7 +25,7 @@ public interface JuInfoService extends MapperService<JuInfo, JuInfoDTO> {
      * @param req 参加剧本杀请求参数
      */
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
-    void join(JuInfoJoinGameReq req);
+    void join(JoinGameReq req);
 
     /**
      * 退出游戏

@@ -25,6 +25,8 @@ public interface CodeConstant {
 
     Code RESOURCE_NOT_FOUND = new Code(4, "资源不存在");
 
+    Code RESOURCE_REFRESH = new Code(5, "资源刷新");
+
     Code CONFIG_ERROR = new Code(99998, "配置文件异常");
 
     /**

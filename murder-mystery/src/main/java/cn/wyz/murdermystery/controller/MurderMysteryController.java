@@ -1,22 +1,16 @@
 package cn.wyz.murdermystery.controller;
 
-import cn.wyz.common.bean.request.PageVM;
 import cn.wyz.common.bean.request.ResponseResult;
-import cn.wyz.murdermystery.bean.bo.MurderMysteryBO;
-import cn.wyz.murdermystery.bean.dto.MurderMysteryCreateDTO;
+import cn.wyz.mapper.controller.BaseController;
+import cn.wyz.murdermystery.bean.MurderMystery;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryDTO;
-import cn.wyz.murdermystery.bean.dto.MurderMysteryParticipateDTO;
-import cn.wyz.murdermystery.bean.request.MurderMysteryPageRequest;
-import cn.wyz.murdermystery.bean.response.MurderMysteryPageResponse;
-import cn.wyz.murdermystery.convert.BeanConvert;
+import cn.wyz.murdermystery.bean.request.JoinGameReq;
+import cn.wyz.murdermystery.bean.request.MurderMysteryRequest;
 import cn.wyz.murdermystery.service.MurderMysteryService;
-import com.github.pagehelper.PageInfo;
-import io.swagger.v3.oas.annotations.Operation;
+import cn.wyz.user.context.LoginContext;
+import cn.wyz.user.holder.SecurityContextHolder;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
 
 /**
  * @author wnx
@@ -24,54 +18,107 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/murderMystery")
 @Tag(name = "剧本杀接口", description = "剧本杀接口")
-public class MurderMysteryController {
+public class MurderMysteryController
+        extends BaseController<MurderMystery, MurderMysteryDTO,
+        MurderMysteryRequest, MurderMysteryService> {
 
-    private final MurderMysteryService murderMysteryService;
 
-    private final BeanConvert beanConvert;
-
-    public MurderMysteryController(MurderMysteryService murderMysteryService, BeanConvert beanConvert) {
-        this.murderMysteryService = murderMysteryService;
-        this.beanConvert = beanConvert;
+    /**
+     * 加入聚
+     *
+     * @param juInfoId 聚id
+     * @return ResponseResult<Void>
+     */
+    @PatchMapping("/join/{juInfoId}")
+    public ResponseResult<Void> join(@PathVariable("juInfoId") Long juInfoId,
+                                     @RequestBody JoinGameReq req) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        req.setGameId(juInfoId);
+        req.setUserId(userId);
+        service().join(req);
+        return ResponseResult.success();
     }
 
-    @Operation(description = "剧本杀分页查询")
-    @PostMapping("/page")
-    public ResponseResult<PageInfo<MurderMysteryPageResponse>> murderMysteryPage(@RequestBody PageVM<MurderMysteryPageRequest> pageRequest) {
-        PageInfo<MurderMysteryBO> boPage = murderMysteryService.murderMysteryPage(pageRequest);
-        PageInfo<MurderMysteryPageResponse> resPage = beanConvert.murderMysteryBOPageToMurderMysteryPageResponsePage(boPage);
-        if (ObjectUtils.isNotEmpty(boPage.getList())) {
-            resPage.setList(boPage.getList().stream().map(beanConvert::murderMysteryToMurderMysteryPageResponse).collect(Collectors.toList()));
-        }
-
-        return ResponseResult.success(resPage);
+    /**
+     * 退出游戏
+     *
+     * @param juInfoId 聚id
+     * @param isForce  是否强制退出
+     */
+    @PatchMapping("/outGame/{juInfoId}")
+    public ResponseResult<Void> outGame(@PathVariable("juInfoId") Long juInfoId,
+                                        @RequestParam(value = "isForce", required = false) Boolean isForce) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        service().outGame(juInfoId, userId, isForce);
+        return ResponseResult.success();
     }
 
-    @Operation(description = "聚--创建剧本杀")
-    @PostMapping("/create")
-    public ResponseResult<String> murderMysteryCreate(@RequestBody MurderMysteryCreateDTO createDTO) {
-        Long id = murderMysteryService.murderMysteryCreate(beanConvert.murderMysteryCreateDTOToMurderMysteryBO(createDTO));
-        return ResponseResult.success(String.valueOf(id));
+    /**
+     * 准备游戏
+     *
+     * @param juInfoId 聚id
+     */
+    @PatchMapping("/prepare/{juInfoId}")
+    public ResponseResult<Void> prepare(@PathVariable("juInfoId") Long juInfoId) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        service().prepareGame(juInfoId, userId);
+        return ResponseResult.success();
     }
 
-    @Operation(description = "聚--获取剧本杀详情")
-    @GetMapping("/detail")
-    public ResponseResult<MurderMysteryDTO> murderMysteryDetail(@RequestParam Long id) {
-
-        MurderMysteryBO murderMysteryBO = murderMysteryService.murderMysteryDetail(id);
-
-        return ResponseResult.success(beanConvert.murderMysteryBOToMurderMysteryDTO(murderMysteryBO));
+    /**
+     * 签到
+     *
+     * @param juInfoId 聚id
+     */
+    @PatchMapping("/sign/{juInfoId}")
+    public ResponseResult<Void> sign(@PathVariable("juInfoId") Long juInfoId) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        service().signGame(juInfoId, userId);
+        return ResponseResult.success();
     }
 
-    @Operation(description = "聚--删除剧本杀")
-    @PostMapping("/delete/{id}")
-    public ResponseResult<String> murderMysteryDelete(@PathVariable("id") Long id) {
-        return ResponseResult.success(null);
+
+    /**
+     * 开始游戏
+     *
+     * @param juInfoId 聚id
+     */
+    @PatchMapping("/start/{juInfoId}")
+    public ResponseResult<Void> start(@PathVariable("juInfoId") Long juInfoId) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        service().startGame(juInfoId, userId);
+        return ResponseResult.success();
     }
 
-    @Operation(description = "聚--参与剧本杀")
-    @PostMapping("/participate")
-    public ResponseResult<String> murderMysteryParticipate(@RequestBody MurderMysteryParticipateDTO participateDTO) {
-        return ResponseResult.success(null);
+    /**
+     * 完成游戏
+     *
+     * @param juInfoId 聚id
+     */
+    @PatchMapping("/finish/{juInfoId}")
+    public ResponseResult<Void> finish(@PathVariable("juInfoId") Long juInfoId) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        service().finishGame(juInfoId, userId);
+        return ResponseResult.success();
     }
+
+    /**
+     * 解散游戏
+     *
+     * @param juInfoId 聚id
+     */
+    @PatchMapping("/dismiss/{juInfoId}")
+    public ResponseResult<Void> dismiss(@PathVariable("juInfoId") Long juInfoId) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        service().dismiss(juInfoId, userId);
+        return ResponseResult.success();
+    }
+
 }

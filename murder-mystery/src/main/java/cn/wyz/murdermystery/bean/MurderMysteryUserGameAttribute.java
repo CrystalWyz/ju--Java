@@ -1,5 +1,7 @@
 package cn.wyz.murdermystery.bean;
 
+import cn.wyz.mapper.bean.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +15,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MurderMysteryUser {
+@TableName
+public class MurderMysteryUserGameAttribute extends BaseEntity {
 
     private Long id;
 

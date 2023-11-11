@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName(value = "ju_info_apply", autoResultMap = true)
-public class JuInfoApply extends BaseEntity {
+@TableName(value = "murder_mystery_apply", autoResultMap = true)
+public class MurderMysteryApply extends BaseEntity {
 
     /**
      * 申请人
