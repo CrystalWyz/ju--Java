@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,8 +17,6 @@ import java.util.List;
 @TableName
 public class MurderMysteryUserGameAttribute extends BaseEntity {
 
-    private Long id;
-
     private Long userId;
 
     private Integer participateNum;
@@ -30,7 +27,4 @@ public class MurderMysteryUserGameAttribute extends BaseEntity {
 
     private List<String> tags;
 
-    private LocalDateTime createTime;
-
-    private LocalDateTime updateTime;
 }

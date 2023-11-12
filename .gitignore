@@ -36,3 +36,7 @@ build/
 ### LOG ###
 *.log
 logs/
+
+### 自动创建的文件或文件夹 ###
+config/ddl.sql
+*/target

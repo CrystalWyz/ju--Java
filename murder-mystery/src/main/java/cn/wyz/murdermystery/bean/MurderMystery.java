@@ -10,14 +10,18 @@ import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.springframework.context.annotation.Description;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
+ * 剧本杀记录
+ *
  * @author wyz
  */
 @Data
+@Description("剧本杀记录")
 @TableName(value = "murder_mystery", autoResultMap = true)
 public class MurderMystery extends BaseEntity {
 

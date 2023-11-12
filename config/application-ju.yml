@@ -2,3 +2,11 @@ ju:
   security:
     loginUrl: '/**/login'
     logoutUrl: '/**/logout'
+
+  ddl-create:
+    # 是否自动创建表
+    type: create
+    # 是否启用 ddl sql 生成
+    isCreateAllDdlSql: true
+    # 生成 ddl 文件目录 相对于启动目录的位置
+    genFilePath: '/config/ddl.sql'
