@@ -5,6 +5,7 @@ import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.holder.SecurityContextHolder;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -28,11 +29,14 @@ public class SecurityUtils {
 
     public static String getToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (SecurityConstant.HEADER_PARAMETER.equals(cookie.getName())) {
-                return cookie.getValue();
+        if (ObjectUtils.isNotEmpty(cookies)) {
+            for (Cookie cookie : cookies) {
+                if (SecurityConstant.HEADER_PARAMETER.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
             }
         }
+
         return null;
     }
 

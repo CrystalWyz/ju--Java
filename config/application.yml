@@ -9,3 +9,7 @@ map:
 # ======================= 日志配置 ========================= #
 logging:
   config: config/logback-spring.xml
+
+springfox:
+  documentation:
+    enabled: true
