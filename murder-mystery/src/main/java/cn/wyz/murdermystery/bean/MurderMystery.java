@@ -122,6 +122,9 @@ public class MurderMystery extends BaseEntity {
     @TableField(typeHandler = ListTypeHandler.class)
     private List<Long> signInParticipant;
 
+    /**
+     * 活动地点
+     */
     @TableField(typeHandler = ListTypeHandler.class)
     private List<Integer> area;
 

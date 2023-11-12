@@ -28,7 +28,7 @@ public class BaseUserException extends BaseException {
         this(code.desc(), code);
     }
 
-    protected BaseUserException(String message, Code code) {
+    public BaseUserException(String message, Code code) {
         super(message, code);
     }
 

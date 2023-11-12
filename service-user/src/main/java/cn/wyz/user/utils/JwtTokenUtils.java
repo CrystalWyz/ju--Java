@@ -1,7 +1,7 @@
 package cn.wyz.user.utils;
 
-import cn.wyz.common.constant.CommonStatusEnum;
-import cn.wyz.common.exception.AppException;
+import cn.wyz.common.constant.CodeConstant;
+import cn.wyz.common.exception.BaseUserException;
 import cn.wyz.common.util.IpUtils;
 import cn.wyz.user.constant.SecurityConstant;
 import cn.wyz.user.context.LoginContext;
@@ -98,15 +98,15 @@ public class JwtTokenUtils {
         try {
             tokenContext = JwtTokenUtils.parseToken(token);
         } catch (SignatureVerificationException e) {
-            throw new AppException(CommonStatusEnum.FAIL.getCode(), "token sign error");
+            throw new BaseUserException("token sign error", CodeConstant.USER_TOKEN_INVALID_ERROR);
         } catch (TokenExpiredException e) {
-            throw new AppException(CommonStatusEnum.FAIL.getCode(), "token time out");
+            throw new BaseUserException("token time out", CodeConstant.USER_TOKEN_INVALID_ERROR);
         } catch (Exception e) {
-            throw new AppException(CommonStatusEnum.FAIL.getCode(), "token error");
+            throw new BaseUserException("token error", CodeConstant.USER_TOKEN_INVALID_ERROR);
         }
 
         if (ObjectUtils.isEmpty(tokenContext)) {
-            throw new AppException(CommonStatusEnum.FAIL.getCode(), "token error");
+            throw new BaseUserException("token error", CodeConstant.USER_TOKEN_INVALID_ERROR);
         }
         return tokenContext;
     }

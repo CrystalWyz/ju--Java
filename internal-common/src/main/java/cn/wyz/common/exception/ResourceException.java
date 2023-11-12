@@ -5,27 +5,29 @@ import cn.wyz.common.constant.CodeConstant;
 import java.io.Serial;
 
 /**
+ * 资源类异常
+ *
  * @author zhouzhitong
  * @since 2023-11-11
  **/
-public class RefreshException extends BaseException {
+public class ResourceException extends BaseException {
 
     @Serial
     private static final long serialVersionUID = -8993934800066999384L;
 
-    public RefreshException() {
+    public ResourceException() {
         this(CodeConstant.RESOURCE_REFRESH);
     }
 
-    public RefreshException(String message) {
+    public ResourceException(String message) {
         this(message, CodeConstant.RESOURCE_REFRESH);
     }
 
-    public RefreshException(Code code) {
+    public ResourceException(Code code) {
         this(code.desc(), code);
     }
 
-    protected RefreshException(String message, Code code) {
+    protected ResourceException(String message, Code code) {
         super(message, code);
     }
 

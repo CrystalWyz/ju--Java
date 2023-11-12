@@ -31,7 +31,7 @@ import java.util.List;
 public class DdlSqlCreateService {
     private final GenDdlConfig config = new GenDdlConfig();
 
-    @Value("${ju.ddl-create.genFilePath: /config/sql/ddl.sql}")
+    @Value("${ju.ddl-create.genFilePath: /config/ddl.sql}")
     private String ddlSqlPath;
 
     @Value("${ju.ddl-create.isCreateAllDdlSql: false}")

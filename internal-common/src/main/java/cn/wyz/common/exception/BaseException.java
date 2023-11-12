@@ -13,6 +13,10 @@ public class BaseException extends RuntimeException {
     @Getter
     private final Code code;
 
+    public BaseException() {
+        this(CodeConstant.FAIL);
+    }
+
     public BaseException(String message) {
         this(message, CodeConstant.FAIL);
     }

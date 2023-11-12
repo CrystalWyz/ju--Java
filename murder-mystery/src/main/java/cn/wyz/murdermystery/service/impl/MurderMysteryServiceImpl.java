@@ -1,7 +1,7 @@
 package cn.wyz.murdermystery.service.impl;
 
 import cn.wyz.common.exception.BaseException;
-import cn.wyz.common.exception.RefreshException;
+import cn.wyz.common.exception.ResourceException;
 import cn.wyz.mapper.req.BaseRequest;
 import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import cn.wyz.mapper.vo.PageResultVO;
@@ -186,7 +186,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         }
         GameStatus status = mm.getStatus();
         if (status != GameStatus.SIGN_IN) {
-            throw new RefreshException("请刷新后重试");
+            throw new ResourceException("请刷新后重试");
         }
         mm.setStatus(GameStatus.STARTING);
         this.update(id, mm);
