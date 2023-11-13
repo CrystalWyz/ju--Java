@@ -20,7 +20,7 @@
             #foreach($column in $tableInfo.fullColumn)
                 <result property="$!{column.name}" column="$!column.obj.name"
                         jdbcType="$!{column.ext.jdbcType}"#if($!{column.ext.sqlType}=='json')
-                        typeHandler="cn.wyz.mapper.handler.JsonTypeHandler" #end/>
+                        typeHandler="cn.wyz.mapper.typeHandler.JsonTypeHandler" #end/>
             #end
         </resultMap>
 

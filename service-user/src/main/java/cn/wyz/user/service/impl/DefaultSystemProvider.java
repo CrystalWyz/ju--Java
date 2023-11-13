@@ -13,7 +13,7 @@ public class DefaultSystemProvider implements SystemProvider {
 
     @Override
     public String getCurrentAuditor() {
-        return SecurityContextHolder.getContext().getUsername();
+        return SecurityContextHolder.getContext().getUsername().toLowerCase();
     }
 
     @Override

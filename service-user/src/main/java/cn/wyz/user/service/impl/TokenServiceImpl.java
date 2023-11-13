@@ -30,7 +30,7 @@ public class TokenServiceImpl implements TokenService {
         LOGGER.debug("saveOrRefreshToken username: {}, token: {}", username, token);
         // FIXME 时间取值不够严谨
         long tokenExpiration = SecurityConstant.TOKEN_EXPIRATION;
-        redisTemplate.opsForValue().set(username, token, tokenExpiration, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(username, token, tokenExpiration, TimeUnit.MILLISECONDS);
         return token;
     }
 

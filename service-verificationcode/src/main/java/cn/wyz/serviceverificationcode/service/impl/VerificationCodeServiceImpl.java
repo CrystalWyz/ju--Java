@@ -8,7 +8,6 @@ import cn.wyz.common.constant.CommonStatusEnum;
 import cn.wyz.common.constant.IdentityEnum;
 import cn.wyz.common.constant.TokenTypeEnum;
 import cn.wyz.common.exception.AppException;
-import cn.wyz.common.util.JwtUtils;
 import cn.wyz.common.util.RedisKeyUtils;
 import cn.wyz.serviceverificationcode.remote.UserFeign;
 import cn.wyz.serviceverificationcode.remote.VerificationCodeFeign;
@@ -76,15 +75,16 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 
         // 下发token
         TokenDTO tokenDTO = TokenDTO.builder().phone(userPhone).identity(IdentityEnum.PASSENGER.getCode()).build();
-        String accessToken = JwtUtils.generatorToken(tokenDTO, TokenTypeEnum.ACCESS_TOKEN_TYPE.getCode());
-        String refreshToken = JwtUtils.generatorToken(tokenDTO, TokenTypeEnum.REFRESH_TOKEN_TYPE.getCode());
+//        String accessToken = JwtUtils.generatorToken(tokenDTO, TokenTypeEnum.ACCESS_TOKEN_TYPE.getCode());
+//        String refreshToken = JwtUtils.generatorToken(tokenDTO, TokenTypeEnum.REFRESH_TOKEN_TYPE.getCode());
 
         //服务器端存储token
         String accessTokenKey = RedisKeyUtils.generatorTokenKey(userPhone, IdentityEnum.PASSENGER.getCode(), TokenTypeEnum.ACCESS_TOKEN_TYPE.getCode());
         String refreshTokenKey = RedisKeyUtils.generatorTokenKey(userPhone, IdentityEnum.PASSENGER.getCode(), TokenTypeEnum.REFRESH_TOKEN_TYPE.getCode());
-        stringRedisTemplate.opsForValue().set(accessTokenKey, accessToken, 7, TimeUnit.DAYS);
-        stringRedisTemplate.opsForValue().set(refreshTokenKey, refreshToken, 30, TimeUnit.DAYS);
-
-        return new TokenResponseDTO(accessToken, refreshToken);
+//        stringRedisTemplate.opsForValue().set(accessTokenKey, accessToken, 7, TimeUnit.DAYS);
+//        stringRedisTemplate.opsForValue().set(refreshTokenKey, refreshToken, 30, TimeUnit.DAYS);
+//
+//        return new TokenResponseDTO(accessToken, refreshToken);
+        return null;
     }
 }

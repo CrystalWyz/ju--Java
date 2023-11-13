@@ -29,4 +29,4 @@ pagehelper:
 
 mybatis-plus:
   configuration:
-    default-enum-type-handler: cn.wyz.mapper.handler.DefaultEnumTypeHandler
+    default-enum-type-handler: cn.wyz.mapper.typeHandler.DefaultEnumTypeHandler

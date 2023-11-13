@@ -1,7 +1,7 @@
-package cn.wyz.mapper.handler;
+package cn.wyz.mapper.typeHandler;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson2.JSON;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.postgresql.util.PGobject;
@@ -14,19 +14,20 @@ import java.sql.SQLException;
 /**
  * @author wangnanxiang
  */
-public class JsonbTypeHandler<T extends Object> extends BaseTypeHandler<T> {
-
+public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
     private final Class<T> clazz;
 
-    public JsonbTypeHandler(Class<T> clazz) {
-        if (clazz == null) throw new IllegalArgumentException("Type argument cannot be null");
+    public JsonTypeHandler(Class<T> clazz) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("Type argument cannot be null");
+        }
         this.clazz = clazz;
     }
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException {
         PGobject jsonObject = new PGobject();
-        jsonObject.setType("jsonb");
+        jsonObject.setType("json");
         jsonObject.setValue(this.toJson(parameter));
         ps.setObject(i, jsonObject);
     }
@@ -48,7 +49,7 @@ public class JsonbTypeHandler<T extends Object> extends BaseTypeHandler<T> {
 
     private String toJson(T object) {
         try {
-            return JSON.toJSONString(object, SerializerFeature.WriteNullListAsEmpty);
+            return JSON.toJSONString(object, String.valueOf(SerializerFeature.WriteNullListAsEmpty));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

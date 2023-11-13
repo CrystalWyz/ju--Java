@@ -52,7 +52,7 @@ public class SystemContext {
      *
      * @return
      */
-    public static String getUsername() {
+    public static String getAuditor() {
         if (systemProvider != null) {
             return systemProvider.getCurrentAuditor();
         }

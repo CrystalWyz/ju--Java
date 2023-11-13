@@ -1,4 +1,4 @@
-package cn.wyz.mapper.handler;
+package cn.wyz.mapper.typeHandler;
 
 import cn.wyz.common.base.BaseEnum;
 import cn.wyz.common.util.EnumUtils;

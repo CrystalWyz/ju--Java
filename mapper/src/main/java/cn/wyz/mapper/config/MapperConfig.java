@@ -1,6 +1,6 @@
 package cn.wyz.mapper.config;
 
-import cn.wyz.mapper.handler.ListTypeHandler;
+import cn.wyz.mapper.typeHandler.ListTypeHandler;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;

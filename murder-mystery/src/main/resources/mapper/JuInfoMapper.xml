@@ -11,7 +11,7 @@
         <result property="lastModifiedBy" column="last_modified_by" jdbcType="VARCHAR"/>
         <result column="title" property="title"/>
         <result column="participant_2" property="participant"
-                typeHandler="cn.wyz.mapper.handler.ListTypeHandler"/>
+                typeHandler="cn.wyz.mapper.typeHandler.ListTypeHandler"/>
         <result column="begin" property="begin"/>
         <result column="finish" property="finish"/>
         <result column="description" property="description"/>
@@ -19,7 +19,7 @@
         <result column="scale" property="scale"/>
         <result column="girl_participant_num" property="girlParticipantNum"/>
         <result column="boy_participant_num" property="boyParticipantNum"/>
-        <result column="config" property="config" typeHandler="cn.wyz.mapper.handler.JsonTypeHandler"/>
+        <result column="config" property="config" typeHandler="cn.wyz.mapper.typeHandler.JsonTypeHandler"/>
         <result column="type" property="type"/>
     </resultMap>
 </mapper>

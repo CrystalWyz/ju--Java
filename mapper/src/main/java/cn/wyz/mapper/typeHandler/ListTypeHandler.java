@@ -1,16 +1,10 @@
-package cn.wyz.mapper.handler;
+package cn.wyz.mapper.typeHandler;
 
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeException;
 
-import java.sql.Array;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.JDBCType;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

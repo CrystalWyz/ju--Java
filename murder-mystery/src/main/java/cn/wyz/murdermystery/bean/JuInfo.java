@@ -1,8 +1,8 @@
 package cn.wyz.murdermystery.bean;
 
 import cn.wyz.mapper.bean.BaseEntity;
-import cn.wyz.mapper.handler.JsonTypeHandler;
-import cn.wyz.mapper.handler.ListTypeHandler;
+import cn.wyz.mapper.typeHandler.JsonTypeHandler;
+import cn.wyz.mapper.typeHandler.ListTypeHandler;
 import cn.wyz.murdermystery.bean.constance.JuInfoConfigConstance;
 import cn.wyz.murdermystery.type.GameStatus;
 import cn.wyz.user.bean.User;
