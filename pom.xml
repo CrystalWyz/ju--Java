@@ -14,6 +14,15 @@
     <name>ju--java</name>
     <description>ju--java</description>
     <properties>
+        <!-- ============ start 指定打包上传服务的基础信息 ============ -->
+        <server.target.path>/data/ju/</server.target.path>
+        <server.ip>43.143.236.141</server.ip>
+        <server.port>22</server.port>
+        <server.user>root</server.user>
+        <server.password>Xxzs990416</server.password>
+        <server.name>ju</server.name>
+        <!-- ============ end ============ -->
+
         <reversion>0.0.2-SNAPSHOT</reversion>
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
