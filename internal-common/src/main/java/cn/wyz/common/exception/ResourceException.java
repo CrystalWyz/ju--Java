@@ -10,7 +10,7 @@ import java.io.Serial;
  * @author zhouzhitong
  * @since 2023-11-11
  **/
-public class ResourceException extends BaseException {
+public class ResourceException extends BaseRuntimeException {
 
     @Serial
     private static final long serialVersionUID = -8993934800066999384L;

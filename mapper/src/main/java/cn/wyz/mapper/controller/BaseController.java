@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 基础的 controller 层
  *
@@ -50,23 +48,15 @@ public abstract class BaseController
      * @param page 分页参数
      * @return 分页结果
      */
-    @GetMapping
+    @GetMapping(value = {"/page", ""})
     @ResponseStatus(HttpStatus.PARTIAL_CONTENT)
-    public ResponseResult<List<DTO>> list(Query page) {
+    public PageResultVO<DTO> list(Query page) {
         // 为了安全起见, 查询所有的时候还是限制一千条
         if (page.getSize() == null) {
             page.setSize(sizeLimit);
         }
-        List<DTO> resList = service.queryAll(page);
-        return ResponseResult.ok(resList);
-    }
-
-    @PostMapping("/page")
-    @ResponseStatus(HttpStatus.PARTIAL_CONTENT)
-    public PageResultVO<DTO> page(@RequestBody Query page) {
         return service.page(page);
     }
-
 
     /**
      * 通过主键查询单条数据

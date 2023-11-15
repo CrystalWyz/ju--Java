@@ -1,4 +1,4 @@
-package cn.wyz.app.gen.utils;
+package cn.wyz.mapper.gen.utils;
 
 import java.io.File;
 import java.io.IOException;

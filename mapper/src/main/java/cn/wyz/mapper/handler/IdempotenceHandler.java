@@ -3,7 +3,7 @@ package cn.wyz.mapper.handler;
 import cn.hutool.core.util.RandomUtil;
 import cn.wyz.common.anno.Idempotence;
 import cn.wyz.common.context.SystemContext;
-import cn.wyz.common.exception.BaseException;
+import cn.wyz.common.exception.BaseRuntimeException;
 import cn.wyz.common.util.ClassUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +59,7 @@ public class IdempotenceHandler {
                 throw new RuntimeException(e);
             }
         } else {
-            throw new BaseException("请勿重复提交");
+            throw new BaseRuntimeException("请勿重复提交");
         }
 
 

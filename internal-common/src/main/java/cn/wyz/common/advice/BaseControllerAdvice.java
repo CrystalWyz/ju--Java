@@ -2,7 +2,7 @@ package cn.wyz.common.advice;
 
 import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.common.constant.CodeConstant;
-import cn.wyz.common.exception.BaseException;
+import cn.wyz.common.exception.BaseRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,8 +29,8 @@ public class BaseControllerAdvice {
     /**
      * 系统异常
      */
-    @ExceptionHandler(BaseException.class)
-    public ResponseResult<Void> userException(BaseException e) {
+    @ExceptionHandler(BaseRuntimeException.class)
+    public ResponseResult<Void> userException(BaseRuntimeException e) {
         LOGGER.error("", e);
         return ResponseResult.fail(e.getCode(), e.getMsg());
     }

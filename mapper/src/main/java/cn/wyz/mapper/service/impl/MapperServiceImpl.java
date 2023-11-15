@@ -4,6 +4,7 @@ import cn.wyz.common.service.SystemProvider;
 import cn.wyz.mapper.bean.BaseEntity;
 import cn.wyz.mapper.bean.dto.BaseDTO;
 import cn.wyz.mapper.bean.dto.PageInfo;
+import cn.wyz.mapper.exception.NotFoundResourceException;
 import cn.wyz.mapper.mapper.CrudMapper;
 import cn.wyz.mapper.req.BaseRequest;
 import cn.wyz.mapper.service.MapperService;
@@ -12,6 +13,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -32,6 +34,7 @@ public abstract class MapperServiceImpl
         implements MapperService<Entity, DTO> {
 
     @Resource
+    @Getter
     private SystemProvider systemProvider;
 
     @Override
@@ -122,6 +125,9 @@ public abstract class MapperServiceImpl
     public DTO get(Long id) {
         LOGGER.trace("get request: {}", id);
         Entity entity = getEntity(id);
+        if (entity == null) {
+            throw new NotFoundResourceException();
+        }
         return toDTO(entity);
     }
 

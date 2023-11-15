@@ -40,16 +40,6 @@
             <artifactId>service-user</artifactId>
         </dependency>
 
-        <!--        <dependency>-->
-        <!--            <groupId>cn.wyz</groupId>-->
-        <!--            <artifactId>service-verification</artifactId>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>cn.wyz</groupId>-->
-        <!--            <artifactId>service-verificationcode</artifactId>-->
-        <!--        </dependency>-->
-
         <dependency>
             <groupId>cn.wyz</groupId>
             <artifactId>murder-mystery</artifactId>
@@ -122,7 +112,6 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>3.0.0</version>
                         <executions>
                             <execution>
                                 <id>run-custom-script</id>
@@ -160,7 +149,6 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>3.0.0</version>
                         <executions>
                             <execution>
                                 <id>run-custom-script</id>
@@ -180,7 +168,6 @@
                                         <argument>${server.password}</argument>
                                         <argument>${project.build.directory}</argument>
                                         <argument>${server.target.path}</argument>
-                                        <argument></argument>
                                     </arguments>
                                 </configuration>
                             </execution>

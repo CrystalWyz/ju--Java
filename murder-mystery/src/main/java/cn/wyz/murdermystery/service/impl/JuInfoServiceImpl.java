@@ -1,6 +1,6 @@
 package cn.wyz.murdermystery.service.impl;
 
-import cn.wyz.common.exception.BaseException;
+import cn.wyz.common.exception.BaseRuntimeException;
 import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
@@ -55,12 +55,12 @@ public class JuInfoServiceImpl
         UserDTO user = userService.get(userId);
         JuInfoDTO juInfo = this.get(juInfoId);
         if (juInfo.getParticipant().contains(userId)) {
-            throw new BaseException("你已经加入, 请勿重复操作");
+            throw new BaseRuntimeException("你已经加入, 请勿重复操作");
         }
         // TODO 应该使用全局锁
         GameStatus status = juInfo.getStatus();
         if (!status.enableJoin()) {
-            throw new BaseException("当前剧本杀的状态不可加入成员");
+            throw new BaseRuntimeException("当前剧本杀的状态不可加入成员");
         }
         juInfo.getParticipant().add(userId);
         Gender gender = user.getGender();
@@ -82,10 +82,10 @@ public class JuInfoServiceImpl
         // TODO 应该使用全局锁
         GameStatus status = juInfo.getStatus();
         if (!status.canOut()) {
-            throw new BaseException("当前游戏状态不支持退出");
+            throw new BaseRuntimeException("当前游戏状态不支持退出");
         }
         if (!juInfo.getParticipant().remove(userId)) {
-            throw new BaseException("你已经不在当前游戏中了, 请勿重复操作");
+            throw new BaseRuntimeException("你已经不在当前游戏中了, 请勿重复操作");
         }
         UserDTO user = userService.get(userId);
         Gender gender = user.getGender();
@@ -107,14 +107,14 @@ public class JuInfoServiceImpl
         JuInfoDTO juInfo = this.get(juInfoId);
         // 判断 发起者是否是创建者
         if (!Objects.equals(userId, juInfo.getUserId())) {
-            throw new BaseException("你不是创建者, 无法解散");
+            throw new BaseRuntimeException("你不是创建者, 无法解散");
         }
         // 检查状态
         if (juInfo.getStatus() == GameStatus.DISMISS) {
-            throw new BaseException("当前游戏已经解散, 请勿重复操作");
+            throw new BaseRuntimeException("当前游戏已经解散, 请勿重复操作");
         }
         if (!juInfo.getStatus().canOut()) {
-            throw new BaseException("当前游戏状态不支持解散");
+            throw new BaseRuntimeException("当前游戏状态不支持解散");
         }
         // 开始数据库操作
         juInfo.setStatus(GameStatus.DISMISS);
@@ -127,11 +127,11 @@ public class JuInfoServiceImpl
         JuInfoDTO juInfo = this.get(juInfoId);
         // 判断 发起者是否是创建者
         if (!Objects.equals(userId, juInfo.getUserId())) {
-            throw new BaseException("你不是创建者, 无法开始游戏");
+            throw new BaseRuntimeException("你不是创建者, 无法开始游戏");
         }
         // 检查状态
         if (juInfo.getStatus() != GameStatus.FULL) {
-            throw new BaseException("当前游戏状态不支持开始游戏");
+            throw new BaseRuntimeException("当前游戏状态不支持开始游戏");
         }
         // 开始数据库操作
         juInfo.setStatus(GameStatus.STARTING);
@@ -155,7 +155,7 @@ public class JuInfoServiceImpl
 
     private void addApplyNotice(Long juInfoId, Long userId, String applyReason) {
         MurderMysteryApplyDTO ja = new MurderMysteryApplyDTO();
-        ja.setJuInfoId(juInfoId);
+        ja.setGameId(juInfoId);
         ja.setUserId(userId);
         ja.setApplyReason(applyReason);
         ja.setApplyStatus(ApplyStatus.NEW);

@@ -4,6 +4,7 @@ import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.mapper.controller.BaseController;
 import cn.wyz.murdermystery.bean.MurderMystery;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryDTO;
+import cn.wyz.murdermystery.bean.request.HandleApplyGameReq;
 import cn.wyz.murdermystery.bean.request.JoinGameReq;
 import cn.wyz.murdermystery.bean.request.MurderMysteryRequest;
 import cn.wyz.murdermystery.service.MurderMysteryService;
@@ -26,19 +27,51 @@ public class MurderMysteryController
     /**
      * 加入聚
      *
-     * @param juInfoId 聚id
+     * @param gameId 聚id
      * @return ResponseResult<Void>
      */
-    @PatchMapping("/join/{juInfoId}")
-    public ResponseResult<Void> join(@PathVariable("juInfoId") Long juInfoId,
+    @PatchMapping("/join/{gameId}")
+    public ResponseResult<Void> join(@PathVariable("gameId") Long gameId,
                                      @RequestBody JoinGameReq req) {
         LoginContext context = SecurityContextHolder.getContext();
         Long userId = context.getUserId();
-        req.setGameId(juInfoId);
+        req.setGameId(gameId);
         req.setUserId(userId);
         service().join(req);
         return ResponseResult.success();
     }
+
+    /**
+     * 撤销申请
+     *
+     * @param gameId 游戏Id
+     * @return ResponseResult<Void>
+     */
+    @PatchMapping("/cancelApply/{gameId}")
+    public ResponseResult<Void> cancelApply(@PathVariable("gameId") Long gameId, @RequestBody JoinGameReq req) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        req.setUserId(userId);
+        req.setGameId(gameId);
+        service().cancelApply(req);
+        return ResponseResult.success();
+    }
+
+    /**
+     * 处理申请
+     *
+     * @param req 处理申请请求参数
+     * @return ResponseResult<Void>
+     */
+    @PatchMapping("/handleApply/")
+    public ResponseResult<Void> handleApply(@RequestBody HandleApplyGameReq req) {
+        LoginContext context = SecurityContextHolder.getContext();
+        Long userId = context.getUserId();
+        req.setUserId(userId);
+        service().handleApply(req);
+        return ResponseResult.success();
+    }
+
 
     /**
      * 退出游戏

@@ -4,6 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import cn.wyz.common.util.BeanUtils;
 import cn.wyz.mapper.bean.BaseEntity;
 import cn.wyz.mapper.bean.dto.BaseDTO;
+import cn.wyz.mapper.exception.NotFoundResourceException;
 import cn.wyz.mapper.req.BaseRequest;
 import cn.wyz.mapper.utils.MybatisPlusWrapperUtils;
 import cn.wyz.mapper.vo.PageResultVO;
@@ -64,6 +65,17 @@ public interface MapperService<
     /**
      * 更新全部的字段
      *
+     * @param dto DTO
+     * @return DTO
+     */
+    @Transactional(rollbackFor = Exception.class)
+    default DTO update(DTO dto) {
+        return update(dto.getId(), dto);
+    }
+
+    /**
+     * 更新全部的字段
+     *
      * @param id  编号
      * @param dto DTO
      * @return DTO
@@ -86,8 +98,9 @@ public interface MapperService<
      *
      * @param id 主键ID
      * @return DTO
+     * @throws NotFoundResourceException 资源找不到时, 抛出异常
      */
-    DTO get(Long id);
+    DTO get(Long id) throws NotFoundResourceException;
 
     /**
      * 根据 query 查询

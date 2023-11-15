@@ -15,4 +15,12 @@ import cn.wyz.murdermystery.bean.dto.MurderMysteryApplyDTO;
 public interface MurderMysteryApplyService
         extends MapperService<MurderMysteryApply, MurderMysteryApplyDTO> {
 
+    /**
+     * 作废所有申请
+     *
+     * @param gameId 剧本杀id {@link cn.wyz.murdermystery.bean.MurderMystery#getId()}
+     * @return
+     */
+    int invalidAll(Long gameId);
+
 }

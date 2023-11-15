@@ -1,9 +1,9 @@
-package cn.wyz.app.gen;
+package cn.wyz.mapper.gen;
 
-import cn.wyz.app.gen.config.FieldTypeMap;
-import cn.wyz.app.gen.config.GenDdlConfig;
-import cn.wyz.app.gen.utils.PackageUtil;
 import cn.wyz.mapper.bean.BaseEntity;
+import cn.wyz.mapper.gen.config.FieldTypeMap;
+import cn.wyz.mapper.gen.config.GenDdlConfig;
+import cn.wyz.mapper.gen.utils.PackageUtil;
 import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;

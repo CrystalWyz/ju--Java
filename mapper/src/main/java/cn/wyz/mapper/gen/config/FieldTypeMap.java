@@ -1,4 +1,4 @@
-package cn.wyz.app.gen.config;
+package cn.wyz.mapper.gen.config;
 
 import java.util.HashMap;
 import java.util.Map;

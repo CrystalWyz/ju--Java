@@ -1,24 +1,18 @@
-package cn.wyz.murdermystery.bean.dto;
+package cn.wyz.murdermystery.bean.request;
 
-import cn.wyz.mapper.bean.dto.BaseDTO;
+import cn.wyz.mapper.req.BaseRequest;
 import cn.wyz.murdermystery.bean.MurderMystery;
 import cn.wyz.murdermystery.type.ApplyStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
- * 剧本杀申请记录
+ * 剧本杀申请请求参数
  *
  * @author zhouzhitong
- * @since 2023-11-06
+ * @since 2023-11-15
  **/
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class MurderMysteryApplyDTO extends BaseDTO {
+public class MurderMysteryApplyReq extends BaseRequest {
 
     /**
      * 申请人
@@ -30,7 +24,7 @@ public class MurderMysteryApplyDTO extends BaseDTO {
     /**
      * 关联剧本杀记录
      *
-     * @see MurderMystery#getId() JuInfo#id
+     * @see MurderMystery#getId() MurderMystery#id
      */
     private Long gameId;
 

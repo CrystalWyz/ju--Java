@@ -1,4 +1,4 @@
-package cn.wyz.app.gen.config;
+package cn.wyz.mapper.gen.config;
 
 import cn.wyz.common.base.BaseEnum;
 import com.alibaba.fastjson.JSONObject;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class GenDdlConfig {
 
     /**
-     *
+     * 字段类型映射
      */
     @Getter
     private final Map<Class<?>, FieldTypeMap> fieldTypeMap;

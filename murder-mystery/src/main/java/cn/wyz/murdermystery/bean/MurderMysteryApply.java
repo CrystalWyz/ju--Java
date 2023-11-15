@@ -31,9 +31,9 @@ public class MurderMysteryApply extends BaseEntity {
     /**
      * 关联剧本杀记录
      *
-     * @see JuInfo#getId() JuInfo#id
+     * @see MurderMystery#getId() MurderMystery#id
      */
-    private Long juInfoId;
+    private Long gameId;
 
     /**
      * 申请状态

@@ -11,7 +11,7 @@ import java.io.Serial;
  * @author zhouzhitong
  * @since 2021/8/27
  */
-public class BaseUserException extends BaseException {
+public class BaseUserException extends BaseRuntimeException {
 
     @Serial
     private static final long serialVersionUID = -8993934800066999384L;
