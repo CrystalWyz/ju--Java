@@ -37,9 +37,11 @@ public class MurderMysteryApplyApplyServiceImpl
         List<MurderMysteryApply> mmaList = this.list(wrapper);
 
         for (MurderMysteryApply mma : mmaList) {
-            mma.setApplyStatus(ApplyStatus.INVALID);
-            mma.setLastModifiedBy(getSystemProvider().getCurrentAuditor());
-            mma.setUpdateTime(LocalDateTime.now());
+            if (mma.getApplyStatus() == ApplyStatus.NEW) {
+                mma.setApplyStatus(ApplyStatus.INVALID);
+                mma.setLastModifiedBy(getSystemProvider().getCurrentAuditor());
+                mma.setUpdateTime(LocalDateTime.now());
+            }
         }
         this.updateBatchById(mmaList);
         return mmaList.size();

@@ -130,10 +130,6 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         if (hasBlemish) {
             addBlemish(id, userId, "在无法退出游戏状态时, 退出游戏");
         }
-        // FIXME 是否修改状体
-        if (status == GameStatus.FULL) {
-            mm.setStatus(GameStatus.NEW);
-        }
         this.update(id, mm);
         return true;
     }
@@ -162,12 +158,13 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         if (status.getCode() > 3) {
             throw new BaseRuntimeException("重复操作, 请刷新再试");
         }
-        if (mm.getStatus() != GameStatus.FULL) {
+        if (mm.isFull()) {
             throw new BaseRuntimeException("人数还没满, 无法准备");
         }
         mm.setStatus(GameStatus.PREPARE);
         this.update(id, mm);
-        // TODO 将多余的申请失效
+        // 将多余的申请失效
+        murderMysteryApplyService.invalidAll(id);
     }
 
     @Override
@@ -239,11 +236,6 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         return new MurderMystery();
     }
 
-    private boolean isFull(MurderMysteryDTO mm) {
-        return Objects.equals(mm.getBoyParticipantNum(), mm.getBoyParticipantNum())
-                && Objects.equals(mm.getGirlParticipantNum(), mm.getGirlParticipantNum());
-    }
-
     private boolean tryRemovePerson(MurderMysteryDTO mm, Long userId, Gender gender) {
         return switch (gender) {
             case BOY -> {
@@ -272,31 +264,27 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
      * @return 是否添加成功
      */
     private boolean tryAddPerson(MurderMysteryDTO mm, Long userId, Gender gender) {
-        try {
-            return switch (gender) {
-                case BOY -> {
-                    if (mm.getBoyParticipant().contains(userId)) {
-                        yield false;
-                    }
-                    mm.getBoyParticipant().add(userId);
-                    yield true;
+        return switch (gender) {
+            case BOY -> {
+                if (mm.getBoyParticipant().contains(userId)) {
+                    yield false;
                 }
-                case GIRL -> {
-                    if (mm.getGirlParticipant().contains(userId)) {
-                        yield false;
-                    }
-                    mm.getGirlParticipant().add(userId);
-                    yield true;
-                }
-            };
-        } finally {
-            if (isFull(mm)) {
-                mm.setStatus(GameStatus.FULL);
+                mm.getBoyParticipant().add(userId);
+                yield true;
             }
-        }
+            case GIRL -> {
+                if (mm.getGirlParticipant().contains(userId)) {
+                    yield false;
+                }
+                mm.getGirlParticipant().add(userId);
+                yield true;
+            }
+        };
+
     }
 
     private void addBlemish(Long juInfoId, Long userId, String blemishReason) {
+
     }
 
     private void addApplyNotice(MurderMysteryDTO mm, Long userId, String applyReason) {

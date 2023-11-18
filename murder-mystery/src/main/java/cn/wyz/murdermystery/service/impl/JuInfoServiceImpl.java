@@ -68,9 +68,6 @@ public class JuInfoServiceImpl
             case BOY -> juInfo.setBoyParticipantNum(juInfo.getBoyParticipantNum() + 1);
             case GIRL -> juInfo.setGirlParticipantNum(juInfo.getGirlParticipantNum() + 1);
         }
-        if (juInfo.full()) {
-            juInfo.setStatus(GameStatus.FULL);
-        }
         this.update(juInfoId, juInfo);
         // FIXME 是否应该通知发起者
     }
@@ -92,9 +89,6 @@ public class JuInfoServiceImpl
         switch (gender) {
             case BOY -> juInfo.setBoyParticipantNum(juInfo.getBoyParticipantNum() - 1);
             case GIRL -> juInfo.setGirlParticipantNum(juInfo.getGirlParticipantNum() - 1);
-        }
-        if (juInfo.getStatus() == GameStatus.FULL) {
-            juInfo.setStatus(GameStatus.NEW);
         }
 
         update(juInfoId, juInfo);
@@ -130,9 +124,9 @@ public class JuInfoServiceImpl
             throw new BaseRuntimeException("你不是创建者, 无法开始游戏");
         }
         // 检查状态
-        if (juInfo.getStatus() != GameStatus.FULL) {
-            throw new BaseRuntimeException("当前游戏状态不支持开始游戏");
-        }
+//        if (juInfo.getStatus() != GameStatus.FULL) {
+//            throw new BaseRuntimeException("当前游戏状态不支持开始游戏");
+//        }
         // 开始数据库操作
         juInfo.setStatus(GameStatus.STARTING);
         update(juInfoId, juInfo);

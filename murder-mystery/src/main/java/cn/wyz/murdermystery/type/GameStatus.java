@@ -18,14 +18,15 @@ public enum GameStatus implements BaseEnum {
     // 草稿, 创建, 人数已满, 准备, 签到, 已开始, 已结束, 解散
     DRAFT(0, "草稿", false),
     NEW(1, "创建", true),
-    FULL(3, "人数已满", false),
+    @Deprecated
+//    FULL(3, "人数已满", false),
     // 下面的状态, 是不可以退出的
     PREPARE(4, "准备", false),
     SIGN_IN(5, "签到", false),
     STARTING(6, "已开始", false),
     END(7, "已结束", false),
     DISMISS(-1, "解散", false),
-    
+
     ;
 
     /**
@@ -49,7 +50,7 @@ public enum GameStatus implements BaseEnum {
     }
 
     public boolean canOut() {
-        return this == NEW || this == FULL;
+        return this == NEW;
     }
 
 }

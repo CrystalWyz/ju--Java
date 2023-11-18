@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author wangnanxiang
@@ -98,6 +99,11 @@ public class MurderMysteryDTO extends BaseDTO {
             return false;
         }
         return config.getBooleanValue(MurderConfigConstance.ENABLE_APPLY);
+    }
+
+    public boolean isFull() {
+        return Objects.equals(this.getBoyParticipantNum(), this.getBoyParticipantNum())
+                && Objects.equals(this.getGirlParticipantNum(), this.getGirlParticipantNum());
     }
 
 }
