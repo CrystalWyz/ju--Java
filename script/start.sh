@@ -11,13 +11,7 @@ TARGET_DIR=$6
 # 登录服务器
 ssh -i "$PASSWORD" "USER@IP" << EOF
     # 检查服务状态
-    if systemctl is-active --quiet "$service_name"; then
-        echo "Service is running. Restarting..."
-        # 重启服务
-        sudo systemctl restart "$service_name"
-    else
-        echo "Service is not running. Starting..."
-        # 启动服务
-        sudo systemctl start "$service_name"
-    fi
+
+    # sh /data/ju/bin/wcs status 并接受返回值, 如果是 1就重启服务, 如果是0就启动服务
+
 EOF

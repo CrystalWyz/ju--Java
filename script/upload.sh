@@ -49,7 +49,10 @@ echo "开始准备上传文件 ${DIR}"
 cd "$DIR" || exit
 
 echo "Files and directories in the target directory:"
-scp_upload '/config'
+scp_upload 'ju/config'
+scp_upload 'ju/bin'
+#scp_upload 'ju/lib'
+scp_upload 'ju/celib'
 for file in $(ls); do
   # 如果是 *.jar 就上传服务
   if [[ $file == app*.jar ]]; then

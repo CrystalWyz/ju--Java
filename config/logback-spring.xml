@@ -2,7 +2,8 @@
 <configuration>
 
     <!-- 定义日志输出格式 -->
-    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <property name="log.pattern"
+              value="%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%c{20}:) %yellow(%L) - %msg%n"/>
 
 
     <!-- 定义滚动文件输出的appender -->

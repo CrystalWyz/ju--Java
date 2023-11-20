@@ -9,7 +9,6 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.cloud.alibaba</groupId>
     <artifactId>app</artifactId>
 
     <dependencies>
@@ -53,15 +52,92 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.project-lombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
+                    <!--项目的启动类-->
+                    <!--                    <mainClass>ai.coevolution.wcs.server.WcsApplication</mainClass>-->
+                    <!--解决windows命令行窗口中文乱码-->
+                    <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
+                    <layout>ZIP</layout>
+                    <!--配置需要打包进项目的jar-->
+                    <includes>
+                        <!--如果没有则non-exists, 表示不打包-->
+                        <include>
+                            <groupId>non-exists</groupId>
+                            <artifactId>non-exists</artifactId>
+                        </include>
+                    </includes>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
-            <!-- copy config 目录 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-lib</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/ju/lib</outputDirectory>
+                            <excludeTransitive>false</excludeTransitive>
+                            <stripVersion>false</stripVersion>
+                            <includeScope>runtime</includeScope>
+                            <excludeGroupIds>cn.wyz</excludeGroupIds>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-celib</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/ju/celib</outputDirectory>
+                            <excludeTransitive>false</excludeTransitive>
+                            <stripVersion>false</stripVersion>
+                            <includeScope>runtime</includeScope>
+                            <includeGroupIds>cn.wyz</includeGroupIds>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-app</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/ju/</outputDirectory>
+                            <stripVersion>false</stripVersion>
+                            <artifact>${project.groupId}:${project.artifactId}:${version}</artifact>
+                        </configuration>
+                    </execution>
+                    <!--                    <execution>-->
+                    <!--                        <id>unpack</id>-->
+                    <!--                        <phase>prepare-package</phase>-->
+                    <!--                        <goals>-->
+                    <!--                            <goal>unpack</goal>-->
+                    <!--                        </goals>-->
+                    <!--                        <configuration>-->
+                    <!--                            <artifactItems>-->
+                    <!--                                <artifactItem>-->
+                    <!--                                    <groupId>cn.wyz</groupId>-->
+                    <!--                                    <artifactId>app</artifactId>-->
+                    <!--                                    <type>jar</type>-->
+                    <!--                                    <outputDirectory>${project.build.directory}/app</outputDirectory>-->
+                    <!--                                </artifactItem>-->
+                    <!--                            </artifactItems>-->
+                    <!--                        </configuration>-->
+                    <!--                    </execution>-->
+
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
@@ -72,8 +148,13 @@
                         </goals>
                         <configuration>
                             <target>
-                                <mkdir dir="${project.build.directory}/logs"/>
-                                <copy todir="${project.build.directory}/config/" overwrite="true">
+                                <mkdir dir="${project.build.directory}/ju/logs"/>
+                                <copy todir="${project.build.directory}/ju/bin" overwrite="true">
+                                    <fileset dir="../bin/" erroronmissingdir="false">
+                                        <include name="*"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="${project.build.directory}/ju/config/" overwrite="true">
                                     <fileset dir="../config/" erroronmissingdir="false">
                                         <include name="**"/>
                                     </fileset>
@@ -82,22 +163,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
-                <configuration>
-                    <source>17</source>  <!--language level-->
-                    <target>17</target>  <!--java compiler version-->
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <testFailureIgnore>true</testFailureIgnore>
-                </configuration>
             </plugin>
         </plugins>
     </build>
