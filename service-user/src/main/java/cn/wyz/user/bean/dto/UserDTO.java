@@ -1,7 +1,7 @@
 package cn.wyz.user.bean.dto;
 
 import cn.wyz.mapper.bean.dto.BaseDTO;
-import cn.wyz.user.type.Gender;
+import cn.wyz.user.constant.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
  **/
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Schema(name = "JuInfoDTO", description = "用户 DTO")
 public class UserDTO extends BaseDTO {
 
     @Schema(name = "用户名")

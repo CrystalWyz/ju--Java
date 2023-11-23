@@ -1,12 +1,20 @@
 package cn.wyz.user.service.impl;
 
 import cn.wyz.common.bean.response.TokenResponseDTO;
+import cn.wyz.common.constant.CommonStatusEnum;
+import cn.wyz.common.exception.AppException;
 import cn.wyz.common.util.EncryptUtils;
+import cn.wyz.user.bean.User;
+import cn.wyz.user.bean.bo.OneClickLoginBO;
+import cn.wyz.user.bean.bo.UserBO;
+import cn.wyz.user.bean.bo.UserTokenBO;
+import cn.wyz.user.bean.dto.LoginDTO;
 import cn.wyz.user.bean.dto.UserDTO;
+import cn.wyz.user.bean.vo.UserInfoVO;
 import cn.wyz.user.config.LibSecurityProperties;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.context.TokenInfo;
-import cn.wyz.user.dto.LoginDTO;
+import cn.wyz.user.converter.JuUserBeanConvert;
 import cn.wyz.user.exception.UserDisableException;
 import cn.wyz.user.exception.UserNotFoundException;
 import cn.wyz.user.exception.UserPasswordNotMatchException;
@@ -16,11 +24,12 @@ import cn.wyz.user.service.TokenService;
 import cn.wyz.user.service.UserService;
 import cn.wyz.user.utils.JwtTokenUtils;
 import cn.wyz.user.utils.SecurityUtils;
-import cn.wyz.user.vo.UserInfoVO;
-import cn.wyz.user.vo.UserTokenVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,8 +50,12 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     private final TokenService tokenService;
 
+    private final StringRedisTemplate redisTemplate;
+
+    private final JuUserBeanConvert convert;
+
     @Override
-    public UserTokenVO login(LoginDTO param) {
+    public UserTokenBO login(LoginDTO param) {
         LOGGER.debug("login param username: {}", param.getUsername());
         String username = param.getUsername();
         String rawPassword = param.getPassword();
@@ -70,21 +83,25 @@ public class AuthorityServiceImpl implements AuthorityService {
             throw new UserPasswordNotMatchException(username);
         }
 
+        return generatorToken(convert.userDTOToUserBO(user));
+    }
+
+    private UserTokenBO generatorToken(UserBO user) {
         String token;
-        if ((token = tokenService.getToken(username)) == null) {
+        if ((token = tokenService.getToken(user.getUsername())) == null) {
             TokenInfo tokenInfo = TokenInfo.builder()
                     .userId(user.getId())
-                    .username(username)
+                    .username(user.getUsername())
                     .gender(user.getGender())
                     .build();
             token = JwtTokenUtils.generatorToken(tokenInfo);
             // 不管怎样刷新下 token
-            tokenService.saveOrRefreshToken(username, token);
+            tokenService.saveOrRefreshToken(user.getUsername(), token);
         }
 
 
-        UserTokenVO res = new UserTokenVO();
-        res.setUsername(username);
+        UserTokenBO res = new UserTokenBO();
+        res.setUsername(user.getUsername());
         res.setToken(token);
         res.setExpireTime(System.currentTimeMillis() + JwtTokenUtils.getExpiration());
         return res;
@@ -151,4 +168,29 @@ public class AuthorityServiceImpl implements AuthorityService {
         return user;
     }
 
+    @Override
+    public UserTokenBO oneClickLogin(OneClickLoginBO oneClickLoginBO) {
+
+        // 校验码验证
+        String verifyCode = redisTemplate.opsForValue().get(oneClickLoginBO.getPhone());
+        if (ObjectUtils.isEmpty(verifyCode)) {
+            throw new AppException(CommonStatusEnum.FAIL.getCode(), "验证码丢失");
+        }
+        if (!verifyCode.equals(oneClickLoginBO.getVerifyCode())) {
+            throw new AppException(CommonStatusEnum.FAIL.getCode(), "验证码错误");
+        }
+
+        // 手机号获取用户信息
+        UserBO userInfo = userService.getByPhone(oneClickLoginBO.getPhone());
+        if (ObjectUtils.isEmpty(userInfo)) {
+            // 注册
+            User user = new User();
+            user.setPhone(oneClickLoginBO.getPhone());
+            user.setNickName("刁民-" + RandomUtils.nextLong(0,Long.MAX_VALUE));
+
+            userService.save(user);
+        }
+
+        return generatorToken(userInfo);
+    }
 }

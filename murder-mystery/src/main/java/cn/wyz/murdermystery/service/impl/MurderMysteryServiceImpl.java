@@ -18,7 +18,7 @@ import cn.wyz.user.bean.dto.UserDTO;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.holder.SecurityContextHolder;
 import cn.wyz.user.service.UserService;
-import cn.wyz.user.type.Gender;
+import cn.wyz.user.constant.Gender;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

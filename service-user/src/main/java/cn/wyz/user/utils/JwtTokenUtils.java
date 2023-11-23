@@ -6,7 +6,7 @@ import cn.wyz.common.util.IpUtils;
 import cn.wyz.user.constant.SecurityConstant;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.context.TokenInfo;
-import cn.wyz.user.type.Gender;
+import cn.wyz.user.constant.Gender;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;

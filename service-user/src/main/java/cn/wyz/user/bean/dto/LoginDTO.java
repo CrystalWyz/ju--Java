@@ -1,4 +1,4 @@
-package cn.wyz.user.vo;
+package cn.wyz.user.bean.dto;
 
 import lombok.Data;
 
@@ -6,13 +6,11 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 用户登录成功后返回的信息
- *
  * @author zhouzhitong
  * @since 2023/5/21
  */
 @Data
-public class UserInfoVO implements Serializable {
+public class LoginDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -23,9 +21,13 @@ public class UserInfoVO implements Serializable {
     private String username;
 
     /**
-     * 用户姓名
+     * 密码
      */
-    private String name;
+    private String password;
 
+    /**
+     * 验证码
+     */
+    private String captcha;
 
 }

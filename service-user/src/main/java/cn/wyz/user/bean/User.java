@@ -1,7 +1,7 @@
 package cn.wyz.user.bean;
 
 import cn.wyz.mapper.bean.BaseEntity;
-import cn.wyz.user.type.Gender;
+import cn.wyz.user.constant.Gender;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;

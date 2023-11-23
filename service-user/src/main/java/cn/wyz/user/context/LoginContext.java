@@ -1,7 +1,7 @@
 package cn.wyz.user.context;
 
 import cn.wyz.common.context.SystemContext;
-import cn.wyz.user.type.Gender;
+import cn.wyz.user.constant.Gender;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -21,7 +21,7 @@ import org.mapstruct.Mappings;
  * @author wangnanxiang
  */
 @Mapper(componentModel = "spring")
-public interface BeanConvert {
+public interface MurderMysteryBeanConvert {
 
     JuInfo juInfoDTOToJuInfo(JuInfoDTO juInfoDTO);
 

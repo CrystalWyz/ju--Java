@@ -1,4 +1,4 @@
-package cn.wyz.user.type;
+package cn.wyz.user.constant;
 
 import cn.wyz.common.base.BaseEnum;
 import cn.wyz.common.util.EnumUtils;

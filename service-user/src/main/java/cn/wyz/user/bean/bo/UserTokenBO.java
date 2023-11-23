@@ -1,4 +1,4 @@
-package cn.wyz.user.vo;
+package cn.wyz.user.bean.bo;
 
 import lombok.Data;
 
@@ -12,10 +12,7 @@ import java.io.Serializable;
  * @since 2023/5/21
  */
 @Data
-public class UserTokenVO implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class UserTokenBO {
 
     /**
      * 用户名

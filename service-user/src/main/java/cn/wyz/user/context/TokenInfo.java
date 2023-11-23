@@ -1,6 +1,6 @@
 package cn.wyz.user.context;
 
-import cn.wyz.user.type.Gender;
+import cn.wyz.user.constant.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

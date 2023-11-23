@@ -2,14 +2,17 @@ package cn.wyz.user.controller;
 
 import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.common.bean.response.TokenResponseDTO;
-import cn.wyz.user.dto.LoginDTO;
+import cn.wyz.user.bean.bo.UserTokenBO;
+import cn.wyz.user.bean.dto.LoginDTO;
+import cn.wyz.user.bean.dto.OneClickLoginDTO;
+import cn.wyz.user.converter.JuUserBeanConvert;
 import cn.wyz.user.service.AuthorityService;
 import cn.wyz.user.utils.SecurityUtils;
-import cn.wyz.user.vo.UserInfoVO;
-import cn.wyz.user.vo.UserTokenVO;
-import jakarta.annotation.Resource;
+import cn.wyz.user.bean.vo.UserInfoVO;
+import cn.wyz.user.bean.vo.UserTokenVO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,8 +30,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/authorities")
 public class AuthorityController {
 
-    @Resource
-    private AuthorityService authorityService;
+    private final AuthorityService authorityService;
+
+    private final JuUserBeanConvert juUserBeanConvert;
+
+    public AuthorityController(AuthorityService authorityService, JuUserBeanConvert juUserBeanConvert) {
+        this.authorityService = authorityService;
+        this.juUserBeanConvert = juUserBeanConvert;
+    }
+
+    /**
+     * 一键登录(注册+登录)
+     */
+    @PostMapping("/oneClickLogin")
+    public ResponseEntity<ResponseResult<UserTokenVO>> oneClickLogin(@Validated @RequestBody OneClickLoginDTO oneClickLoginDTO,
+                                                                     HttpServletRequest request) {
+        UserTokenBO userTokenBO = authorityService.oneClickLogin(juUserBeanConvert
+                .oneClickLoginDTOToOneClickLoginBO(oneClickLoginDTO));
+
+        return ResponseEntity
+                .status(302)
+                .header("Location", request.getHeader("Location"))
+                .body(ResponseResult.success(juUserBeanConvert.userTokenBOToUserTokenVO(userTokenBO)));
+    }
 
     /**
      * 登录
@@ -40,13 +64,13 @@ public class AuthorityController {
     @PostMapping("/login")
     public ResponseEntity<ResponseResult<UserTokenVO>> login(@RequestBody LoginDTO param,
                                                              HttpServletRequest request) {
-        UserTokenVO login = authorityService.login(param);
+        UserTokenBO login = authorityService.login(param);
 
         String location = request.getHeader("Location");
         return ResponseEntity
                 .status(302)
                 .header("Location", location)
-                .body(ResponseResult.success(login));
+                .body(ResponseResult.success(juUserBeanConvert.userTokenBOToUserTokenVO(login)));
     }
 
     /**
