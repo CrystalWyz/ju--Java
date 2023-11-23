@@ -71,7 +71,7 @@ public class OpenApiConfig {
      * @return 剧本杀相关
      */
     @Bean
-    public GroupedOpenApi authoritiy() {
+    public GroupedOpenApi authority() {
         return GroupedOpenApi.builder()
                 .group("登录相关")
                 .pathsToMatch("/api/v1/authorities/**")
