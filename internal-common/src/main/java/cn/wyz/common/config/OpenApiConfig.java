@@ -1,4 +1,4 @@
-package cn.wyz.murdermystery.config;
+package cn.wyz.common.config;
 
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
@@ -62,6 +62,32 @@ public class OpenApiConfig {
         return GroupedOpenApi.builder()
                 .group("剧本杀标签相关")
                 .pathsToMatch("/api/v1/murderMysteryTag/**")
+                .build();
+    }
+
+    /**
+     * 登录相关
+     *
+     * @return 剧本杀相关
+     */
+    @Bean
+    public GroupedOpenApi authoritiy() {
+        return GroupedOpenApi.builder()
+                .group("登录相关")
+                .pathsToMatch("/api/v1/authorities/**")
+                .build();
+    }
+
+    /**
+     * 用户相关
+     *
+     * @return 用户相关
+     */
+    @Bean
+    public GroupedOpenApi user() {
+        return GroupedOpenApi.builder()
+                .group("用户相关")
+                .pathsToMatch("/api/v1/users/**")
                 .build();
     }
 }
