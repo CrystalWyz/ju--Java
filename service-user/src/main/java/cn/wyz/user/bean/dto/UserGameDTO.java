@@ -2,15 +2,13 @@ package cn.wyz.user.bean.dto;
 
 import cn.wyz.mapper.bean.dto.BaseDTO;
 import cn.wyz.user.bean.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * @author zhouzhitong
  * @since 2023-10-31
  **/
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -7,6 +7,7 @@ import cn.wyz.mapper.utils.MybatisPlusWrapperUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.io.Serial;
@@ -19,6 +20,7 @@ import java.util.List;
  *
  * @author zhouzhitong
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString(callSuper = true)
 public class BaseRequest extends ExtensibleProperties implements Serializable {

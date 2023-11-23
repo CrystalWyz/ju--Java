@@ -66,10 +66,10 @@ CE_LIB_DIR=${BASE_DIR}/celib
 LIB_DIR="${THIRD_PART_LIB_DIR},${CE_LIB_DIR}"
 #echo "LIB_DIR: ${LIB_DIR}"
 
-# java: 优先使用17
-if [ -x "$(command -v "/usr/lib/jvm/temurin-17-jdk/bin/java" )" ]
+# java: 优先使用21
+if [ -x "$(command -v "/usr/lib/jvm/temurin-21-jdk/bin/java" )" ]
 then
-  JAVA_CMD=/usr/lib/jvm/temurin-17-jdk/bin/java
+  JAVA_CMD=/usr/lib/jvm/temurin-21-jdk/bin/java
 else
   JAVA_CMD=java
 fi

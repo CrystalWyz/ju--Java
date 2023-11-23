@@ -4,11 +4,13 @@ import cn.wyz.mapper.bean.dto.BaseDTO;
 import cn.wyz.user.type.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author zhouzhitong
  * @since 2023-10-28
  **/
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class UserDTO extends BaseDTO {
 

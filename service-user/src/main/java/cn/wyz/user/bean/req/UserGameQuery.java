@@ -2,10 +2,7 @@ package cn.wyz.user.bean.req;
 
 import cn.wyz.mapper.req.BaseRequest;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * 用户游戏属性
@@ -13,6 +10,7 @@ import lombok.NoArgsConstructor;
  * @author zhouzhitong
  * @since 2023-10-28
  **/
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

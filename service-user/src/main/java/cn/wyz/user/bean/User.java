@@ -5,6 +5,7 @@ import cn.wyz.user.type.Gender;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 
 /**
@@ -13,6 +14,7 @@ import org.apache.ibatis.type.JdbcType;
  * @author wyzZzz
  * @since 2023-03-12 10:52:41
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName(value = "ju_user", resultMap = "JuUserMap")
 public class User extends BaseEntity {

@@ -115,7 +115,7 @@
                         <configuration>
                             <outputDirectory>${project.build.directory}/ju/</outputDirectory>
                             <stripVersion>false</stripVersion>
-                            <artifact>${project.groupId}:${project.artifactId}:${version}</artifact>
+                            <artifact>${project.groupId}:${project.artifactId}:${project.version}</artifact>
                         </configuration>
                     </execution>
                     <!--                    <execution>-->
