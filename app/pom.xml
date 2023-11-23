@@ -205,42 +205,6 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <!-- 指定服务器重启 -Pstart -->
-            <id>start</id>
-            <build>
-                <plugins>
-                    <!-- Exec 插件配置 -->
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>run-custom-script</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <!-- 自定义 shell 命令 -->
-                                    <executable>sh</executable>
-                                    <workingDirectory>${project.build.directory}/../../script</workingDirectory>
-                                    <arguments>
-                                        <argument>start.sh</argument>
-                                        <argument>${server.ip}</argument>
-                                        <argument>${server.port}</argument>
-                                        <argument>${server.user}</argument>
-                                        <argument>${server.password}</argument>
-                                        <argument>${project.build.directory}</argument>
-                                        <argument>${server.target.path}</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
     </profiles>
 
 

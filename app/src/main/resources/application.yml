@@ -1,10 +1,2 @@
 server:
   port: 8075
-
-spring:
-  data:
-    redis:
-      password: Xxzs990416
-      host: 59.110.34.78
-      port: 6379
-      database: 0
