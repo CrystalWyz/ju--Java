@@ -43,12 +43,12 @@ public class LoginContext {
     private String lang = SystemContext.getDefaultLocale();
 
     /**
-     * 账户登陆唯一标识
+     * 账户登录唯一标识
      */
     private String token;
 
     /**
-     * 账户登陆时间
+     * 账户登录时间
      */
     private LocalDateTime loginTime;
 

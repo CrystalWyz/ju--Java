@@ -38,7 +38,7 @@ public interface CodeConstant {
 
     Code I18N_RESOLVER_ERROR = new Code(30100, "国际化解析异常");
 
-    Code USER_UN_LOGIN = new Code(40400, "未登陆, 请先登陆");
+    Code USER_UN_LOGIN = new Code(40400, "未登录, 请先登录");
 
     Code USER_TOKEN_INVALID_ERROR = new Code(40401, "token失效, 请重新登录");
 

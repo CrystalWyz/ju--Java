@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class UserControllerAdvice {
 
     /**
-     * 异常处理：登陆失败
+     * 异常处理：登录失败
      */
     @ExceptionHandler(BaseUserException.class)
     public ResponseEntity<ResponseResult<?>> userException(BaseUserException e) {

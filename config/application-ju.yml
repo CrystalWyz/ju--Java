@@ -2,6 +2,9 @@ ju:
   security:
     loginUrl: '/**/login'
     logoutUrl: '/**/logout'
+    ignoreUrls:
+      - '/swagger-ui/**'
+      - '/v3/api-docs/**'
 
   ddl-create:
     # 是否自动创建表
