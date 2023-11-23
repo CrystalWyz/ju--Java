@@ -1,7 +1,9 @@
 package cn.wyz.mapper.bean;
 
+import cn.wyz.mapper.autoGen.anno.FieldDescription;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.OrderBy;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Getter;
@@ -28,27 +30,33 @@ public class BaseEntity extends Model<BaseEntity> implements Serializable {
      * 主键 ID
      */
     @TableId(type = IdType.AUTO)
+    @FieldDescription(comment = "主键 ID")
     protected Long id;
 
     /**
      * 创建时间
      */
+    @FieldDescription(comment = "创建时间", defaultValue = "CURRENT_TIMESTAMP", isAllowEmpty = false)
     protected LocalDateTime createTime;
 
     /**
      * 更新时间
      */
     @OrderBy
+    @FieldDescription(comment = "更新时间", defaultValue = "CURRENT_TIMESTAMP", isAllowEmpty = false)
     protected LocalDateTime updateTime;
 
     /**
      * 创建人
      */
+    @FieldDescription(comment = "创建人", defaultValue = "system", length = 64, isAllowEmpty = false)
     protected String createdBy = "system";
 
     /**
      * 更新人
      */
+    @TableField
+    @FieldDescription(comment = "更新人", defaultValue = "system", isAllowEmpty = false)
     protected String lastModifiedBy = "system";
 
 //    /**

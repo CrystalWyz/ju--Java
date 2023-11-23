@@ -1,5 +1,6 @@
 package cn.wyz.murdermystery.bean;
 
+import cn.wyz.mapper.autoGen.anno.FieldDescription;
 import cn.wyz.mapper.bean.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -17,6 +18,7 @@ import lombok.ToString;
 public class BlemishDetail extends BaseEntity {
 
     @Schema(name = "用户id")
+    @FieldDescription(comment = "用户id", isAllowEmpty = false)
     private Long userId;
 
     @Schema(name = "污点类型")

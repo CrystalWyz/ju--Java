@@ -42,16 +42,18 @@ function scp_upload() {
   fi
 }
 
-
 echo "开始准备上传文件 ${DIR}"
 # 上传文件
 # 遍历 target 目录, 将所有的文件和目录打印出来
 cd "$DIR" || exit
 
 echo "Files and directories in the target directory:"
-scp_upload 'ju/config'
+# 服务启动脚本
 scp_upload 'ju/bin'
-#scp_upload 'ju/lib'
+# 上传非自己代码的依赖包
+scp_upload 'ju/lib'
+
+scp_upload 'ju/config'
 scp_upload 'ju/celib'
 for file in $(ls); do
   # 如果是 *.jar 就上传服务
@@ -61,7 +63,3 @@ for file in $(ls); do
 done
 
 echo "上传完成!"
-
-
-
-

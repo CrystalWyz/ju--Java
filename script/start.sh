@@ -1,17 +1,35 @@
 #!/usr/bin/env bash
-# 登录服务器, 查看服务状态, 如果服务没启动, 就启动, 如果服务已经启动了就重启
-IP=$1
+#IP=$1
+IP="59.110.34.78"
 PORT=$2
-USER=$3
+#USER=$3
+USER="root"
 PASSWORD=$4
-DIR=$5
-TARGET_DIR=$6
+PASSWORD="Xxzs990416"
+# 服务器信息
+# 连接到服务器并执行脚本
+echo "连接服务器 并执行重启脚本"
+# 打印连接的服务器
+echo "服务器信息: $USER@$IP"
+#!/usr/bin/expect -f
+
+# 服务器信息
+set server_address "59.110.34.78"
+set username "root"
+set password "Xxzs990416"
+set remote_script_path "/data/ju/bin/wcs"
 
 
-# 登录服务器
-ssh -i "$PASSWORD" "USER@IP" << EOF
-    # 检查服务状态
-
-    # sh /data/ju/bin/wcs status 并接受返回值, 如果是 1就重启服务, 如果是0就启动服务
-
-EOF
+expect -c"
+  set timeout 3;
+  spawn ssh -p 22 root@59.110.34.78
+  expect {
+    *assword* {
+          send Xxzs990416\r;
+    }
+  }
+  expect \"*#\"
+  send \"sh /data/ju/bin/wcs restart\r\"
+  send \"exit\r\"
+  interact
+"
