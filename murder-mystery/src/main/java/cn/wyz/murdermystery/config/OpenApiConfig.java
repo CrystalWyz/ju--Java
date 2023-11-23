@@ -56,4 +56,12 @@ public class OpenApiConfig {
                 .pathsToMatch("/api/v1/murderMysteryUser/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi murderMysteryTag() {
+        return GroupedOpenApi.builder()
+                .group("剧本杀标签相关")
+                .pathsToMatch("/api/v1/murderMysteryTag/**")
+                .build();
+    }
 }
