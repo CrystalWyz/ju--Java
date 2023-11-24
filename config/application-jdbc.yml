@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://43.143.236.141:5432/ju?currentSchema=ju
+    url: jdbc:postgresql://59.110.34.78:5432/ju?currentSchema=ju
     username: postgres
     password: Xxzs990416
     type: com.alibaba.druid.pool.DruidDataSource

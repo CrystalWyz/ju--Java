@@ -87,8 +87,8 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     private UserTokenBO generatorToken(UserBO user) {
-        String token;
-        if ((token = tokenService.getToken(user.getUsername())) == null) {
+        String token = tokenService.getToken(user.getUsername());
+        if (StringUtils.isEmpty(token)) {
             TokenInfo tokenInfo = TokenInfo.builder()
                     .userId(user.getId())
                     .username(user.getUsername())
@@ -186,9 +186,13 @@ public class AuthorityServiceImpl implements AuthorityService {
             // 注册
             User user = new User();
             user.setPhone(oneClickLoginBO.getPhone());
-            user.setNickName("刁民-" + RandomUtils.nextLong(0,Long.MAX_VALUE));
+            String name = "刁民-" + RandomUtils.nextLong(0,Long.MAX_VALUE);
+            user.setNickName(name);
+            user.setUsername(oneClickLoginBO.getPhone());
 
             userService.save(user);
+
+            userInfo = convert.userTOUserBO(user);
         }
 
         return generatorToken(userInfo);

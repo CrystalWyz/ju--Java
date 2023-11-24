@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 public class DefaultSystemProvider implements SystemProvider {
 
     @Override
+    public Long getCurrentUserId() {
+        return SecurityContextHolder.getContext().getUserId();
+    }
+
+    @Override
     public String getCurrentAuditor() {
         return SecurityContextHolder.getContext().getUsername().toLowerCase();
     }

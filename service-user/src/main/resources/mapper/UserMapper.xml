@@ -22,10 +22,8 @@
                 jdbcType="TIMESTAMP"/>
         <result property="identity" column="identity"
                 jdbcType="INTEGER"/>
-        <result property="createdBy" column="created_by"
-                jdbcType="VARCHAR"/>
-        <result property="lastModifiedBy" column="last_modified_by"
-                jdbcType="VARCHAR"/>
+        <result property="createdBy" column="created_by" />
+        <result property="lastModifiedBy" column="last_modified_by" />
         <result property="username" column="username"
                 jdbcType="VARCHAR"/>
         <result property="password" column="password"

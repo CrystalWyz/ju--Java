@@ -4,6 +4,7 @@ import cn.wyz.user.constant.SecurityConstant;
 import cn.wyz.user.service.TokenService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,9 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public String getToken(String username) {
+        if (StringUtils.isEmpty(username)) {
+            return null;
+        }
         return redisTemplate.opsForValue().get(username);
     }
 

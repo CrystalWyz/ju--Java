@@ -5,6 +5,7 @@ ju:
     ignoreUrls:
       - '/swagger-ui/**'
       - '/v3/api-docs/**'
+      - '/api/v1/authorities/oneClickLogin'
 
   ddl-create:
     # 是否自动创建表

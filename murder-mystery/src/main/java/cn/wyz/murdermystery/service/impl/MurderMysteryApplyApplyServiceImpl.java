@@ -39,7 +39,7 @@ public class MurderMysteryApplyApplyServiceImpl
         for (MurderMysteryApply mma : mmaList) {
             if (mma.getApplyStatus() == ApplyStatus.NEW) {
                 mma.setApplyStatus(ApplyStatus.INVALID);
-                mma.setLastModifiedBy(getSystemProvider().getCurrentAuditor());
+                mma.setLastModifiedBy(getSystemProvider().getCurrentUserId());
                 mma.setUpdateTime(LocalDateTime.now());
             }
         }

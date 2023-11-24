@@ -47,16 +47,12 @@ public class BaseBO extends ExtensibleProperties {
     /**
      * 创建者
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    protected LocalDateTime createdBy;
+    protected Long createdBy;
 
     /**
      * 修改者
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    protected LocalDateTime lastModifiedBy;
+    protected Long lastModifiedBy;
 
     /**
      * 版本

@@ -8,6 +8,8 @@ package cn.wyz.common.service;
  */
 public interface SystemProvider {
 
+    Long getCurrentUserId();
+
     /**
      * 获取当前用户
      *

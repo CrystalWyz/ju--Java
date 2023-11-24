@@ -68,10 +68,10 @@ public abstract class MapperServiceImpl
         // 赋值
         copyProperties(dto, entity);
 
-        entity.setCreatedBy(systemProvider.getCurrentAuditor());
+        entity.setCreatedBy(systemProvider.getCurrentUserId());
         entity.setCreateTime(LocalDateTime.now());
         entity.setUpdateTime(LocalDateTime.now());
-        entity.setLastModifiedBy(systemProvider.getCurrentAuditor());
+        entity.setLastModifiedBy(systemProvider.getCurrentUserId());
 
         // 保存
         return save(entity)
@@ -92,7 +92,7 @@ public abstract class MapperServiceImpl
         copyProperties(dto, entity);
 
         entity.setUpdateTime(LocalDateTime.now());
-        entity.setLastModifiedBy(systemProvider.getCurrentAuditor());
+        entity.setLastModifiedBy(systemProvider.getCurrentUserId());
 
         boolean update = this.updateById(entity);
         return update
@@ -107,7 +107,7 @@ public abstract class MapperServiceImpl
         copyProperties(dto, entity);
 
         entity.setUpdateTime(LocalDateTime.now());
-        entity.setLastModifiedBy(systemProvider.getCurrentAuditor());
+        entity.setLastModifiedBy(systemProvider.getCurrentUserId());
 
         boolean update = this.updateById(entity);
         return update
