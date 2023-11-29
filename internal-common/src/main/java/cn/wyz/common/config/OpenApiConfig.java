@@ -40,7 +40,7 @@ public class OpenApiConfig {
     public GroupedOpenApi murderMystery() {
         return GroupedOpenApi.builder()
                 .group("剧本杀相关")
-                .pathsToMatch("/api/v1/murderMystery/**")
+                .pathsToMatch("/api/v1/murderMysteries/**")
                 .build();
     }
 

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @author wnx
  */
 @RestController
-@RequestMapping("/api/v1/murderMystery")
+@RequestMapping("/api/v1/murderMysteries")
 @Tag(name = "剧本杀接口", description = "剧本杀接口")
 public class MurderMysteryController
         extends BaseController<MurderMystery, MurderMysteryDTO,
