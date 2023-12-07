@@ -117,7 +117,7 @@ start() {
 	echo "BOOT_JAR: ${BOOT_JAR}"
 	if ! is_running; 
 	then
-		if nohup java ${JAVA_OPTS} -jar "${BOOT_JAR}" > /dev/null 2>&1 &
+		if nohup /usr/local/jdk-21.0.1/bin/java ${JAVA_OPTS} -jar "${BOOT_JAR}" >/data/ju/app.log 2>&1 &
 		then
 			detect_pid
 			if [ "X${pid}" != "X" ]

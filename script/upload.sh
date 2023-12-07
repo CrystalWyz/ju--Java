@@ -92,9 +92,9 @@ cd "$DIR" || exit
 
 echo "Files and directories in the target directory:"
 # 服务启动脚本
-#scp_upload 'ju/bin'
+scp_upload 'ju/bin'
 ## 上传非自己代码的依赖包
-#scp_upload 'ju/lib'
+scp_upload 'ju/lib'
 
 scp_upload 'ju/config'
 scp_upload 'ju/celib'
