@@ -40,3 +40,6 @@ logs/
 ### 自动创建的文件或文件夹 ###
 config/ddl.sql
 */target
+
+### Mac 系统文件 ###
+.DS_Store
