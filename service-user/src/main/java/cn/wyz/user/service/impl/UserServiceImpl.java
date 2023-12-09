@@ -3,7 +3,6 @@ package cn.wyz.user.service.impl;
 import cn.wyz.common.util.EncryptUtils;
 import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import cn.wyz.user.bean.User;
-import cn.wyz.user.bean.bo.UserBO;
 import cn.wyz.user.bean.dto.UserDTO;
 import cn.wyz.user.converter.JuUserBeanConvert;
 import cn.wyz.user.mapper.UserMapper;
@@ -11,6 +10,7 @@ import cn.wyz.user.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,7 +38,7 @@ public class UserServiceImpl
     }
 
     @Override
-    public UserBO getByPhone(String phone) {
+    public UserDTO getByPhone(String phone) {
 
         QueryWrapper<User> wrapper = buildQuery(null);
         wrapper.eq("phone", phone);
@@ -47,8 +47,18 @@ public class UserServiceImpl
         if (ObjectUtils.isEmpty(user)) {
             return null;
         }
+        return toDTO(user);
+    }
 
-        return convert.userTOUserBO(user);
+    @Override
+    public UserDTO register(String phone) {
+        LOGGER.info("register: {}", phone);
+        UserDTO user = new UserDTO();
+        user.setPhone(phone);
+        String name = "刁民-" + RandomUtils.nextLong(0, Long.MAX_VALUE);
+        user.setNickName(name);
+        user.setUsername(phone);
+        return this.add(user);
     }
 
     @Override

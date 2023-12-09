@@ -3,11 +3,11 @@ package cn.wyz.murdermystery.service;
 import cn.wyz.mapper.service.MapperService;
 import cn.wyz.murdermystery.bean.MurderMysteryApply;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryApplyDTO;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * <p>
- * 服务类
- * </p>
+ * 剧本杀申请 -- 服务类
  *
  * @author wyzZzz
  * @since 2023-03-12 10:52:41
@@ -22,5 +22,14 @@ public interface MurderMysteryApplyService
      * @return
      */
     int invalidAll(Long gameId);
+
+    /**
+     * 作废申请
+     *
+     * @param id     申请id
+     * @param reason 作废原因
+     */
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
+    void invalid(Long id, String reason);
 
 }

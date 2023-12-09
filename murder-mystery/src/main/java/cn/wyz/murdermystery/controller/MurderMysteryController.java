@@ -1,5 +1,6 @@
 package cn.wyz.murdermystery.controller;
 
+import cn.wyz.common.anno.Idempotence;
 import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.mapper.controller.BaseController;
 import cn.wyz.murdermystery.bean.MurderMystery;
@@ -30,6 +31,7 @@ public class MurderMysteryController
      * @param gameId 聚id
      * @return ResponseResult<Void>
      */
+    @Idempotence
     @PatchMapping("/join/{gameId}")
     public ResponseResult<Void> join(@PathVariable("gameId") Long gameId,
                                      @RequestBody JoinGameReq req) {
@@ -47,6 +49,7 @@ public class MurderMysteryController
      * @param gameId 游戏Id
      * @return ResponseResult<Void>
      */
+    @Idempotence
     @PatchMapping("/cancelApply/{gameId}")
     public ResponseResult<Void> cancelApply(@PathVariable("gameId") Long gameId, @RequestBody JoinGameReq req) {
         LoginContext context = SecurityContextHolder.getContext();
@@ -64,6 +67,7 @@ public class MurderMysteryController
      * @return ResponseResult<Void>
      */
     @PatchMapping("/handleApply/")
+    @Idempotence
     public ResponseResult<Void> handleApply(@RequestBody HandleApplyGameReq req) {
         LoginContext context = SecurityContextHolder.getContext();
         Long userId = context.getUserId();
@@ -79,6 +83,7 @@ public class MurderMysteryController
      * @param juInfoId 聚id
      * @param isForce  是否强制退出
      */
+    @Idempotence
     @PatchMapping("/outGame/{juInfoId}")
     public ResponseResult<Void> outGame(@PathVariable("juInfoId") Long juInfoId,
                                         @RequestParam(value = "isForce", required = false) Boolean isForce) {
@@ -93,6 +98,7 @@ public class MurderMysteryController
      *
      * @param juInfoId 聚id
      */
+    @Idempotence
     @PatchMapping("/prepare/{juInfoId}")
     public ResponseResult<Void> prepare(@PathVariable("juInfoId") Long juInfoId) {
         LoginContext context = SecurityContextHolder.getContext();
@@ -106,6 +112,7 @@ public class MurderMysteryController
      *
      * @param juInfoId 聚id
      */
+    @Idempotence
     @PatchMapping("/sign/{juInfoId}")
     public ResponseResult<Void> sign(@PathVariable("juInfoId") Long juInfoId) {
         LoginContext context = SecurityContextHolder.getContext();
@@ -120,6 +127,7 @@ public class MurderMysteryController
      *
      * @param juInfoId 聚id
      */
+    @Idempotence
     @PatchMapping("/start/{juInfoId}")
     public ResponseResult<Void> start(@PathVariable("juInfoId") Long juInfoId) {
         LoginContext context = SecurityContextHolder.getContext();
@@ -133,6 +141,7 @@ public class MurderMysteryController
      *
      * @param juInfoId 聚id
      */
+    @Idempotence
     @PatchMapping("/finish/{juInfoId}")
     public ResponseResult<Void> finish(@PathVariable("juInfoId") Long juInfoId) {
         LoginContext context = SecurityContextHolder.getContext();
@@ -146,6 +155,7 @@ public class MurderMysteryController
      *
      * @param juInfoId 聚id
      */
+    @Idempotence
     @PatchMapping("/dismiss/{juInfoId}")
     public ResponseResult<Void> dismiss(@PathVariable("juInfoId") Long juInfoId) {
         LoginContext context = SecurityContextHolder.getContext();

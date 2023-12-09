@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.annotation.Nullable;
+
 /**
  * @author zhouzhitong
  * @since 2023-10-28
@@ -31,6 +33,7 @@ public class UserDTO extends BaseDTO {
     private String username;
 
     @Schema(name = "登录密码")
+    @Nullable
     private String password;
 
     @Schema(name = "是否启用")

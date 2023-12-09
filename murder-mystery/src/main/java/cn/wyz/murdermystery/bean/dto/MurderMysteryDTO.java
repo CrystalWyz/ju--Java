@@ -48,9 +48,6 @@ public class MurderMysteryDTO extends BaseDTO {
     @Schema(name = "聚描述信息")
     private String description;
 
-    @Schema(name = "创建者id")
-    private Long userId;
-
     /**
      * 游戏状态
      */

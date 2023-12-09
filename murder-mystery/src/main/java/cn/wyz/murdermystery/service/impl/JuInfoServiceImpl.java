@@ -12,10 +12,10 @@ import cn.wyz.murdermystery.service.MurderMysteryApplyService;
 import cn.wyz.murdermystery.type.ApplyStatus;
 import cn.wyz.murdermystery.type.GameStatus;
 import cn.wyz.user.bean.dto.UserDTO;
+import cn.wyz.user.constant.Gender;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.holder.SecurityContextHolder;
 import cn.wyz.user.service.UserService;
-import cn.wyz.user.constant.Gender;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +29,7 @@ import java.util.Objects;
 @Slf4j
 @Service
 @AllArgsConstructor
+@Deprecated
 public class JuInfoServiceImpl
         extends MapperServiceImpl<JuInfoMapper, JuInfo, JuInfoDTO>
         implements JuInfoService {
@@ -150,7 +151,6 @@ public class JuInfoServiceImpl
     private void addApplyNotice(Long juInfoId, Long userId, String applyReason) {
         MurderMysteryApplyDTO ja = new MurderMysteryApplyDTO();
         ja.setGameId(juInfoId);
-        ja.setUserId(userId);
         ja.setApplyReason(applyReason);
         ja.setApplyStatus(ApplyStatus.NEW);
         juInfoApplyService.add(ja);

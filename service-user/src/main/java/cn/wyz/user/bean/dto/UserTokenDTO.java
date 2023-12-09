@@ -1,9 +1,6 @@
-package cn.wyz.user.bean.bo;
+package cn.wyz.user.bean.dto;
 
 import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * 用户登录成功后返回的信息
@@ -12,7 +9,7 @@ import java.io.Serializable;
  * @since 2023/5/21
  */
 @Data
-public class UserTokenBO {
+public class UserTokenDTO {
 
     /**
      * 用户名

@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface MurderMysteryService extends MapperService<MurderMystery, MurderMysteryDTO> {
 
     /**
-     * 参加聚本杀
+     * 参加聚本杀: 包括申请加入和直接加入
      *
      * @param req 参加剧本杀请求参数
      */
@@ -93,5 +93,13 @@ public interface MurderMysteryService extends MapperService<MurderMystery, Murde
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
     void finishGame(Long id, Long userId);
 
+    /**
+     * 检查用户是否可以加入新的聚本杀
+     *
+     * @param userId 用户Id
+     * @param gameId 游戏Id
+     * @return 如果返回 null, 说明可以加入, 如果返回不为 null, 说明不能加入, 返回的是不能加入的原因
+     */
+    MurderMysteryDTO checkUserCanJoinNew(Long userId, Long gameId);
 
 }

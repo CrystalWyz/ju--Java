@@ -61,7 +61,10 @@ public class BaseRequest extends ExtensibleProperties implements Serializable {
     }
 
     public List<FiledQuery> getFiledQueries() {
-        return filedQueries != null ? filedQueries : Collections.emptyList();
+        if (filedQueries == null) {
+            this.filedQueries = Lists.newArrayList();
+        }
+        return filedQueries;
     }
 
     /**
@@ -85,9 +88,12 @@ public class BaseRequest extends ExtensibleProperties implements Serializable {
     }
 
     public void setQueries(String filedQueries) {
-        this.filedQueries = Lists.newArrayList();
+        if (filedQueries == null) {
+            this.filedQueries = Lists.newArrayList();
+        }
         for (String query : filedQueries.split(",")) {
-            String[] s = query.split(" ");
+            String[] s = query.split(":");
+            // 0: 字段名, 1: 值, 2: 查询类型
             FiledQuery filedQuery = FiledQuery.of(s[0], s[1], QueryType.of(Integer.parseInt(s[2])));
             this.filedQueries.add(filedQuery);
         }

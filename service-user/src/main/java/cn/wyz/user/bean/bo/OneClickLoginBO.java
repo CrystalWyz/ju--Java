@@ -1,6 +1,5 @@
 package cn.wyz.user.bean.bo;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -9,7 +8,13 @@ import lombok.Data;
 @Data
 public class OneClickLoginBO {
 
+    /**
+     * 手机号
+     */
     private String phone;
 
+    /**
+     * 验证码
+     */
     private String verifyCode;
 }

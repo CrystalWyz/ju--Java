@@ -50,14 +50,14 @@ public class BaseEntity extends Model<BaseEntity> implements Serializable {
      * 创建人
      */
     @FieldDescription(comment = "创建人", defaultValue = "system", length = 64, isAllowEmpty = false)
-    protected Long createdBy = 1L;
+    protected Long createdBy = 0L;
 
     /**
      * 更新人
      */
     @TableField
     @FieldDescription(comment = "更新人", defaultValue = "system", isAllowEmpty = false)
-    protected Long lastModifiedBy = 1L;
+    protected Long lastModifiedBy = 0L;
 
 //    /**
 //     * 版本

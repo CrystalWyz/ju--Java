@@ -1,5 +1,6 @@
 package cn.wyz.user.bean.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serial;
@@ -18,11 +19,13 @@ public class LoginDTO implements Serializable {
     /**
      * 用户名
      */
+    @NotNull(message = "用户名不可以为空")
     private String username;
 
     /**
      * 密码
      */
+    @NotNull(message = "密码不可以为空")
     private String password;
 
     /**

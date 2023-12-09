@@ -31,13 +31,6 @@ public class MurderMystery extends BaseEntity {
     private String title;
 
     /**
-     * 活动发起人
-     *
-     * @see User#getId() User.getId()
-     */
-    private Long userId;
-
-    /**
      * 游戏状态
      */
     private GameStatus status;

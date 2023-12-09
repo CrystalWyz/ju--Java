@@ -21,13 +21,6 @@ import lombok.NoArgsConstructor;
 public class MurderMysteryApplyDTO extends BaseDTO {
 
     /**
-     * 申请人
-     *
-     * @see cn.wyz.user.bean.User User#id
-     */
-    private Long userId;
-
-    /**
      * 关联剧本杀记录
      *
      * @see MurderMystery#getId() JuInfo#id

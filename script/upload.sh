@@ -18,8 +18,13 @@ PASSWORD=$4
 DIR=$5
 # 服务器目标目录
 TARGET_DIR=$6
+# 定义一个数组, 需要上传的文件: celib
+#upload_file=('bin' 'lib')
+
 # 删除旧文件命令
+#delete_old_file_command="rm -rf ${TARGET_DIR}celib ${TARGET_DIR}config ${TARGET_DIR}lib ${TARGET_DIR}bin ${TARGET_DIR}app*.jar"
 delete_old_file_command="rm -rf ${TARGET_DIR}celib ${TARGET_DIR}config ${TARGET_DIR}app*.jar"
+
 echo $delete_old_file_command
 # 重启服务命令
 restart_command="sh ${TARGET_DIR}bin/wcs restart"
@@ -91,13 +96,18 @@ echo "开始准备上传文件 ${DIR}"
 cd "$DIR" || exit
 
 echo "Files and directories in the target directory:"
-# 服务启动脚本
-scp_upload 'ju/bin'
-## 上传非自己代码的依赖包
-scp_upload 'ju/lib'
+# 开始上传文件
 
+## 1. 上传启动脚本
+#scp_upload 'ju/bin'
+## 2. 上传非自己代码的依赖包
+#scp_upload 'ju/lib'
+
+# 3. 上传自己的代码
 scp_upload 'ju/config'
+# 4. 上传自己的核心包
 scp_upload 'ju/celib'
+# 5. 上传启动类
 for file in $(ls); do
   # 如果是 *.jar 就上传服务
   if [[ $file == app*.jar ]]; then

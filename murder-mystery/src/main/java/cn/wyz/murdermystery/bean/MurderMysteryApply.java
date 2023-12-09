@@ -22,13 +22,6 @@ import lombok.NoArgsConstructor;
 public class MurderMysteryApply extends BaseEntity {
 
     /**
-     * 申请人
-     *
-     * @see cn.wyz.user.bean.User User#id
-     */
-    private Long userId;
-
-    /**
      * 关联剧本杀记录
      *
      * @see MurderMystery#getId() MurderMystery#id

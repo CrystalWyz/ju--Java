@@ -2,12 +2,15 @@ package cn.wyz.murdermystery.service.impl;
 
 import cn.wyz.common.exception.BaseRuntimeException;
 import cn.wyz.common.exception.ResourceException;
+import cn.wyz.mapper.req.FiledQuery;
 import cn.wyz.mapper.service.impl.MapperServiceImpl;
+import cn.wyz.mapper.type.QueryType;
 import cn.wyz.murdermystery.bean.MurderMystery;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryApplyDTO;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryDTO;
 import cn.wyz.murdermystery.bean.request.HandleApplyGameReq;
 import cn.wyz.murdermystery.bean.request.JoinGameReq;
+import cn.wyz.murdermystery.bean.request.MurderMysteryRequest;
 import cn.wyz.murdermystery.mapper.MurderMysteryMapper;
 import cn.wyz.murdermystery.service.BlemishDetailService;
 import cn.wyz.murdermystery.service.MurderMysteryApplyService;
@@ -15,15 +18,17 @@ import cn.wyz.murdermystery.service.MurderMysteryService;
 import cn.wyz.murdermystery.type.ApplyStatus;
 import cn.wyz.murdermystery.type.GameStatus;
 import cn.wyz.user.bean.dto.UserDTO;
+import cn.wyz.user.constant.Gender;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.holder.SecurityContextHolder;
 import cn.wyz.user.service.UserService;
-import cn.wyz.user.constant.Gender;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -52,7 +57,6 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
     @Override
     public MurderMysteryDTO add(MurderMysteryDTO dto) {
         LoginContext context = SecurityContextHolder.getContext();
-        dto.setUserId(context.getUserId());
         tryAddPerson(dto, context.getUserId(), context.getGender());
         dto.setStatus(GameStatus.NEW);
         return super.add(dto);
@@ -66,14 +70,26 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         UserDTO user = userService.get(userId);
         MurderMysteryDTO mm = this.get(gameId);
         if (mm.getStatus() != GameStatus.NEW) {
-            throw new BaseRuntimeException("当前游戏状态, 无法加入");
+            throw new BaseRuntimeException("游戏已经开始, 无法加入");
         }
+
+        // 判断是否需要申请
         if (mm.needApply()) {
-            addApplyNotice(mm, userId, req.getReason());
+            addApplyNotice(mm, req.getReason());
         } else {
-            if (tryAddPerson(mm, userId, user.getGender())) {
-                throw new BaseRuntimeException("你已经加入, 请勿重复操作");
+            // 判断已经加入的人数是否已经满了
+            if (mm.isFull()) {
+                throw new BaseRuntimeException("人数已满, 无法加入");
             }
+            // 判断个人是否具备加入条件 conflict
+            MurderMysteryDTO conflictMM = checkUserCanJoinNew(userId, gameId);
+            if (conflictMM != null) {
+                throw new BaseRuntimeException("你已经与已经加入的游戏" + conflictMM.getTitle() + " 时间有冲突, 无法加入");
+            }
+        }
+        // 尝试新增
+        if (tryAddPerson(mm, userId, user.getGender())) {
+            throw new BaseRuntimeException("你已经加入, 请勿重复操作");
         }
         this.update(gameId, mm);
     }
@@ -91,9 +107,17 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         if (req.getStatus() == ApplyStatus.NOT_PASS) {
             mma.setRejectReason(req.getReason());
         } else if (req.getStatus() == ApplyStatus.PASS) {
+            Long userId = mma.getCreatedBy();
+            MurderMysteryDTO conflictMM = this.checkUserCanJoinNew(userId, mm.getId());
+            if (conflictMM != null) {
+                LOGGER.error("[murderMystery#handleApply] user [id: {}] want join game [id: {}], but has conflict with game [id: {}]",
+                        userId, mm.getId(), conflictMM.getId());
+                murderMysteryApplyService.invalid(mma.getId(), "该用户已经已经加入其他游戏并时间上有冲突, 现在无法加入");
+                throw new BaseRuntimeException("该用户已经已经加入其他游戏并时间上有冲突, 现在无法加入");
+            }
             if (!tryAddPerson(mm, req.getUserId(), user.getGender())) {
-                // 当前性别的人数满了
-                throw new BaseRuntimeException("当前性别的人数已满, 无法加入");
+                murderMysteryApplyService.invalid(mma.getId(), "该用户已经已经加入游戏了");
+                throw new BaseRuntimeException("该用户已经在游戏中了, 请勿重复操作");
             }
             this.update(mm);
         } else if (req.getStatus() == ApplyStatus.CANCEL) {
@@ -151,7 +175,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
     public void prepareGame(Long id, Long userId) {
         LOGGER.info("[murderMystery#prepareGame] user [id: {}] want prepare game [id: {}] ", userId, id);
         MurderMysteryDTO mm = this.get(id);
-        if (!Objects.equals(mm.getUserId(), userId)) {
+        if (!Objects.equals(mm.getCreatedBy(), userId)) {
             throw new BaseRuntimeException("你不是房主, 无法准备");
         }
         GameStatus status = mm.getStatus();
@@ -176,7 +200,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         }
         GameStatus status = mm.getStatus();
 
-        if (Objects.equals(mm.getUserId(), userId)) {
+        if (Objects.equals(mm.getCreatedBy(), userId)) {
             if (status != GameStatus.PREPARE) {
                 throw new BaseRuntimeException("当前游戏状态, 无法开启签到");
             }
@@ -200,7 +224,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         if (mm == null) {
             throw new BaseRuntimeException("游戏不存在");
         }
-        if (!Objects.equals(mm.getUserId(), userId)) {
+        if (!Objects.equals(mm.getCreatedBy(), userId)) {
             throw new BaseRuntimeException("你不是房主, 无法开始游戏");
         }
         GameStatus status = mm.getStatus();
@@ -218,13 +242,68 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         if (mm == null) {
             throw new BaseRuntimeException("游戏不存在");
         }
-        if (!Objects.equals(mm.getUserId(), userId)) {
+        if (!Objects.equals(mm.getCreatedBy(), userId)) {
             throw new BaseRuntimeException("你不是房主, 无法结束游戏");
         }
         mm.setStatus(GameStatus.END);
         this.update(id, mm);
     }
 
+    @Override
+    public MurderMysteryDTO checkUserCanJoinNew(Long userId, Long gameId) {
+        LOGGER.trace("[murderMystery#checkUserCanJoinNew] user [id: {}] want check can join new game", userId);
+        MurderMystery mm = this.getById(gameId);
+        if (mm == null) {
+            throw new BaseRuntimeException("游戏不存在");
+        }
+
+        MurderMysteryRequest req = new MurderMysteryRequest();
+        req.setCreateBy(userId);
+        req.getFiledQueries().add(FiledQuery.of("status", GameStatus.NEW, QueryType.GE));
+        List<MurderMysteryDTO> startingMMList = this.queryAll(req);
+        if (CollectionUtils.isEmpty(startingMMList)) {
+            return null;
+        }
+        // 获取 startingMMList, 最小的开始时间, 和最大的结束时间(都要大于当前时间的)
+        LocalDateTime minStartTime = LocalDateTime.now();
+        LocalDateTime maxFinishTime = minStartTime;
+        MurderMysteryDTO minStartTimeMM = null;
+        MurderMysteryDTO maxStartTimeMM = null;
+
+
+        for (MurderMysteryDTO startingMM : startingMMList) {
+            // 判断预计开始时间相比现在过了一天, 则过滤掉
+            if (startingMM.getBeginExpected().isAfter(LocalDateTime.now().plusDays(1))) {
+                continue;
+            }
+            LocalDateTime gameStartTime = startingMM.getBeginActual() != null ?
+                    startingMM.getBeginActual() : startingMM.getBeginExpected();
+            LocalDateTime gameFinishTime = startingMM.getFinishExpected();
+            if (gameStartTime.isBefore(minStartTime)) {
+                minStartTime = gameStartTime;
+                minStartTimeMM = startingMM;
+            }
+            if (gameFinishTime.isAfter(maxFinishTime)) {
+                maxFinishTime = gameFinishTime;
+                maxStartTimeMM = startingMM;
+            }
+        }
+        if (minStartTimeMM == null || maxStartTimeMM == null) {
+            return null;
+        }
+        // 判断当前游戏的预计开始时间和预计结束时间, 不在最小开始时间和最大结束时间之间, 则可以加入
+        LocalDateTime gameStartTime = mm.getBeginExpected();
+        LocalDateTime gameFinishTime = mm.getFinishExpected();
+        if (gameStartTime.isAfter(minStartTime)) {
+//            throw new BaseRuntimeException("你与已经加入的游戏" + minStartTimeMM.getTitle() + "时间冲突, 无法加入");
+            return minStartTimeMM;
+        }
+        if (gameFinishTime.isBefore(maxFinishTime)) {
+//            throw new BaseRuntimeException("你与已经加入的游戏" + maxStartTimeMM.getTitle() + "时间冲突, 无法加入");
+            return maxStartTimeMM;
+        }
+        return null;
+    }
 
     @Override
     public MurderMysteryDTO newDTO() {
@@ -287,10 +366,9 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
 
     }
 
-    private void addApplyNotice(MurderMysteryDTO mm, Long userId, String applyReason) {
+    private void addApplyNotice(MurderMysteryDTO mm, String applyReason) {
         MurderMysteryApplyDTO ja = new MurderMysteryApplyDTO();
         ja.setGameId(mm.getId());
-        ja.setUserId(userId);
         ja.setApplyReason(applyReason);
         ja.setApplyStatus(ApplyStatus.NEW);
         ja = murderMysteryApplyService.add(ja);

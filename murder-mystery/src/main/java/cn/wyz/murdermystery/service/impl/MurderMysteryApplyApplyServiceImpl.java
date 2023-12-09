@@ -48,6 +48,20 @@ public class MurderMysteryApplyApplyServiceImpl
     }
 
     @Override
+    public void invalid(Long id, String reason) {
+        LOGGER.info("invalid MurderMysteryApply, id: {}", id);
+        MurderMysteryApplyDTO mma = get(id);
+        LOGGER.debug("MurderMysteryApply: {}", mma);
+        if (mma.getApplyStatus() != ApplyStatus.NEW) {
+            // 过滤掉
+            return;
+        }
+        mma.setApplyStatus(ApplyStatus.INVALID);
+        mma.setRejectReason(reason);
+        this.update(mma);
+    }
+
+    @Override
     public MurderMysteryApplyDTO newDTO() {
         return new MurderMysteryApplyDTO();
     }

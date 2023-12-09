@@ -2,7 +2,6 @@ package cn.wyz.user.service;
 
 import cn.wyz.mapper.service.MapperService;
 import cn.wyz.user.bean.User;
-import cn.wyz.user.bean.bo.UserBO;
 import cn.wyz.user.bean.dto.UserDTO;
 
 /**
@@ -19,9 +18,19 @@ public interface UserService extends MapperService<User, UserDTO> {
 
     /**
      * 根据手机号返回用户信息
+     *
      * @param phone 手机号
      * @return 用户信息，没有则返回null
      */
-    UserBO getByPhone(String phone);
+    UserDTO getByPhone(String phone);
+
+    /**
+     * 根据注册手机号
+     *
+     * @param phone 手机号
+     * @return 用户信息
+     */
+    UserDTO register(String phone);
+
 
 }

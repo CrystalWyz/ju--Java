@@ -3,13 +3,12 @@ package cn.wyz.user.service.impl;
 import cn.wyz.common.bean.response.TokenResponseDTO;
 import cn.wyz.common.constant.CommonStatusEnum;
 import cn.wyz.common.exception.AppException;
+import cn.wyz.common.exception.BaseUserException;
 import cn.wyz.common.util.EncryptUtils;
-import cn.wyz.user.bean.User;
 import cn.wyz.user.bean.bo.OneClickLoginBO;
-import cn.wyz.user.bean.bo.UserBO;
-import cn.wyz.user.bean.bo.UserTokenBO;
 import cn.wyz.user.bean.dto.LoginDTO;
 import cn.wyz.user.bean.dto.UserDTO;
+import cn.wyz.user.bean.dto.UserTokenDTO;
 import cn.wyz.user.bean.vo.UserInfoVO;
 import cn.wyz.user.config.LibSecurityProperties;
 import cn.wyz.user.context.LoginContext;
@@ -27,7 +26,6 @@ import cn.wyz.user.utils.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,7 +53,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     private final JuUserBeanConvert convert;
 
     @Override
-    public UserTokenBO login(LoginDTO param) {
+    public UserTokenDTO login(LoginDTO param) {
         LOGGER.debug("login param username: {}", param.getUsername());
         String username = param.getUsername();
         String rawPassword = param.getPassword();
@@ -76,17 +74,19 @@ public class AuthorityServiceImpl implements AuthorityService {
         // 加密处理
         String encrypt = EncryptUtils.encrypt16(rawPassword);
         String password = user.getPassword();
+        if (password == null) {
+            throw new BaseUserException("当前账户没设置密码, 请使用手机号设置密码登录");
+        }
 
         // 匹配密码
         String encodePwd = passwordEncoder.encode(password);
         if (!passwordEncoder.matches(encrypt, encodePwd)) {
             throw new UserPasswordNotMatchException(username);
         }
-
-        return generatorToken(convert.userDTOToUserBO(user));
+        return generatorToken(user);
     }
 
-    private UserTokenBO generatorToken(UserBO user) {
+    private UserTokenDTO generatorToken(UserDTO user) {
         String token = tokenService.getToken(user.getUsername());
         if (StringUtils.isEmpty(token)) {
             TokenInfo tokenInfo = TokenInfo.builder()
@@ -100,7 +100,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         }
 
 
-        UserTokenBO res = new UserTokenBO();
+        UserTokenDTO res = new UserTokenDTO();
         res.setUsername(user.getUsername());
         res.setToken(token);
         res.setExpireTime(System.currentTimeMillis() + JwtTokenUtils.getExpiration());
@@ -169,8 +169,8 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public UserTokenBO oneClickLogin(OneClickLoginBO oneClickLoginBO) {
-
+    public UserTokenDTO oneClickLogin(OneClickLoginBO oneClickLoginBO) {
+        LOGGER.debug("一键登录: {}", oneClickLoginBO);
         // 校验码验证
         String verifyCode = redisTemplate.opsForValue().get(oneClickLoginBO.getPhone());
         if (ObjectUtils.isEmpty(verifyCode)) {
@@ -181,20 +181,18 @@ public class AuthorityServiceImpl implements AuthorityService {
         }
 
         // 手机号获取用户信息
-        UserBO userInfo = userService.getByPhone(oneClickLoginBO.getPhone());
+        UserDTO userInfo = userService.getByPhone(oneClickLoginBO.getPhone());
+
         if (ObjectUtils.isEmpty(userInfo)) {
-            // 注册
-            User user = new User();
-            user.setPhone(oneClickLoginBO.getPhone());
-            String name = "刁民-" + RandomUtils.nextLong(0,Long.MAX_VALUE);
-            user.setNickName(name);
-            user.setUsername(oneClickLoginBO.getPhone());
-
-            userService.save(user);
-
-            userInfo = convert.userTOUserBO(user);
+            // 没有就自动注册
+            userInfo = userService.register(oneClickLoginBO.getPhone());
         }
 
         return generatorToken(userInfo);
+    }
+
+    @Override
+    public void register(LoginDTO param) {
+
     }
 }

@@ -5,6 +5,8 @@ import cn.wyz.mapper.bean.bo.BaseBO;
 import cn.wyz.mapper.bean.dto.BaseDTO;
 
 /**
+ * 实体, DTO, BO, VO 之间的转换
+ *
  * @author zhouzhitong
  * @since 2023-11-11
  **/

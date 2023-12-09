@@ -1,7 +1,9 @@
 package cn.wyz.mapper.req;
 
 import cn.wyz.mapper.type.QueryType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,6 +13,8 @@ import java.io.Serializable;
  * @since 2023/5/21
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class FiledQuery implements Serializable {
 
     @Serial

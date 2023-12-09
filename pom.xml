@@ -17,9 +17,11 @@
         <!-- ============ start 指定打包上传服务的基础信息 ============ -->
         <server.target.path>/data/ju/</server.target.path>
         <server.ip>59.110.34.78</server.ip>
-        <server.port>9001</server.port>
+        <server.port>22</server.port>
         <server.user>root</server.user>
-        <server.password>zhouzhitong</server.password>
+        <server.password>Xxzs990416</server.password>
+        <!--        <server.port>9001</server.port>-->
+        <!--        <server.password>zhouzhitong</server.password>-->
         <server.name>ju</server.name>
         <!-- ============ end ============ -->
 

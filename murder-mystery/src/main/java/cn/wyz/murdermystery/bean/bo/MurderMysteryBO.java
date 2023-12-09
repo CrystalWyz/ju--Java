@@ -32,8 +32,6 @@ public class MurderMysteryBO extends BaseBO {
 
     private String description;
 
-    private Long userId;
-
     private Integer scale;
 
     private Integer girlParticipantNum;
