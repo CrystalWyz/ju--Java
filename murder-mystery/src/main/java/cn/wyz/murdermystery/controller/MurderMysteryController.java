@@ -44,23 +44,6 @@ public class MurderMysteryController
     }
 
     /**
-     * 撤销申请
-     *
-     * @param gameId 游戏Id
-     * @return ResponseResult<Void>
-     */
-    @Idempotence
-    @PatchMapping("/cancelApply/{gameId}")
-    public ResponseResult<Void> cancelApply(@PathVariable("gameId") Long gameId, @RequestBody JoinGameReq req) {
-        LoginContext context = SecurityContextHolder.getContext();
-        Long userId = context.getUserId();
-        req.setUserId(userId);
-        req.setGameId(gameId);
-        service().cancelApply(req);
-        return ResponseResult.success();
-    }
-
-    /**
      * 处理申请
      *
      * @param req 处理申请请求参数
@@ -117,7 +100,7 @@ public class MurderMysteryController
     public ResponseResult<Void> sign(@PathVariable("juInfoId") Long juInfoId) {
         LoginContext context = SecurityContextHolder.getContext();
         Long userId = context.getUserId();
-        service().signGame(juInfoId, userId);
+        service().startSignGame(juInfoId, userId);
         return ResponseResult.success();
     }
 

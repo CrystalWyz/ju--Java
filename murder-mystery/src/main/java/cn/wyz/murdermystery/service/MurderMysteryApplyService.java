@@ -21,6 +21,7 @@ public interface MurderMysteryApplyService
      * @param gameId 剧本杀id {@link cn.wyz.murdermystery.bean.MurderMystery#getId()}
      * @return
      */
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
     int invalidAll(Long gameId);
 
     /**
@@ -31,5 +32,12 @@ public interface MurderMysteryApplyService
      */
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
     void invalid(Long id, String reason);
+
+    /**
+     * 取消申请
+     *
+     * @param id 申请id
+     */
+    void cancelApply(Long id);
 
 }

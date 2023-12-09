@@ -104,6 +104,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         res.setUsername(user.getUsername());
         res.setToken(token);
         res.setExpireTime(System.currentTimeMillis() + JwtTokenUtils.getExpiration());
+        res.setUser(user);
         return res;
     }
 

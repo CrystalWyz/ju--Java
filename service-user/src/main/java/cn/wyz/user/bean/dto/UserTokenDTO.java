@@ -31,4 +31,9 @@ public class UserTokenDTO {
      */
     private String location;
 
+    /**
+     * 用户信息
+     */
+    private Object user;
+
 }

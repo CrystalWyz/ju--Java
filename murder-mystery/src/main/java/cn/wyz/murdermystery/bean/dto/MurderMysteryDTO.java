@@ -81,7 +81,6 @@ public class MurderMysteryDTO extends BaseDTO {
     @Schema(name = "签到列表")
     private List<Long> signInParticipant = Lists.newLinkedList();
 
-
     @Schema(name = "所属地区")
     private List<Integer> area;
 
@@ -90,6 +89,18 @@ public class MurderMysteryDTO extends BaseDTO {
 
     @Schema(name = "店铺名")
     private String shopName;
+
+    /**
+     * 获取所有参与者
+     *
+     * @return 所有参与者
+     */
+    public List<Long> getAllParticipant() {
+        List<Long> allParticipant = Lists.newLinkedList();
+        allParticipant.addAll(this.getGirlParticipant());
+        allParticipant.addAll(this.getBoyParticipant());
+        return allParticipant;
+    }
 
     public boolean needApply() {
         if (config == null) {

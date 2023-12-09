@@ -17,11 +17,11 @@ import lombok.Getter;
 public enum ApplyStatus implements BaseEnum {
 
     // 撤销, 创建, 通过, 不通过, 失效
+    INVALID(-3, "失效"),
+    NOT_PASS(-2, "不通过"),
     CANCEL(-1, "撤销"),
     NEW(1, "创建"),
     PASS(2, "通过"),
-    NOT_PASS(3, "不通过"),
-    INVALID(4, "失效"),
     ;
 
     @EnumValue

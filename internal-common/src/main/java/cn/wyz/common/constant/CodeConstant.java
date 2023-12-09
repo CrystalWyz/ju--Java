@@ -48,7 +48,7 @@ public interface CodeConstant {
 
     Code USERNAME_NOT_FOUND_ERROR = new Code(40404, "用户名不存在");
 
-    Code USERNAME_PASSWORD_NOT_FOUND_ERROR = new Code(40405, "用户名和密码不匹配异常");
+    Code USERNAME_PASSWORD_NOT_FOUND_ERROR = new Code(40405, "用户名和密码不匹配");
 
     Code USER_DISABLE_ERROR = new Code(40411, "账户被冻结");
 

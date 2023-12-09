@@ -19,7 +19,14 @@ public enum CommonStatusEnum {
     /**
      * 失败
      */
-    FAIL(500, "fail");
+    FAIL(500, "fail"),
+
+    /**
+     * 失败并刷新, 用于前端刷新页面
+     */
+    FAIL_REFRESH(301, "fail and refresh"),
+    ;
+
 
     private final Integer code;
 

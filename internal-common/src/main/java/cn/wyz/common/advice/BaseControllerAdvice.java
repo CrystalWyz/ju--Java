@@ -2,6 +2,7 @@ package cn.wyz.common.advice;
 
 import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.common.constant.CodeConstant;
+import cn.wyz.common.exception.BaseRefreshException;
 import cn.wyz.common.exception.BaseRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,6 +33,9 @@ public class BaseControllerAdvice {
     @ExceptionHandler(BaseRuntimeException.class)
     public ResponseResult<Void> userException(BaseRuntimeException e) {
         LOGGER.error("", e);
+        if (e instanceof BaseRefreshException) {
+            return ResponseResult.fail(CodeConstant.RESOURCE_REFRESH, e.getMessage());
+        }
         return ResponseResult.fail(e.getCode(), e.getMsg());
     }
 

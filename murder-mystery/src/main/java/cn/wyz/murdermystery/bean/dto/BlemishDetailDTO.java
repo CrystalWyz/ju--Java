@@ -1,6 +1,7 @@
 package cn.wyz.murdermystery.bean.dto;
 
 import cn.wyz.mapper.bean.dto.BaseDTO;
+import cn.wyz.murdermystery.type.BlemishDetailType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class BlemishDetailDTO extends BaseDTO {
     private Long userId;
 
     @Schema(name = "污点类型")
-    private Short type;
+    private BlemishDetailType type;
 
     @Schema(name = "其他——类型描述")
     private String otherDescription;

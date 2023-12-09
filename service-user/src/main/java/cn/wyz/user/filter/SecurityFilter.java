@@ -5,11 +5,7 @@ import cn.wyz.user.constant.SecurityConstant;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.holder.SecurityContextHolder;
 import cn.wyz.user.utils.JwtTokenUtils;
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +41,7 @@ public class SecurityFilter implements Filter {
         String lang = ((HttpServletRequest) request).getHeader(SecurityConstant.LANGUAGE);
         loginContext.setLang(lang);
 
-        LOGGER.trace("current user {}", loginContext);
+        LOGGER.debug("current user {}", loginContext);
 
         SecurityContextHolder.setContext(loginContext);
         try {
