@@ -1,7 +1,6 @@
 package cn.wyz.user.service;
 
 import cn.wyz.common.bean.response.TokenResponseDTO;
-import cn.wyz.user.bean.bo.OneClickLoginBO;
 import cn.wyz.user.bean.dto.LoginDTO;
 import cn.wyz.user.bean.dto.OneClickLoginDTO;
 import cn.wyz.user.bean.dto.UserTokenDTO;

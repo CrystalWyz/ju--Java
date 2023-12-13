@@ -5,7 +5,6 @@ import cn.wyz.common.constant.CommonStatusEnum;
 import cn.wyz.common.exception.AppException;
 import cn.wyz.common.exception.BaseUserException;
 import cn.wyz.common.util.EncryptUtils;
-import cn.wyz.user.bean.bo.OneClickLoginBO;
 import cn.wyz.user.bean.dto.LoginDTO;
 import cn.wyz.user.bean.dto.OneClickLoginDTO;
 import cn.wyz.user.bean.dto.UserDTO;
