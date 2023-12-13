@@ -4,6 +4,7 @@ import cn.wyz.common.util.EncryptUtils;
 import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import cn.wyz.user.bean.User;
 import cn.wyz.user.bean.dto.UserDTO;
+import cn.wyz.user.constant.Gender;
 import cn.wyz.user.converter.JuUserBeanConvert;
 import cn.wyz.user.mapper.UserMapper;
 import cn.wyz.user.service.UserService;
@@ -60,6 +61,7 @@ public class UserServiceImpl
         String name = "刁民-" + RandomUtils.nextLong(0, Long.MAX_VALUE);
         user.setNickName(name);
         user.setUsername(phone);
+        user.setGender(Gender.UNKNOWN);
         return this.add(user);
     }
 
