@@ -90,6 +90,9 @@ public class MurderMysteryDTO extends BaseDTO {
     @Schema(name = "店铺名")
     private String shopName;
 
+    @Schema(name = "标签")
+    private List<Long> tags = Lists.newArrayList();
+
     /**
      * 获取所有参与者
      *

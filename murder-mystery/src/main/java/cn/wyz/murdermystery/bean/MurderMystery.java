@@ -10,6 +10,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.context.annotation.Description;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ import java.util.List;
  *
  * @author wyz
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Description("剧本杀记录")
 @TableName(value = "murder_mystery", autoResultMap = true)
@@ -130,4 +132,12 @@ public class MurderMystery extends BaseEntity {
      * 店铺名称
      */
     private String shopName;
+
+    /**
+     * 标签
+     *
+     * @see User#getId() User.getId()
+     */
+    @TableField(typeHandler = ListTypeHandler.class)
+    private List<Long> tags;
 }
