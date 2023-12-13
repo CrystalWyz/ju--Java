@@ -41,9 +41,9 @@ public interface SecurityConstant {
     String LANGUAGE = "lang";
 
     /**
-     * 过期时间: 默认 1 天(单位: 毫秒)
+     * 过期时间: 默认 60 天(单位: 毫秒)
      */
-    long TOKEN_EXPIRATION = 24 * 60 * 60 * 1000L;
+    long TOKEN_EXPIRATION = 24 * 60 * 60 * 1000L * 60;
 
     /**
      * 密文

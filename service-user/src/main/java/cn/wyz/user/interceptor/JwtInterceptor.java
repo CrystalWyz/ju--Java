@@ -34,9 +34,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     private LibSecurityProperties securityProperties;
 
     @Override
-    public boolean preHandle(HttpServletRequest request,
-                             HttpServletResponse response,
-                             Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (ignore(request)) {
             LOGGER.debug("ignore url {}", request.getRequestURI());
             return true;

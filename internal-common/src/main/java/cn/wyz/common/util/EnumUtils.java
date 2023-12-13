@@ -3,6 +3,8 @@ package cn.wyz.common.util;
 import cn.wyz.common.base.BaseEnum;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Objects;
+
 /**
  * 枚举工具类
  *
@@ -18,12 +20,11 @@ public class EnumUtils {
         }
         T[] enumConstants = c.getEnumConstants();
         for (T e : enumConstants) {
-            if (e.getCode() == code) {
+            if (Objects.equals(e.getCode(), code)) {
                 return e;
             }
         }
         LOGGER.error("enum type {} don't have code {}.", c, code);
-//        throw EnumNotFindException.instant(c, code);
         return null;
     }
 

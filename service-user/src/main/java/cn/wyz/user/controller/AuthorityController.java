@@ -41,12 +41,12 @@ public class AuthorityController {
     public ResponseEntity<ResponseResult<UserTokenVO>> oneClickLogin(@Validated @RequestBody OneClickLoginDTO oneClickLoginDTO,
                                                                      HttpServletRequest request) {
 
-        UserTokenDTO UserTokenDTO = authorityService.oneClickLogin(oneClickLoginDTO);
+        UserTokenDTO userTokenDTO = authorityService.oneClickLogin(oneClickLoginDTO);
 
         return ResponseEntity
                 .status(200)
                 .header("Location", request.getHeader("Location"))
-                .body(ResponseResult.success(juUserBeanConvert.UserTokenDTOToUserTokenVO(UserTokenDTO)));
+                .body(ResponseResult.success(juUserBeanConvert.UserTokenDTOToUserTokenVO(userTokenDTO)));
     }
 
     /**

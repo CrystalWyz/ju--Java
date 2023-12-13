@@ -83,11 +83,10 @@ public class JwtTokenUtils {
         Claim userId = decodedJWT.getClaim(JWT_KEY_USER_ID);
         Claim gender = decodedJWT.getClaim(JWT_KEY_USER_GENDER);
         Claim ip = decodedJWT.getClaim(JWT_KEY_IP);
-        Claim generateTime = decodedJWT.getClaim(JWT_GENERATE_TIME);
         return TokenInfo.builder()
                 .userId(Long.valueOf(userId.asString()))
                 .username(username.asString())
-                .gender(Gender.of(Integer.parseInt(gender.asString())))
+                .gender(Gender.of(gender.asInt()))
                 .ip(ip.asString()).token(token)
                 .tokenCreateTime(decodedJWT.getExpiresAt().getTime())
                 .build();
