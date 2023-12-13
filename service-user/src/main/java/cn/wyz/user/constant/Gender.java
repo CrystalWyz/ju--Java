@@ -14,8 +14,7 @@ import lombok.Getter;
 public enum Gender implements BaseEnum {
 
     BOY(1, "男"),
-    GIRL(2, "女"),
-    UNKNOWN(99,"未知");
+    GIRL(2, "女");
 
     @EnumValue
     private final Integer code;

@@ -61,7 +61,7 @@ public class UserServiceImpl
         String name = "刁民-" + RandomUtils.nextLong(0, Long.MAX_VALUE);
         user.setNickName(name);
         user.setUsername(phone);
-        user.setGender(Gender.UNKNOWN);
+        user.setGender(Gender.BOY);
         return this.add(user);
     }
 
