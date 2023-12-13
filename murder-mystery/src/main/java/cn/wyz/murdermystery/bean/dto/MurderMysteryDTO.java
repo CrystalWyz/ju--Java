@@ -70,16 +70,16 @@ public class MurderMysteryDTO extends BaseDTO {
     private JSONObject config;
 
     @Schema(name = "女生参与列表")
-    private List<Long> girlParticipant = Lists.newLinkedList();
+    private List<Long> girlParticipant = Lists.newArrayList();
 
     @Schema(name = "男生参与列表")
-    private List<Long> boyParticipant = Lists.newLinkedList();
+    private List<Long> boyParticipant = Lists.newArrayList();
 
     @Schema(name = "申请参与列表")
-    private List<Long> applyParticipant = Lists.newLinkedList();
+    private List<Long> applyParticipant = Lists.newArrayList();
 
     @Schema(name = "签到列表")
-    private List<Long> signInParticipant = Lists.newLinkedList();
+    private List<Long> signInParticipant = Lists.newArrayList();
 
     @Schema(name = "所属地区")
     private List<Integer> area;
