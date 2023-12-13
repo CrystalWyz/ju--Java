@@ -371,6 +371,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
                 mm.getGirlParticipant().remove(userId);
                 yield true;
             }
+            case UNKNOWN -> true;
         };
     }
 
@@ -398,6 +399,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
                 mm.getGirlParticipant().add(userId);
                 yield true;
             }
+            case UNKNOWN -> false;
         };
 
     }
