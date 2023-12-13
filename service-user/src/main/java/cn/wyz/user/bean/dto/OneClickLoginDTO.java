@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 @Schema(name = "OneClickLoginDTO", description = "一键登录 DTO")
 public class OneClickLoginDTO {
 
-    @NotNull(message = "手机号不可以未空")
+    @NotNull(message = "手机号不可以为空")
     @Schema(name = "手机号")
     private String phone;
 
-    @NotNull(message = "校验码不可以未空")
+    @NotNull(message = "校验码不可以为空")
     @Schema(name = "校验码")
     private String verifyCode;
 }

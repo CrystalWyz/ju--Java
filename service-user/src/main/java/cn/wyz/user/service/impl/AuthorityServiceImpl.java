@@ -7,6 +7,7 @@ import cn.wyz.common.exception.BaseUserException;
 import cn.wyz.common.util.EncryptUtils;
 import cn.wyz.user.bean.bo.OneClickLoginBO;
 import cn.wyz.user.bean.dto.LoginDTO;
+import cn.wyz.user.bean.dto.OneClickLoginDTO;
 import cn.wyz.user.bean.dto.UserDTO;
 import cn.wyz.user.bean.dto.UserTokenDTO;
 import cn.wyz.user.bean.vo.UserInfoVO;
@@ -170,23 +171,23 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public UserTokenDTO oneClickLogin(OneClickLoginBO oneClickLoginBO) {
-        LOGGER.debug("一键登录: {}", oneClickLoginBO);
+    public UserTokenDTO oneClickLogin(OneClickLoginDTO oneClickLoginDTO) {
+        LOGGER.debug("一键登录: {}", oneClickLoginDTO);
         // 校验码验证
-        String verifyCode = redisTemplate.opsForValue().get(oneClickLoginBO.getPhone());
+        String verifyCode = redisTemplate.opsForValue().get(oneClickLoginDTO.getPhone());
         if (ObjectUtils.isEmpty(verifyCode)) {
             throw new AppException(CommonStatusEnum.FAIL.getCode(), "验证码丢失");
         }
-        if (!verifyCode.equals(oneClickLoginBO.getVerifyCode())) {
+        if (!verifyCode.equals(oneClickLoginDTO.getVerifyCode())) {
             throw new AppException(CommonStatusEnum.FAIL.getCode(), "验证码错误");
         }
 
         // 手机号获取用户信息
-        UserDTO userInfo = userService.getByPhone(oneClickLoginBO.getPhone());
+        UserDTO userInfo = userService.getByPhone(oneClickLoginDTO.getPhone());
 
         if (ObjectUtils.isEmpty(userInfo)) {
             // 没有就自动注册
-            userInfo = userService.register(oneClickLoginBO.getPhone());
+            userInfo = userService.register(oneClickLoginDTO.getPhone());
         }
 
         return generatorToken(userInfo);

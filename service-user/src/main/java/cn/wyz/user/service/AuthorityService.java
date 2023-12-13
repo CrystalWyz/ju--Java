@@ -3,6 +3,7 @@ package cn.wyz.user.service;
 import cn.wyz.common.bean.response.TokenResponseDTO;
 import cn.wyz.user.bean.bo.OneClickLoginBO;
 import cn.wyz.user.bean.dto.LoginDTO;
+import cn.wyz.user.bean.dto.OneClickLoginDTO;
 import cn.wyz.user.bean.dto.UserTokenDTO;
 import cn.wyz.user.bean.vo.UserInfoVO;
 
@@ -44,10 +45,10 @@ public interface AuthorityService {
     /**
      * 一键登录(注册+登录)
      *
-     * @param oneClickLoginBO 一键登录参数
+     * @param oneClickLoginDTO 一键登录参数
      * @return 登录结果
      */
-    UserTokenDTO oneClickLogin(OneClickLoginBO oneClickLoginBO);
+    UserTokenDTO oneClickLogin(OneClickLoginDTO oneClickLoginDTO);
 
     /**
      * 注册

@@ -40,8 +40,8 @@ public class AuthorityController {
     @PostMapping("/oneClickLogin")
     public ResponseEntity<ResponseResult<UserTokenVO>> oneClickLogin(@Validated @RequestBody OneClickLoginDTO oneClickLoginDTO,
                                                                      HttpServletRequest request) {
-        UserTokenDTO UserTokenDTO = authorityService.oneClickLogin(juUserBeanConvert
-                .oneClickLoginDTOToOneClickLoginBO(oneClickLoginDTO));
+
+        UserTokenDTO UserTokenDTO = authorityService.oneClickLogin(oneClickLoginDTO);
 
         return ResponseEntity
                 .status(200)

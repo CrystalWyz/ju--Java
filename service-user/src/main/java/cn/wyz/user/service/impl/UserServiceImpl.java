@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author wnx
@@ -50,6 +51,7 @@ public class UserServiceImpl
         return toDTO(user);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public UserDTO register(String phone) {
         LOGGER.info("register: {}", phone);

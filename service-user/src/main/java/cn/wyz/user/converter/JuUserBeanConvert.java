@@ -14,11 +14,6 @@ import org.mapstruct.Mapper;
  */
 @Mapper(componentModel = "spring")
 public interface JuUserBeanConvert {
-    OneClickLoginBO oneClickLoginDTOToOneClickLoginBO(OneClickLoginDTO oneClickLoginDTO);
 
     UserTokenVO UserTokenDTOToUserTokenVO(UserTokenDTO UserTokenDTO);
-
-    UserBO userTOUserBO(User user);
-
-    UserBO userDTOToUserBO(UserDTO user);
 }
