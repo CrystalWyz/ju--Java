@@ -100,16 +100,4 @@ public class AuthorityController {
         authorityService.logout(token);
         return ResponseEntity.ok().build();
     }
-
-    /**
-     * 注册
-     *
-     * @param param 注册参数
-     */
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody LoginDTO param) {
-        authorityService.register(param);
-        return ResponseEntity.ok().build();
-    }
-
 }
