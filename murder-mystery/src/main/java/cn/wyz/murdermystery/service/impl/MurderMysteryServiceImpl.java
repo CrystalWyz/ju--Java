@@ -307,53 +307,46 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
     @Override
     public MurderMysteryDTO tryGetConflictGame(Long userId, Long gameId) {
         LOGGER.trace("[murderMystery#checkUserCanJoinNew] user [id: {}] want check can join new game", userId);
-        MurderMystery mm = this.getById(gameId);
-        if (mm == null) {
+        MurderMystery targetMM = this.getById(gameId);
+        if (targetMM == null) {
             throw new BaseRuntimeException("游戏不存在");
         }
 
         MurderMysteryRequest req = new MurderMysteryRequest();
         req.setCreateBy(userId);
         req.getFiledQueries().add(FiledQuery.of("status", GameStatus.NEW, QueryType.GE));
-        List<MurderMysteryDTO> startingMMList = this.queryAll(req);
-        if (CollectionUtils.isEmpty(startingMMList)) {
+        // 已经加入的游戏
+        List<MurderMysteryDTO> joinedMMList = this.queryAll(req);
+        if (CollectionUtils.isEmpty(joinedMMList)) {
             return null;
         }
         // 获取 startingMMList, 最小的开始时间, 和最大的结束时间(都要大于当前时间的)
-        LocalDateTime minStartTime = LocalDateTime.now();
-        LocalDateTime maxFinishTime = minStartTime;
-        MurderMysteryDTO minStartTimeMM = null;
-        MurderMysteryDTO maxStartTimeMM = null;
+        LocalDateTime startTime = targetMM.getBeginActual() != null ?
+                targetMM.getBeginActual() : targetMM.getBeginExpected();
 
+        LocalDateTime finishTime = targetMM.getFinishExpected();
 
-        for (MurderMysteryDTO startingMM : startingMMList) {
-            // 判断预计开始时间相比现在过了一天, 则过滤掉
-            if (startingMM.getBeginExpected().isAfter(LocalDateTime.now().plusDays(1))) {
+        // 间隔时间: 单位小时
+        int intervalHour = 1;
+        for (MurderMysteryDTO joinedMM : joinedMMList) {
+            LocalDateTime gameStartTime = joinedMM.getBeginActual() != null ?
+                    joinedMM.getBeginActual() : joinedMM.getBeginExpected();
+            LocalDateTime gameFinishTime = joinedMM.getFinishExpected();
+
+            // 过滤掉过期的游戏: 游戏的结束时间 < 当前时间 - intervalHour
+            if (gameFinishTime.isBefore(LocalDateTime.now().minusHours(intervalHour))) {
                 continue;
             }
-            LocalDateTime gameStartTime = startingMM.getBeginActual() != null ?
-                    startingMM.getBeginActual() : startingMM.getBeginExpected();
-            LocalDateTime gameFinishTime = startingMM.getFinishExpected();
-            if (gameStartTime.isBefore(minStartTime)) {
-                minStartTime = gameStartTime;
-                minStartTimeMM = startingMM;
+            // 判断 targetMM 是否与 startingMM 时间冲突, 并且这个时间冲突大于 intervalHour 值
+            // [startTime, finishTime] 和 [gameStartTime, gameFinishTime] 是否有交集
+            if (gameStartTime.minusHours(intervalHour).isBefore(startTime)
+                    && gameFinishTime.minusHours(-intervalHour).isAfter(startTime)) {
+                return joinedMM;
             }
-            if (gameFinishTime.isAfter(maxFinishTime)) {
-                maxFinishTime = gameFinishTime;
-                maxStartTimeMM = startingMM;
+            if (gameStartTime.minusHours(intervalHour).isBefore(finishTime)
+                    && gameFinishTime.minusHours(-intervalHour).isAfter(finishTime)) {
+                return joinedMM;
             }
-        }
-        if (minStartTimeMM == null || maxStartTimeMM == null) {
-            return null;
-        }
-        // 判断当前游戏的预计开始时间和预计结束时间, 不在最小开始时间和最大结束时间之间, 则可以加入
-        LocalDateTime gameStartTime = mm.getBeginExpected();
-        LocalDateTime gameFinishTime = mm.getFinishExpected();
-        if (gameStartTime.isAfter(minStartTime)) {
-            return minStartTimeMM;
-        }
-        if (gameFinishTime.isBefore(maxFinishTime)) {
-            return maxStartTimeMM;
         }
         return null;
     }
