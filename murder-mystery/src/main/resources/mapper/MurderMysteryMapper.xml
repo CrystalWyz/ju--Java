@@ -1,47 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.wyz.murdermystery.mapper.MurderMysteryMapper">
-    <!--    <resultMap id="CompleteResultMap" type="cn.wyz.murdermystery.bean.MurderMystery">-->
-    <!--        <id column="id" property="id"/>-->
-    <!--        <result column="title" property="title"/>-->
-    <!--        <result column="create_time" property="createTime"/>-->
-    <!--        <result column="description" property="description"/>-->
-    <!--        <result column="user_id" property="userId"/>-->
-    <!--        <result column="update_time" property="updateTime"/>-->
-    <!--        <result column="scale" property="scale"/>-->
-    <!--        <result column="girl_participant_num" property="girlParticipantNum"/>-->
-    <!--        <result column="boy_participant_num" property="boyParticipantNum"/>-->
-    <!--        <result column="config" property="config" typeHandler="cn.wyz.mapper.handler.JsonTypeHandler"/>-->
-    <!--        <result column="girl_participant" property="girlParticipant"-->
-    <!--                typeHandler="cn.wyz.mapper.handler.ListTypeHandler"/>-->
-    <!--        <result column="boy_participant" property="boyParticipant" typeHandler="cn.wyz.mapper.handler.ListTypeHandler"/>-->
-    <!--        <result column="area" property="area" typeHandler="cn.wyz.mapper.handler.ListTypeHandler"/>-->
-    <!--        <result column="address" property="address"/>-->
-    <!--        <result column="shop_name" property="shopName"/>-->
-    <!--    </resultMap>-->
-    <!--    <insert id="insert" useGeneratedKeys="true" keyProperty="id">-->
-    <!--        INSERT INTO murder_mystery-->
-    <!--        VALUES (DEFAULT, #{title}, #{begin}, #{finish},#{createTime}, #{description}, #{userId},#{updateTime},#{scale},-->
-    <!--                #{girlParticipantNum},#{boyParticipantNum},#{config, typeHandler=cn.wyz.mapper.handler.JsonbTypeHandler},-->
-    <!--               #{girlParticipant, typeHandler=cn.wyz.mapper.handler.ListTypeHandler},#{boyParticipant, typeHandler=cn.wyz.mapper.handler.ListTypeHandler},-->
-    <!--                #{area, typeHandler=cn.wyz.mapper.handler.ListTypeHandler},#{address},#{shopName})-->
-    <!--    </insert>-->
+        <resultMap id="CompleteResultMap" type="cn.wyz.murdermystery.bean.MurderMystery">
+            <id column="id" property="id"/>
+            <result column="title" property="title"/>
+            <result column="create_time" property="createTime"/>
+            <result column="description" property="description"/>
+            <result column="update_time" property="updateTime"/>
+            <result column="scale" property="scale"/>
+            <result column="girl_participant_num" property="girlParticipantNum"/>
+            <result column="boy_participant_num" property="boyParticipantNum"/>
+            <result column="config" property="config" typeHandler="cn.wyz.mapper.typeHandler.JsonTypeHandler"/>
+            <result column="girl_participant" property="girlParticipant"
+                    typeHandler="cn.wyz.mapper.typeHandler.ListTypeHandler"/>
+            <result column="boy_participant" property="boyParticipant" typeHandler="cn.wyz.mapper.typeHandler.ListTypeHandler"/>
+            <result column="area" property="area" typeHandler="cn.wyz.mapper.typeHandler.ListTypeHandler"/>
+            <result column="address" property="address"/>
+            <result column="shop_name" property="shopName"/>
+        </resultMap>
+        <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+            INSERT INTO murder_mystery
+            VALUES (DEFAULT, #{title}, #{begin}, #{finish},#{createTime}, #{description}, #{userId},#{updateTime},#{scale},
+                    #{girlParticipantNum},#{boyParticipantNum},#{config, typeHandler=cn.wyz.mapper.typeHandler.JsonbTypeHandler},
+                   #{girlParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},#{boyParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},
+                    #{area, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},#{address},#{shopName})
+        </insert>
 
-    <!--    <select id="list" resultMap="CompleteResultMap">-->
-    <!--        SELECT id,-->
-    <!--               title,-->
-    <!--               begin,-->
-    <!--               finish,-->
-    <!--               description,-->
-    <!--               user_id,-->
-    <!--               scale,-->
-    <!--               girl_participant_num,-->
-    <!--               boy_participant_num,-->
-    <!--               config,-->
-    <!--               girl_participant,-->
-    <!--               boy_participant,-->
-    <!--               shop_name-->
-    <!--        FROM murder_mystery-->
-    <!--        ORDER BY create_time-->
-    <!--    </select>-->
+        <select id="list" resultMap="CompleteResultMap">
+            SELECT id,
+                   title,
+                   begin,
+                   finish,
+                   description,
+                   user_id,
+                   scale,
+                   girl_participant_num,
+                   boy_participant_num,
+                   config,
+                   girl_participant,
+                   boy_participant,
+                   shop_name
+            FROM murder_mystery
+            ORDER BY create_time
+        </select>
+    
+    <select id="getUserConflictJoined" resultType="cn.wyz.murdermystery.bean.MurderMystery">
+        SELECT * 
+        FROM murder_mystery
+        <where>
+            #{startTime} &gt;= begin_expected AND #{startTime} &lt;= #{finish_expected} + '30 min'
+            <choose>
+                <when test="userInfo.gender == @cn.wyz.user.constant.Gender@BOY">
+                    AND #{userInfo.userId} = ANY(boy_participant)
+                </when>
+                <when test="userInfo.gender == @cn.wyz.user.constant.Gender@GIRL">
+                    AND #{userInfo.userId} = ANY(girl_participant)
+                </when>
+            </choose>
+        </where>
+        LIMIT 1
+    </select>
 </mapper>

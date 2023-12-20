@@ -59,18 +59,18 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
         String redisCode = stringRedisTemplate.opsForValue().get(key);
 
         if (StringUtils.isEmpty(redisCode)) {
-            throw new AppException(CommonStatusEnum.FAIL.getCode(), CommonStatusEnum.FAIL.getMessage());
+            throw new AppException(CommonStatusEnum.FAIL, CommonStatusEnum.FAIL.getMessage());
         }
 
         if (!redisCode.equals(verificationCode.trim())) {
-            throw new AppException(CommonStatusEnum.FAIL.getCode(), CommonStatusEnum.FAIL.getMessage());
+            throw new AppException(CommonStatusEnum.FAIL, CommonStatusEnum.FAIL.getMessage());
         }
         // 校验成功 删除验证码缓存
         stringRedisTemplate.delete(key);
 
         // 用户存在判断
         if (ObjectUtils.isEmpty(userFeign.userDetailByPhone(userPhone))) {
-            throw new AppException(CommonStatusEnum.FAIL.getCode(), "用户不存在");
+            throw new AppException(CommonStatusEnum.FAIL, "用户不存在");
         }
 
         // 下发token

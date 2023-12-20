@@ -19,11 +19,6 @@ public class JoinGameReq implements Serializable {
     private Long gameId;
 
     /**
-     * 操作用户Id
-     */
-    private Long userId;
-
-    /**
      * 申请理由/撤销理由
      */
     private String reason;

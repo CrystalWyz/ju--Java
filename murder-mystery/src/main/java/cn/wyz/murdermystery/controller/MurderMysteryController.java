@@ -38,7 +38,6 @@ public class MurderMysteryController
         LoginContext context = SecurityContextHolder.getContext();
         Long userId = context.getUserId();
         req.setGameId(gameId);
-        req.setUserId(userId);
         service().join(req);
         return ResponseResult.success();
     }

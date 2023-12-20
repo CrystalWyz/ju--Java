@@ -175,10 +175,10 @@ public class AuthorityServiceImpl implements AuthorityService {
         // 校验码验证
         String verifyCode = redisTemplate.opsForValue().get(oneClickLoginDTO.getPhone());
         if (ObjectUtils.isEmpty(verifyCode)) {
-            throw new AppException(CommonStatusEnum.FAIL.getCode(), "验证码丢失");
+            throw new AppException(CommonStatusEnum.FAIL, "验证码丢失");
         }
         if (!verifyCode.equals(oneClickLoginDTO.getVerifyCode())) {
-            throw new AppException(CommonStatusEnum.FAIL.getCode(), "验证码错误");
+            throw new AppException(CommonStatusEnum.FAIL, "验证码错误");
         }
 
         // 手机号获取用户信息

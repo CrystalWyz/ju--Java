@@ -34,7 +34,6 @@ public class JuInfoController
         LoginContext context = SecurityContextHolder.getContext();
         Long userId = context.getUserId();
         req.setGameId(juInfoId);
-        req.setUserId(userId);
         service().join(req);
         return ResponseResult.success();
     }

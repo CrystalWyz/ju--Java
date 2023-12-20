@@ -1,5 +1,6 @@
 package cn.wyz.common.exception;
 
+import cn.wyz.common.constant.CommonStatusEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,13 +12,13 @@ import lombok.NoArgsConstructor;
 public class AppException extends RuntimeException {
 
 
-    private Integer code;
+    private CommonStatusEnum commonStatusEnum;
 
     private String message;
 
-    public AppException(Integer code, String message) {
+    public AppException(CommonStatusEnum commonStatusEnum, String message) {
         super(message);
-        this.code = code;
+        this.commonStatusEnum = commonStatusEnum;
         this.message = message;
     }
 }

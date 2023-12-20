@@ -51,11 +51,11 @@ public class JuInfoServiceImpl
     @Override
     public void join(JoinGameReq req) {
         Long juInfoId = req.getGameId();
-        Long userId = req.getUserId();
-        LOGGER.info("[juInfo#join] user [id: {}] want joint juInfo [id: {}]", userId, juInfoId);
-        UserDTO user = userService.get(userId);
+        LoginContext context = SecurityContextHolder.getContext();
+        LOGGER.info("[juInfo#join] user [id: {}] want joint juInfo [id: {}]", context.getUserId(), juInfoId);
+        UserDTO user = userService.get(context.getUserId());
         JuInfoDTO juInfo = this.get(juInfoId);
-        if (juInfo.getParticipant().contains(userId)) {
+        if (juInfo.getParticipant().contains(context.getUserId())) {
             throw new BaseRuntimeException("你已经加入, 请勿重复操作");
         }
         // TODO 应该使用全局锁
@@ -63,7 +63,7 @@ public class JuInfoServiceImpl
         if (!status.enableJoin()) {
             throw new BaseRuntimeException("当前剧本杀的状态不可加入成员");
         }
-        juInfo.getParticipant().add(userId);
+        juInfo.getParticipant().add(context.getUserId());
         Gender gender = user.getGender();
         switch (gender) {
             case BOY -> juInfo.setBoyParticipantNum(juInfo.getBoyParticipantNum() + 1);
