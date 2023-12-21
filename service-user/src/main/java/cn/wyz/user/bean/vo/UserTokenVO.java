@@ -1,5 +1,6 @@
 package cn.wyz.user.bean.vo;
 
+import cn.wyz.user.constant.Gender;
 import lombok.Data;
 
 import java.io.Serial;
@@ -37,4 +38,8 @@ public class UserTokenVO implements Serializable {
      */
     private String location;
 
+    /**
+     * 性别
+     */
+    private Gender gender;
 }

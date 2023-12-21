@@ -61,7 +61,7 @@ public class JwtTokenUtils {
         Map<String, String> map = new HashMap<>(4);
         map.put(JWT_KEY_USER_ID, String.valueOf(user.getUserId()));
         map.put(JWT_KEY_USERNAME, user.getUsername());
-//        map.put(JWT_KEY_USER_GENDER, String.valueOf(user.getGender().getCode()));
+        map.put(JWT_KEY_USER_GENDER, String.valueOf(user.getGender().getCode()));
         map.put(JWT_KEY_IP, IpUtils.getIpAddr());
         map.put(JWT_GENERATE_TIME, String.valueOf(System.currentTimeMillis()));
 
@@ -86,7 +86,7 @@ public class JwtTokenUtils {
         return TokenInfo.builder()
                 .userId(Long.valueOf(userId.asString()))
                 .username(username.asString())
-                .gender(Gender.of(gender.asInt()))
+                .gender(Gender.of(Integer.valueOf(gender.asString())))
                 .ip(ip.asString()).token(token)
                 .tokenCreateTime(decodedJWT.getExpiresAt().getTime())
                 .build();

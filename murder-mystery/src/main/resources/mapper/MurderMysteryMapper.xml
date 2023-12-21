@@ -20,10 +20,12 @@
         </resultMap>
         <insert id="insert" useGeneratedKeys="true" keyProperty="id">
             INSERT INTO murder_mystery
-            VALUES (DEFAULT, #{title}, #{begin}, #{finish},#{createTime}, #{description}, #{userId},#{updateTime},#{scale},
+            VALUES (DEFAULT, #{title}, #{beginExpected}, #{finishExpected},#{createTime}, #{description},#{updateTime},#{scale},
                     #{girlParticipantNum},#{boyParticipantNum},#{config, typeHandler=cn.wyz.mapper.typeHandler.JsonbTypeHandler},
                    #{girlParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},#{boyParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},
-                    #{area, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},#{address},#{shopName})
+                    #{area, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},#{address},#{shopName},#{beginActual},#{finishActual},
+                    #{tags, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},#{status},#{applyParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},
+                    #{signInParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},#{createdBy},#{lastModifiedBy})
         </insert>
 
         <select id="list" resultMap="CompleteResultMap">
@@ -48,7 +50,7 @@
         SELECT * 
         FROM murder_mystery
         <where>
-            #{startTime} &gt;= begin_expected AND #{startTime} &lt;= #{finish_expected} + '30 min'
+            #{startTime} &gt;= begin_expected AND #{startTime} &lt;= finish_expected + '30 min'
             <choose>
                 <when test="userInfo.gender == @cn.wyz.user.constant.Gender@BOY">
                     AND #{userInfo.userId} = ANY(boy_participant)
