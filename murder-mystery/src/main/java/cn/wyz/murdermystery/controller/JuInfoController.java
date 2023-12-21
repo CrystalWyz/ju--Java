@@ -4,7 +4,6 @@ import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.mapper.controller.BaseController;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
-import cn.wyz.murdermystery.bean.request.JoinGameReq;
 import cn.wyz.murdermystery.bean.request.JuInfoRequest;
 import cn.wyz.murdermystery.service.JuInfoService;
 import cn.wyz.user.context.LoginContext;
@@ -29,12 +28,8 @@ public class JuInfoController
      * @return ResponseResult<Void>
      */
     @PatchMapping("/join/{juInfoId}")
-    public ResponseResult<Void> join(@PathVariable("juInfoId") Long juInfoId,
-                                     @RequestBody JoinGameReq req) {
-        LoginContext context = SecurityContextHolder.getContext();
-        Long userId = context.getUserId();
-        req.setGameId(juInfoId);
-        service().join(req);
+    public ResponseResult<Void> join(@PathVariable("juInfoId") Long juInfoId) {
+        service().join(juInfoId);
         return ResponseResult.success();
     }
 

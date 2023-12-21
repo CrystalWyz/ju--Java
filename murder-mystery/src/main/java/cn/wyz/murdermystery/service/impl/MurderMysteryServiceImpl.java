@@ -13,13 +13,14 @@ import cn.wyz.murdermystery.bean.dto.BlemishDetailDTO;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryApplyDTO;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryDTO;
 import cn.wyz.murdermystery.bean.request.HandleApplyGameReq;
-import cn.wyz.murdermystery.bean.request.JoinGameReq;
 import cn.wyz.murdermystery.bean.request.MurderMysteryRequest;
 import cn.wyz.murdermystery.bo.MurderMysteryJoinBO;
+import cn.wyz.murdermystery.constant.MurderMysteryConstant;
 import cn.wyz.murdermystery.mapper.MurderMysteryMapper;
 import cn.wyz.murdermystery.service.BlemishDetailService;
 import cn.wyz.murdermystery.service.MurderMysteryApplyService;
 import cn.wyz.murdermystery.service.MurderMysteryService;
+import cn.wyz.murdermystery.service.MurderMysteryUserService;
 import cn.wyz.murdermystery.type.ApplyStatus;
 import cn.wyz.murdermystery.type.BlemishDetailType;
 import cn.wyz.murdermystery.type.GameStatus;
@@ -28,6 +29,7 @@ import cn.wyz.user.constant.Gender;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.holder.SecurityContextHolder;
 import cn.wyz.user.service.UserService;
+import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -51,6 +53,8 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
     private final UserService userService;
 
     private final BlemishDetailService blemishDetailService;
+
+    private final MurderMysteryUserService murderMysteryUserService;
 
 //    @Override
 //    public <Query extends BaseRequest> PageResultVO<MurderMysteryDTO> page(Query query) {
@@ -81,8 +85,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
     }
 
     @Override
-    public void join(JoinGameReq req) {
-        Long gameId = req.getGameId();
+    public void join(Long gameId) {
         LoginContext context = SecurityContextHolder.getContext();
         LOGGER.info("[murderMystery#join] user [id: {}] want joint game [id: {}]", context.getUserId(), gameId);
         MurderMysteryDTO mm = this.get(gameId);
@@ -90,34 +93,39 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
             throw new BaseRuntimeException("游戏已经开始, 无法加入");
         }
 
-        // 时间冲突检查
-        timeConflictCheck(context, mm.getBeginExpected());
+        // 判断已经加入的人数是否已经满了
+        boolean isFull = switch (context.getGender()) {
+            case BOY -> mm.isBoyFull();
+            case GIRL -> mm.isGirlFull();
+            case UNKNOWN -> throw new AppException(CommonStatusEnum.FAIL, "请先完善个人信息");
+        };
+        if (isFull) {
+            throw new BaseRuntimeException("人数已满, 无法加入");
+        }
 
-        // 判断是否需要申请
-        if (mm.needApply()) {
-            addApplyNotice(mm, req.getReason());
+        // 判断个人是否具备加入条件
+        MurderMysteryJoinBO canJoin = canJoin(context, gameId);
+        if (canJoin.isCanJoin()) {
+            if (mm.needApply()) {
+                // 需要审核
+                addApplyNotice(mm);
+            } else {
+                // 尝试新增
+                if (tryAddPerson(mm, context.getUserId(), context.getGender())) {
+                    throw new BaseRuntimeException("你已经加入, 请勿重复操作");
+                }
+                this.update(gameId, mm);
+            }
         } else {
-            // 判断已经加入的人数是否已经满了
-            if (mm.isFull()) {
-                throw new BaseRuntimeException("人数已满, 无法加入");
-            }
-            // 判断个人是否具备加入条件
-            MurderMysteryJoinBO canJoin = canJoin(context.getUserId(), gameId);
-            if (!canJoin.isCanJoin()) {
-                throw new BaseRuntimeException(canJoin.getReason());
-            }
+//            throw new BaseRuntimeException(canJoin.getReason());
         }
-        // 尝试新增
-        if (tryAddPerson(mm, context.getUserId(), context.getGender())) {
-            throw new BaseRuntimeException("你已经加入, 请勿重复操作");
-        }
-        this.update(gameId, mm);
     }
 
     @Override
     public void handleApply(HandleApplyGameReq req) {
         LOGGER.info("[murderMystery#handleApply] req {}", req);
         Long gameId = req.getGameId();
+        LoginContext context = SecurityContextHolder.getContext();
         MurderMysteryDTO mm = this.get(gameId);
         if (mm.getStatus() != GameStatus.NEW) {
             throw new BaseRuntimeException("当前游戏状态, 无法处理申请");
@@ -129,7 +137,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         if (!mm.getApplyParticipant().contains(req.getApplyId())) {
             throw new BaseRefreshException("当前申请已经失效, 请刷新会重试");
         }
-        UserDTO user = userService.get(req.getUserId());
+        UserDTO user = userService.get(context.getUserId());
         MurderMysteryApplyDTO mma = murderMysteryApplyService.get(req.getApplyId());
         if (mma.getApplyStatus() != ApplyStatus.NEW) {
             throw new BaseRefreshException("当前请求已经失效, 请刷新会重试");
@@ -138,14 +146,14 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
             mma.setRejectReason(req.getReason());
         } else if (req.getStatus() == ApplyStatus.PASS) {
             Long userId = mma.getCreatedBy();
-            MurderMysteryJoinBO canJoin = this.canJoin(userId, gameId);
+            MurderMysteryJoinBO canJoin = this.canJoin(context, gameId);
             if (!canJoin.isCanJoin()) {
                 LOGGER.error("[murderMystery#handleApply] user [id: {}] want join game [id: {}], but has conflict with game [{}]",
                         userId, mm.getId(), canJoin.getSource());
                 murderMysteryApplyService.invalid(mma.getId(), canJoin.getReason());
                 throw new BaseRefreshException(canJoin.getReason());
             }
-            if (!tryAddPerson(mm, req.getUserId(), user.getGender())) {
+            if (!tryAddPerson(mm, context.getUserId(), user.getGender())) {
                 murderMysteryApplyService.invalid(mma.getId(), "该用户已经已经加入游戏了");
                 throw new BaseRefreshException("该用户已经在游戏中了, 请勿重复操作");
             }
@@ -293,13 +301,22 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
     }
 
     @Override
-    public MurderMysteryJoinBO canJoin(Long userId, Long gameId) {
-        LOGGER.trace("[murderMystery#checkUserCanJoinNew] user [id: {}] want check can join new game", userId);
-        MurderMysteryDTO mm = tryGetConflictGame(userId, gameId);
-        if (mm != null) {
-            return MurderMysteryJoinBO.of(mm, "你已经与已经加入的游戏" + mm.getTitle() + " 时间有冲突, 无法加入");
+    public MurderMysteryJoinBO canJoin(LoginContext context, Long gameId) {
+        LOGGER.trace("[murderMystery#checkUserCanJoinNew] user [id: {}] want check can join new game", context.getUserId());
+        MurderMystery murderMystery = this.getById(gameId);
+        JSONObject config = murderMystery.getConfig();
+
+        // 时间冲突判断
+        MurderMystery conflict = baseMapper.getUserConflictJoined(context, murderMystery.getBeginExpected());
+        if (conflict != null) {
+            return MurderMysteryJoinBO.of(conflict, "与游戏" + conflict.getTitle() + " 时间冲突, 无法加入");
         }
-        // TODO 判断是否有污点？？？
+
+        // 用户信息判断
+        Integer level = config.getInteger(MurderMysteryConstant.LEVEL.getValue());
+        if (ObjectUtils.isNotEmpty(level)) {
+
+        }
 
         return new MurderMysteryJoinBO();
     }
@@ -419,10 +436,9 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         blemishDetailService.add(bd);
     }
 
-    private void addApplyNotice(MurderMysteryDTO mm, String applyReason) {
+    private void addApplyNotice(MurderMysteryDTO mm) {
         MurderMysteryApplyDTO ja = new MurderMysteryApplyDTO();
         ja.setGameId(mm.getId());
-        ja.setApplyReason(applyReason);
         ja.setApplyStatus(ApplyStatus.NEW);
         ja = murderMysteryApplyService.add(ja);
         mm.getApplyParticipant().add(ja.getGameId());

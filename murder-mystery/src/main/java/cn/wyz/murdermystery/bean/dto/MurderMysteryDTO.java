@@ -117,4 +117,11 @@ public class MurderMysteryDTO extends BaseDTO {
                 && Objects.equals(this.getGirlParticipantNum(), this.getGirlParticipantNum());
     }
 
+    public boolean isGirlFull() {
+        return Objects.equals(this.getGirlParticipantNum(), this.getGirlParticipantNum());
+    }
+
+    public boolean isBoyFull() {
+        return Objects.equals(this.getBoyParticipantNum(), this.getBoyParticipantNum());
+    }
 }

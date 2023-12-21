@@ -6,7 +6,6 @@ import cn.wyz.mapper.controller.BaseController;
 import cn.wyz.murdermystery.bean.MurderMystery;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryDTO;
 import cn.wyz.murdermystery.bean.request.HandleApplyGameReq;
-import cn.wyz.murdermystery.bean.request.JoinGameReq;
 import cn.wyz.murdermystery.bean.request.MurderMysteryRequest;
 import cn.wyz.murdermystery.service.MurderMysteryService;
 import cn.wyz.user.context.LoginContext;
@@ -33,12 +32,8 @@ public class MurderMysteryController
      */
     @Idempotence
     @PatchMapping("/join/{gameId}")
-    public ResponseResult<Void> join(@PathVariable("gameId") Long gameId,
-                                     @RequestBody JoinGameReq req) {
-        LoginContext context = SecurityContextHolder.getContext();
-        Long userId = context.getUserId();
-        req.setGameId(gameId);
-        service().join(req);
+    public ResponseResult<Void> join(@PathVariable("gameId") Long gameId) {
+        service().join(gameId);
         return ResponseResult.success();
     }
 
@@ -51,9 +46,6 @@ public class MurderMysteryController
     @PatchMapping("/handleApply/")
     @Idempotence
     public ResponseResult<Void> handleApply(@RequestBody HandleApplyGameReq req) {
-        LoginContext context = SecurityContextHolder.getContext();
-        Long userId = context.getUserId();
-        req.setUserId(userId);
         service().handleApply(req);
         return ResponseResult.success();
     }

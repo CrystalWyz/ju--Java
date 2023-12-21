@@ -30,6 +30,7 @@ public class MurderMysteryJoinBO extends BaseBO {
      * 目前可能是:
      * {@link cn.wyz.murdermystery.bean.dto.MurderMysteryApplyDTO MurderMysteryApplyDTO}
      * 或 {@link cn.wyz.murdermystery.bean.dto.MurderMysteryDTO MurderMysteryDTO}
+     * 或 {@link cn.wyz.murdermystery.bean.MurderMystery MurderMyster}
      */
     private Object source;
 

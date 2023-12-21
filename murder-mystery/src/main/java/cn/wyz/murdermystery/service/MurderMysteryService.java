@@ -4,8 +4,8 @@ import cn.wyz.mapper.service.MapperService;
 import cn.wyz.murdermystery.bean.MurderMystery;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryDTO;
 import cn.wyz.murdermystery.bean.request.HandleApplyGameReq;
-import cn.wyz.murdermystery.bean.request.JoinGameReq;
 import cn.wyz.murdermystery.bo.MurderMysteryJoinBO;
+import cn.wyz.user.context.LoginContext;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +20,7 @@ public interface MurderMysteryService extends MapperService<MurderMystery, Murde
      * @param req 参加剧本杀请求参数
      */
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
-    void join(JoinGameReq req);
+    void join(Long gameId);
 
     /**
      * 处理申请
@@ -86,7 +86,7 @@ public interface MurderMysteryService extends MapperService<MurderMystery, Murde
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
     void finishGame(Long id, Long userId);
 
-    MurderMysteryJoinBO canJoin(Long userId, Long gameId);
+    MurderMysteryJoinBO canJoin(LoginContext context, Long gameId);
 
     /**
      * 尝试获取用户时间冲突的剧本杀游戏
@@ -95,6 +95,7 @@ public interface MurderMysteryService extends MapperService<MurderMystery, Murde
      * @param gameId 游戏Id
      * @return 如果返回 null, 说明可以加入, 如果返回不为 null, 说明不能加入, 返回的是不能加入的原因
      */
+    @Deprecated
     MurderMysteryDTO tryGetConflictGame(Long userId, Long gameId);
 
 }

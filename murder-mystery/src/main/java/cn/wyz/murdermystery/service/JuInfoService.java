@@ -3,7 +3,6 @@ package cn.wyz.murdermystery.service;
 import cn.wyz.mapper.service.MapperService;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
-import cn.wyz.murdermystery.bean.request.JoinGameReq;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +21,10 @@ public interface JuInfoService extends MapperService<JuInfo, JuInfoDTO> {
     /**
      * 参加聚本杀
      *
-     * @param req 参加剧本杀请求参数
+     * @param juInfoId id
      */
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
-    void join(JoinGameReq req);
+    void join(Long juInfoId);
 
     /**
      * 退出游戏

@@ -20,11 +20,6 @@ public class HandleApplyGameReq implements Serializable {
     private Long gameId;
 
     /**
-     * 操作用户Id
-     */
-    private Long userId;
-
-    /**
      * 申请记录Id
      */
     private Long applyId;

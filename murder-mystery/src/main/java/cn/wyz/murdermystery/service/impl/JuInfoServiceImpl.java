@@ -5,7 +5,6 @@ import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import cn.wyz.murdermystery.bean.JuInfo;
 import cn.wyz.murdermystery.bean.dto.JuInfoDTO;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryApplyDTO;
-import cn.wyz.murdermystery.bean.request.JoinGameReq;
 import cn.wyz.murdermystery.mapper.JuInfoMapper;
 import cn.wyz.murdermystery.service.JuInfoService;
 import cn.wyz.murdermystery.service.MurderMysteryApplyService;
@@ -49,8 +48,7 @@ public class JuInfoServiceImpl
     }
 
     @Override
-    public void join(JoinGameReq req) {
-        Long juInfoId = req.getGameId();
+    public void join(Long juInfoId) {
         LoginContext context = SecurityContextHolder.getContext();
         LOGGER.info("[juInfo#join] user [id: {}] want joint juInfo [id: {}]", context.getUserId(), juInfoId);
         UserDTO user = userService.get(context.getUserId());
