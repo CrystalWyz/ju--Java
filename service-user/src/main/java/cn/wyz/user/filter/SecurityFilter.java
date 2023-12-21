@@ -23,9 +23,6 @@ import java.io.IOException;
 @Slf4j
 public class SecurityFilter implements Filter {
 
-    @Autowired
-    private LibSecurityProperties securityProperties;
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -33,17 +30,14 @@ public class SecurityFilter implements Filter {
 
         LoginContext loginContext = resolveToken((HttpServletRequest) request);
         if (loginContext != null) {
+            // 获取用户当前语言
+            String lang = ((HttpServletRequest) request).getHeader(SecurityConstant.LANGUAGE);
+            loginContext.setLang(lang);
+
+            LOGGER.debug("current user {}", loginContext);
+
             SecurityContextHolder.setContext(loginContext);
         }
-
-        loginContext = SecurityContextHolder.getContext();
-        // 获取用户当前语言
-        String lang = ((HttpServletRequest) request).getHeader(SecurityConstant.LANGUAGE);
-        loginContext.setLang(lang);
-
-        LOGGER.debug("current user {}", loginContext);
-
-        SecurityContextHolder.setContext(loginContext);
         try {
             chain.doFilter(request, response);
         } finally {
