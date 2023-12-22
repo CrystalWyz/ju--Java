@@ -56,15 +56,6 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
 
     private final MurderMysteryUserService murderMysteryUserService;
 
-//    @Override
-//    public <Query extends BaseRequest> PageResultVO<MurderMysteryDTO> page(Query query) {
-//        MurderMysteryRequest req = (MurderMysteryRequest) query;
-//        PageResultVO<MurderMysteryDTO> page = super.page(query);
-//
-//
-//        return page;
-//    }
-
     @Override
     public MurderMysteryDTO add(MurderMysteryDTO dto) {
         LoginContext context = SecurityContextHolder.getContext();
@@ -219,6 +210,9 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         this.update(id, mm);
         // 将多余的申请失效
         murderMysteryApplyService.invalidAll(id);
+        // 给所有的用户增加游戏常数
+        List<Long> allParticipant = mm.getAllParticipant();
+        murderMysteryUserService.addCount(allParticipant, id);
     }
 
     @Override
@@ -282,6 +276,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         needParticipantList.removeAll(signInParticipant);
         for (Long l : needParticipantList) {
             addBlemish(id, l, "未签到", BlemishDetailType.ABSENT);
+            murderMysteryUserService.addBlemishCount(userId, BlemishDetailType.ABSENT);
         }
 
     }
