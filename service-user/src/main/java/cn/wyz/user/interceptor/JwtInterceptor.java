@@ -35,8 +35,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        LOGGER.debug("正在处理请求: {}", request.getRequestURI());
         if (ignore(request)) {
-            LOGGER.debug("ignore url {}", request.getRequestURI());
+            LOGGER.debug("ignore 请求拦截");
             return true;
         }
         LoginContext context = SecurityContextHolder.getContext();

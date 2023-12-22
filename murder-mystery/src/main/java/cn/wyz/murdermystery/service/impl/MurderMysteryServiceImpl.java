@@ -1,6 +1,7 @@
 package cn.wyz.murdermystery.service.impl;
 
 import cn.wyz.common.constant.CommonStatusEnum;
+import cn.wyz.common.event.EventPublisher;
 import cn.wyz.common.exception.AppException;
 import cn.wyz.common.exception.BaseRefreshException;
 import cn.wyz.common.exception.BaseRuntimeException;
@@ -16,6 +17,7 @@ import cn.wyz.murdermystery.bean.request.HandleApplyGameReq;
 import cn.wyz.murdermystery.bean.request.MurderMysteryRequest;
 import cn.wyz.murdermystery.bo.MurderMysteryJoinBO;
 import cn.wyz.murdermystery.constant.MurderMysteryConstant;
+import cn.wyz.murdermystery.event.MurderMysteryPrepareEvent;
 import cn.wyz.murdermystery.mapper.MurderMysteryMapper;
 import cn.wyz.murdermystery.service.BlemishDetailService;
 import cn.wyz.murdermystery.service.MurderMysteryApplyService;
@@ -55,6 +57,8 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
     private final BlemishDetailService blemishDetailService;
 
     private final MurderMysteryUserService murderMysteryUserService;
+
+    private final EventPublisher eventPublisher;
 
     @Override
     public MurderMysteryDTO add(MurderMysteryDTO dto) {
@@ -102,11 +106,11 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
                 addApplyNotice(mm);
             } else {
                 // 尝试新增
-                if (tryAddPerson(mm, context.getUserId(), context.getGender())) {
+                if (!tryAddPerson(mm, context.getUserId(), context.getGender())) {
                     throw new BaseRuntimeException("你已经加入, 请勿重复操作");
                 }
-                this.update(gameId, mm);
             }
+            this.update(gameId, mm);
         } else {
 //            throw new BaseRuntimeException(canJoin.getReason());
         }
@@ -125,13 +129,13 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
             murderMysteryApplyService.invalidAll(mm.getId());
             throw new BaseRuntimeException("人数已满, 无法处理申请");
         }
-        if (!mm.getApplyParticipant().contains(req.getApplyId())) {
-            throw new BaseRefreshException("当前申请已经失效, 请刷新会重试");
+        if (mm.getApplyParticipant().remove(req.getApplyId())) {
+            throw new BaseRefreshException("请求已经处理, 请刷新后再试");
         }
         UserDTO user = userService.get(context.getUserId());
         MurderMysteryApplyDTO mma = murderMysteryApplyService.get(req.getApplyId());
         if (mma.getApplyStatus() != ApplyStatus.NEW) {
-            throw new BaseRefreshException("当前请求已经失效, 请刷新会重试");
+            throw new BaseRefreshException("当前请求已经失效, 请勿重复操作");
         }
         if (req.getStatus() == ApplyStatus.NOT_PASS) {
             mma.setRejectReason(req.getReason());
@@ -139,27 +143,25 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
             Long userId = mma.getCreatedBy();
             MurderMysteryJoinBO canJoin = this.canJoin(context, gameId);
             if (!canJoin.isCanJoin()) {
-                LOGGER.error("[murderMystery#handleApply] user [id: {}] want join game [id: {}], but has conflict with game [{}]",
-                        userId, mm.getId(), canJoin.getSource());
+                LOGGER.error("[murderMystery#handleApply] user [id: {}] want join game [id: {}], but has conflict with game [{}]", userId, mm.getId(), canJoin.getSource());
                 murderMysteryApplyService.invalid(mma.getId(), canJoin.getReason());
                 throw new BaseRefreshException(canJoin.getReason());
             }
             if (!tryAddPerson(mm, context.getUserId(), user.getGender())) {
                 murderMysteryApplyService.invalid(mma.getId(), "该用户已经已经加入游戏了");
-                throw new BaseRefreshException("该用户已经在游戏中了, 请勿重复操作");
+                throw new BaseRefreshException("该用户已经在游戏中, 请勿重复操作");
             }
             // 更新申请信息
             mm.getApplyParticipant().remove(mma.getGameId());
-            this.update(mm);
         }
+        this.update(mm);
         mma.setApplyStatus(req.getStatus());
         murderMysteryApplyService.update(mma);
     }
 
     @Override
     public boolean outGame(Long id, Long userId, Boolean isForce) {
-        LOGGER.info("[murderMystery#outGame] user [id: {}] want out game [id: {}, isForce: {}] ",
-                userId, id, isForce);
+        LOGGER.info("[murderMystery#outGame] user [id: {}] want out game [id: {}, isForce: {}] ", userId, id, isForce);
         MurderMysteryDTO mm = this.get(id);
         GameStatus status = mm.getStatus();
 
@@ -169,7 +171,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         // 如果是在无法退出游戏状态时, 则记录有瑕疵
         boolean hasBlemish = !status.canOut();
         UserDTO user = userService.get(userId);
-        if (tryRemovePerson(mm, userId, user.getGender())) {
+        if (!tryRemovePerson(mm, userId, user.getGender())) {
             throw new BaseRuntimeException("你已不在游戏中, 无法退出");
         }
         if (hasBlemish) {
@@ -208,8 +210,15 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         }
         mm.setStatus(GameStatus.PREPARE);
         this.update(id, mm);
+
+        mm.getApplyParticipant().clear();
+
+        eventPublisher.publish(new MurderMysteryPrepareEvent(mm));
+
+        // FIXME 将下面的逻辑应该通过事件实现解偶
         // 将多余的申请失效
         murderMysteryApplyService.invalidAll(id);
+
         // 给所有的用户增加游戏常数
         List<Long> allParticipant = mm.getAllParticipant();
         murderMysteryUserService.addCount(allParticipant, id);
@@ -333,16 +342,14 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
             return null;
         }
         // 获取 startingMMList, 最小的开始时间, 和最大的结束时间(都要大于当前时间的)
-        LocalDateTime startTime = targetMM.getBeginActual() != null ?
-                targetMM.getBeginActual() : targetMM.getBeginExpected();
+        LocalDateTime startTime = targetMM.getBeginActual() != null ? targetMM.getBeginActual() : targetMM.getBeginExpected();
 
         LocalDateTime finishTime = targetMM.getFinishExpected();
 
         // 间隔时间: 单位小时
         int intervalHour = 1;
         for (MurderMysteryDTO joinedMM : joinedMMList) {
-            LocalDateTime gameStartTime = joinedMM.getBeginActual() != null ?
-                    joinedMM.getBeginActual() : joinedMM.getBeginExpected();
+            LocalDateTime gameStartTime = joinedMM.getBeginActual() != null ? joinedMM.getBeginActual() : joinedMM.getBeginExpected();
             LocalDateTime gameFinishTime = joinedMM.getFinishExpected();
 
             // 过滤掉过期的游戏: 游戏的结束时间 < 当前时间 - intervalHour
@@ -351,12 +358,10 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
             }
             // 判断 targetMM 是否与 startingMM 时间冲突, 并且这个时间冲突大于 intervalHour 值
             // [startTime, finishTime] 和 [gameStartTime, gameFinishTime] 是否有交集
-            if (gameStartTime.minusHours(intervalHour).isBefore(startTime)
-                    && gameFinishTime.minusHours(-intervalHour).isAfter(startTime)) {
+            if (gameStartTime.minusHours(intervalHour).isBefore(startTime) && gameFinishTime.minusHours(-intervalHour).isAfter(startTime)) {
                 return joinedMM;
             }
-            if (gameStartTime.minusHours(intervalHour).isBefore(finishTime)
-                    && gameFinishTime.minusHours(-intervalHour).isAfter(finishTime)) {
+            if (gameStartTime.minusHours(intervalHour).isBefore(finishTime) && gameFinishTime.minusHours(-intervalHour).isAfter(finishTime)) {
                 return joinedMM;
             }
         }

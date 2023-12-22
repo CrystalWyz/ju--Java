@@ -7,10 +7,13 @@ import cn.wyz.user.bean.dto.OneClickLoginDTO;
 import cn.wyz.user.bean.dto.UserTokenDTO;
 import cn.wyz.user.bean.vo.UserInfoVO;
 import cn.wyz.user.bean.vo.UserTokenVO;
+import cn.wyz.user.constant.SecurityConstant;
 import cn.wyz.user.converter.JuUserBeanConvert;
 import cn.wyz.user.service.AuthorityService;
 import cn.wyz.user.utils.SecurityUtils;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,13 +41,11 @@ public class AuthorityController {
      * 一键登录(注册+登录)
      */
     @PostMapping("/oneClickLogin")
-    public ResponseEntity<ResponseResult<UserTokenVO>> oneClickLogin(@Validated @RequestBody OneClickLoginDTO oneClickLoginDTO,
-                                                                     HttpServletRequest request) {
+    public ResponseEntity<ResponseResult<UserTokenVO>> oneClickLogin(@Validated @RequestBody OneClickLoginDTO oneClickLoginDTO, HttpServletRequest request, HttpServletResponse response) {
 
         UserTokenDTO userTokenDTO = authorityService.oneClickLogin(oneClickLoginDTO);
-
-        return ResponseEntity
-                .status(200)
+        response.addCookie(new Cookie(SecurityConstant.HEADER_PARAMETER, userTokenDTO.getToken()));
+        return ResponseEntity.status(200)
                 .header("Location", request.getHeader("Location"))
                 .body(ResponseResult.success(juUserBeanConvert.UserTokenDTOToUserTokenVO(userTokenDTO)));
     }
@@ -58,13 +59,15 @@ public class AuthorityController {
      */
     @PostMapping("/login")
     public ResponseEntity<ResponseResult<UserTokenVO>> login(@Validated @RequestBody LoginDTO param,
-                                                             HttpServletRequest request) {
+                                                             HttpServletRequest request,
+                                                             HttpServletResponse response) {
         UserTokenDTO login = authorityService.login(param);
 
         String location = request.getHeader("Location");
-        return ResponseEntity
-                .status(200)
+        response.addCookie(new Cookie(SecurityConstant.HEADER_PARAMETER, login.getToken()));
+        return ResponseEntity.status(200)
                 .header("Location", location)
+//                .header("Cookie", SecurityConstant.HEADER_PARAMETER + ": " + login.getToken())
                 .body(ResponseResult.success(juUserBeanConvert.UserTokenDTOToUserTokenVO(login)));
     }
 

@@ -31,7 +31,7 @@ public interface SecurityConstant {
     String LOGIN_TIME = "loginTime";
 
     /**
-     * token 请求头
+     * cookie token
      */
     String HEADER_PARAMETER = "Authorization";
 

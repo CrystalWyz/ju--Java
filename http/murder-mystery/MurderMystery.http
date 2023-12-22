@@ -1,17 +1,17 @@
 ### 新增实体 murderMystery
-POST {{host}}murderMystery
+POST {{host}}murderMysteries
 Content-Type: application/json;charset=UTF-8
 Cookie: Authorization={{token}}
 
 {
-  "title": "String",
-  "beginExpected": "2023-11-15 00:00",
-  "finishExpected": "2023-11-15 01:00",
+  "title": "第4个剧本杀测试",
+  "beginExpected": "2023-11-17 00:00",
+  "finishExpected": "2023-11-17 01:00",
   "description": "String",
   "scale": 2,
   "config": {
-  },
-  "type": 1
+    "enableApply": true
+  }
 }
 
 ### 修改实体 JuInfo
@@ -42,5 +42,25 @@ GET {{host}}murderMystery
 Cookie: Authorization={{token}}
 
 ### 6. 加入剧本杀
-PATCH {{host}}murderMystery/join/3
+PATCH {{host}}murderMysteries/join/10
 Cookie: Authorization={{token-test}}
+
+### 7. 处理剧本杀申请
+PATCH {{host}}murderMysteries/handleApply
+Cookie: Authorization={{token-test}}
+Content-Type: application/json
+
+{
+  "gameId": 10,
+  "applyId": 3,
+  "status": "通过"
+}
+
+### 8. 退出游戏
+PATCH {{host}}murderMysteries/outGame/10
+Cookie: Authorization={{token-test}}
+
+### 9. 准备游戏
+PATCH {{host}}murderMysteries/prepare/10
+Cookie: Authorization={{token}}
+

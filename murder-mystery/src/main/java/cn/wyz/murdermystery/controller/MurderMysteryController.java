@@ -43,7 +43,7 @@ public class MurderMysteryController
      * @param req 处理申请请求参数
      * @return ResponseResult<Void>
      */
-    @PatchMapping("/handleApply/")
+    @PatchMapping("/handleApply")
     @Idempotence
     public ResponseResult<Void> handleApply(@RequestBody HandleApplyGameReq req) {
         service().handleApply(req);

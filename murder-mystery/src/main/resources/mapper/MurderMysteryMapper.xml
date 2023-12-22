@@ -58,7 +58,7 @@
         FROM murder_mystery
         <where>
             #{startTime} &gt;= begin_expected AND #{startTime} &lt;= finish_expected + '30 min'
-            AND `status` >=2
+            AND "status" &gt; 1
             <choose>
                 <when test="userInfo.gender == @cn.wyz.user.constant.Gender@BOY">
                     AND #{userInfo.userId} = ANY(boy_participant)

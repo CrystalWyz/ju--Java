@@ -29,12 +29,14 @@ public class UserControllerAdvice {
      */
     @ExceptionHandler(BaseUserException.class)
     public ResponseEntity<ResponseResult<?>> userException(BaseUserException e) {
+        LOGGER.error("", e);
         ResponseResult<Void> res = ResponseResult.fail(e.code().code(), e.getMsg());
         return this.buildResponseEntity(res, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UserDeniedException.class)
     public ResponseEntity<ResponseResult<?>> accessDeniedException(UserDeniedException e) {
+        LOGGER.error("", e);
         ResponseResult<Void> res = ResponseResult.fail(CodeConstant.USER_TOKEN_DENIED_PERMISSION);
         return this.buildResponseEntity(res, HttpStatus.FORBIDDEN);
     }

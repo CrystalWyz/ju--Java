@@ -3,10 +3,10 @@ package cn.wyz.user.utils;
 import cn.wyz.common.constant.CodeConstant;
 import cn.wyz.common.exception.BaseUserException;
 import cn.wyz.common.util.IpUtils;
+import cn.wyz.user.constant.Gender;
 import cn.wyz.user.constant.SecurityConstant;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.context.TokenInfo;
-import cn.wyz.user.constant.Gender;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -15,6 +15,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.time.Instant;
@@ -24,6 +25,7 @@ import java.util.Map;
 /**
  * @author wangnanxiang
  */
+@Slf4j
 public class JwtTokenUtils {
 
     private static final String SIGN = "CPFwyz@!##";
@@ -39,6 +41,7 @@ public class JwtTokenUtils {
     public static LoginContext getAuthentication(HttpServletRequest request) {
         String token = SecurityUtils.getToken(request);
         if (token != null) {
+            LOGGER.debug("token: {}", token);
             TokenInfo claims = parseToken(token);
             String user = claims.getUsername();
             Long userId = claims.getUserId();

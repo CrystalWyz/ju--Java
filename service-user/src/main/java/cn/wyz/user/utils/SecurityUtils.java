@@ -36,8 +36,7 @@ public class SecurityUtils {
                 }
             }
         }
-
-        return null;
+        return request.getHeader(SecurityConstant.HEADER_PARAMETER);
     }
 
 }
