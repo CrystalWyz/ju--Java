@@ -44,7 +44,9 @@ public class AuthorityController {
     public ResponseEntity<ResponseResult<UserTokenVO>> oneClickLogin(@Validated @RequestBody OneClickLoginDTO oneClickLoginDTO, HttpServletRequest request, HttpServletResponse response) {
 
         UserTokenDTO userTokenDTO = authorityService.oneClickLogin(oneClickLoginDTO);
-        response.addCookie(new Cookie(SecurityConstant.HEADER_PARAMETER, userTokenDTO.getToken()));
+        Cookie cookie = new Cookie(SecurityConstant.HEADER_PARAMETER, userTokenDTO.getToken());
+        cookie.setPath("/");
+        response.addCookie(cookie);
         return ResponseEntity.status(200)
                 .header("Location", request.getHeader("Location"))
                 .body(ResponseResult.success(juUserBeanConvert.UserTokenDTOToUserTokenVO(userTokenDTO)));
