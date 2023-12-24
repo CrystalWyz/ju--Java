@@ -64,7 +64,9 @@ public class AuthorityController {
         UserTokenDTO login = authorityService.login(param);
 
         String location = request.getHeader("Location");
-        response.addCookie(new Cookie(SecurityConstant.HEADER_PARAMETER, login.getToken()));
+        Cookie cookie = new Cookie(SecurityConstant.HEADER_PARAMETER, login.getToken());
+        cookie.setPath("/");
+        response.addCookie(cookie);
         return ResponseEntity.status(200)
                 .header("Location", location)
 //                .header("Cookie", SecurityConstant.HEADER_PARAMETER + ": " + login.getToken())
