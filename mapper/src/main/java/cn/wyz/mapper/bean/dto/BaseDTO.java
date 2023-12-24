@@ -26,7 +26,6 @@ public class BaseDTO extends ExtensibleProperties {
     /**
      * 主键 id（唯一标识）
      */
-    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;
 
     /**
