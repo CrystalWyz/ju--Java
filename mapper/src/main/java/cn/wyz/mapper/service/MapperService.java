@@ -152,9 +152,10 @@ public interface MapperService<
      * @param dto    DTO
      * @param entity Entity
      */
-    default void copyProperties(DTO dto, Entity entity) {
+    default Entity copyProperties(DTO dto, Entity entity) {
         BeanUtils.copy(dto, entity);
         entity.getAndIncrementVersion();
+        return entity;
     }
 
     /**
@@ -163,9 +164,10 @@ public interface MapperService<
      * @param dto    DTO
      * @param entity Entity
      */
-    default void copyAllowNullProperties(DTO dto, Entity entity) {
+    default Entity copyAllowNullProperties(DTO dto, Entity entity) {
         BeanUtils.copyForUpdate(dto, entity);
         entity.getAndIncrementVersion();
+        return entity;
     }
 
     /**

@@ -1,4 +1,8 @@
 ### 新增实体 murderMystery
+GET {{host}}murderMysteries/current/page?size=10&page=0
+
+
+### 新增实体 murderMystery
 POST {{host}}murderMysteries
 Content-Type: application/json;charset=UTF-8
 Cookie: Authorization={{token}}

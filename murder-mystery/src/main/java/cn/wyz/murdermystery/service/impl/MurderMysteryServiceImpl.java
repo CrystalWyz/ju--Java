@@ -13,19 +13,18 @@ import cn.wyz.murdermystery.bean.MurderMystery;
 import cn.wyz.murdermystery.bean.dto.BlemishDetailDTO;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryApplyDTO;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryDTO;
+import cn.wyz.murdermystery.bean.dto.TagDTO;
 import cn.wyz.murdermystery.bean.request.HandleApplyGameReq;
 import cn.wyz.murdermystery.bean.request.MurderMysteryRequest;
 import cn.wyz.murdermystery.bo.MurderMysteryJoinBO;
 import cn.wyz.murdermystery.constant.MurderMysteryConstant;
 import cn.wyz.murdermystery.event.MurderMysteryPrepareEvent;
 import cn.wyz.murdermystery.mapper.MurderMysteryMapper;
-import cn.wyz.murdermystery.service.BlemishDetailService;
-import cn.wyz.murdermystery.service.MurderMysteryApplyService;
-import cn.wyz.murdermystery.service.MurderMysteryService;
-import cn.wyz.murdermystery.service.MurderMysteryUserService;
+import cn.wyz.murdermystery.service.*;
 import cn.wyz.murdermystery.type.ApplyStatus;
 import cn.wyz.murdermystery.type.BlemishDetailType;
 import cn.wyz.murdermystery.type.GameStatus;
+import cn.wyz.murdermystery.type.ServiceType;
 import cn.wyz.user.bean.dto.UserDTO;
 import cn.wyz.user.constant.Gender;
 import cn.wyz.user.context.LoginContext;
@@ -60,16 +59,40 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
 
     private final EventPublisher eventPublisher;
 
+    private final TagService tagService;
+
     @Override
     public MurderMysteryDTO add(MurderMysteryDTO dto) {
         LoginContext context = SecurityContextHolder.getContext();
 
         // 时间冲突检查
         timeConflictCheck(context, dto.getBeginExpected());
-
+        // 把自己添加进去
         tryAddPerson(dto, context.getUserId(), context.getGender());
         dto.setStatus(GameStatus.NEW);
-        return super.add(dto);
+        MurderMysteryDTO res = super.add(dto);
+        List<String> tagNames = dto.getTags();
+        tryAddTag(tagNames);
+        return res;
+    }
+
+    @Override
+    public MurderMysteryDTO update(Long id, MurderMysteryDTO dto) {
+        LOGGER.info("update request: {}", dto);
+        MurderMystery entity = getEntity(id);
+
+        // TODO 判断修改的属性, 在当前的游戏状态下能否修改
+
+        copyProperties(dto, entity);
+
+        entity.setUpdateTime(LocalDateTime.now());
+        entity.setLastModifiedBy(systemProvider.getCurrentUserId());
+
+
+        boolean update = this.updateById(entity);
+        return update
+                ? toDTO(entity)
+                : null;
     }
 
     private void timeConflictCheck(LoginContext userInfo, LocalDateTime startTime) {
@@ -334,7 +357,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         }
 
         MurderMysteryRequest req = new MurderMysteryRequest();
-        req.setCreateBy(userId);
+        req.setCreatedBy(userId);
         req.getFiledQueries().add(FiledQuery.of("status", GameStatus.NEW, QueryType.GE));
         // 已经加入的游戏
         List<MurderMysteryDTO> joinedMMList = this.queryAll(req);
@@ -376,6 +399,14 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
     @Override
     public MurderMystery newEntity() {
         return new MurderMystery();
+    }
+
+    private int tryAddTag(List<String> tagNames) {
+        List<TagDTO> tags = tagNames.stream()
+                .map(tagName -> new TagDTO(tagName, 1, ServiceType.MurderMystery))
+                .toList();
+
+        return tagService.addTags(tags);
     }
 
     private boolean tryRemovePerson(MurderMysteryDTO mm, Long userId, Gender gender) {

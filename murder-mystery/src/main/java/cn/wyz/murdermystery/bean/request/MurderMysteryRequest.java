@@ -19,7 +19,7 @@ public class MurderMysteryRequest extends BaseRequest {
     /**
      * 创建人
      */
-    private Long createBy;
+    private Long createdBy;
 
     /**
      * 剧本杀状态

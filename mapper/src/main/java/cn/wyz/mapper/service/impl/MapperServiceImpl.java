@@ -13,7 +13,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -34,8 +33,7 @@ public abstract class MapperServiceImpl
         implements MapperService<Entity, DTO> {
 
     @Resource
-    @Getter
-    private SystemProvider systemProvider;
+    protected SystemProvider systemProvider;
 
     @Override
     public <Query extends BaseRequest> List<DTO> queryAll(Query query) {
@@ -131,7 +129,7 @@ public abstract class MapperServiceImpl
         return toDTO(entity);
     }
 
-    private Entity getEntity(Long id) {
+    protected Entity getEntity(Long id) {
         return this.getById(id);
     }
 

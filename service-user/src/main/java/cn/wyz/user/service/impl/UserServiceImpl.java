@@ -66,12 +66,13 @@ public class UserServiceImpl
     }
 
     @Override
-    public void copyProperties(UserDTO dto, User entity) {
+    public User copyProperties(UserDTO dto, User entity) {
         super.copyProperties(dto, entity);
         if (dto.getPassword() != null) {
             String encrypt = EncryptUtils.encrypt16(dto.getPassword());
             entity.setPassword(encrypt);
         }
+        return entity;
     }
 
     @Override

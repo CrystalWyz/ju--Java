@@ -45,7 +45,7 @@ public class MurderMysteryApplyApplyServiceImpl
         for (MurderMysteryApply mma : mmaList) {
             if (mma.getApplyStatus() == ApplyStatus.NEW) {
                 mma.setApplyStatus(ApplyStatus.INVALID);
-                mma.setLastModifiedBy(getSystemProvider().getCurrentUserId());
+                mma.setLastModifiedBy(systemProvider.getCurrentUserId());
                 mma.setUpdateTime(LocalDateTime.now());
             }
         }
@@ -74,7 +74,7 @@ public class MurderMysteryApplyApplyServiceImpl
         if (mma == null || mma.getApplyStatus() != ApplyStatus.NEW) {
             return;
         }
-        Long currentUserId = getSystemProvider().getCurrentUserId();
+        Long currentUserId = systemProvider.getCurrentUserId();
         if (!Objects.equals(mma.getCreatedBy(), currentUserId)) {
             throw new BaseRuntimeException("不能撤销他人的申请");
         }

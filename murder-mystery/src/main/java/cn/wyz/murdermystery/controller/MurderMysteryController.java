@@ -3,6 +3,7 @@ package cn.wyz.murdermystery.controller;
 import cn.wyz.common.anno.Idempotence;
 import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.mapper.controller.BaseController;
+import cn.wyz.mapper.vo.PageResultVO;
 import cn.wyz.murdermystery.bean.MurderMystery;
 import cn.wyz.murdermystery.bean.dto.MurderMysteryDTO;
 import cn.wyz.murdermystery.bean.request.HandleApplyGameReq;
@@ -11,6 +12,7 @@ import cn.wyz.murdermystery.service.MurderMysteryService;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.holder.SecurityContextHolder;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,6 +24,23 @@ import org.springframework.web.bind.annotation.*;
 public class MurderMysteryController
         extends BaseController<MurderMystery, MurderMysteryDTO,
         MurderMysteryRequest, MurderMysteryService> {
+
+
+    /**
+     * 查询所有
+     * <p>
+     * 但是为了安全起见, 查询所有的时候还是限制一千条
+     *
+     * @param page 分页参数
+     * @return 分页结果
+     */
+    @GetMapping(value = {"/current/page"})
+    @ResponseStatus(HttpStatus.PARTIAL_CONTENT)
+    public PageResultVO<MurderMysteryDTO> list(MurderMysteryRequest page) {
+        Long userId = SecurityContextHolder.getContext().getUserId();
+        page.setCreatedBy(userId);
+        return service().page(page);
+    }
 
 
     /**

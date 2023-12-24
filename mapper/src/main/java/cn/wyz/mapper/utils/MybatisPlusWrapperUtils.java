@@ -76,6 +76,7 @@ public class MybatisPlusWrapperUtils {
             Field[] declaredFields = c.getDeclaredFields();
             for (Field field : declaredFields) {
                 String name = field.getName();
+                name = ORMUtils.getDbName(name);
                 try {
                     field.setAccessible(true);
                     Object value = field.get(query);

@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @author wyz
@@ -15,7 +14,7 @@ import java.util.List;
 @Mapper
 public interface MurderMysteryMapper extends CrudMapper<MurderMystery> {
 
-    List<MurderMystery> list(MurderMystery condition);
+//    List<MurderMystery> list(MurderMystery condition);
 
     MurderMystery getUserConflictJoined(@Param("userInfo") LoginContext userInfo, @Param("startTime") LocalDateTime startTime);
 }
