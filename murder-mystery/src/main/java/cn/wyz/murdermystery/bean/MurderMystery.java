@@ -136,8 +136,8 @@ public class MurderMystery extends BaseEntity {
     /**
      * 标签
      *
-     * @see User#getId() User.getId()
+     * @see Tag#getName()
      */
     @TableField(typeHandler = ListTypeHandler.class)
-    private List<Long> tags;
+    private List<String> tags;
 }

@@ -20,6 +20,8 @@ public class ResponseResult<T> {
     }
 
     protected ResponseResult(T data) {
+        this.code = CommonStatusEnum.SUCCESS.getCode();
+        this.message = CommonStatusEnum.SUCCESS.getMessage();
         this.data = data;
     }
 

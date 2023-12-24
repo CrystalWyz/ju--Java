@@ -1,6 +1,7 @@
 package cn.wyz.murdermystery.bean.dto;
 
 import cn.wyz.mapper.bean.dto.BaseDTO;
+import cn.wyz.murdermystery.bean.Tag;
 import cn.wyz.murdermystery.bean.constance.MurderConfigConstance;
 import cn.wyz.murdermystery.type.GameStatus;
 import com.alibaba.fastjson.annotation.JSONField;
@@ -90,8 +91,11 @@ public class MurderMysteryDTO extends BaseDTO {
     @Schema(name = "shopName", description = "店铺名")
     private String shopName;
 
+    /**
+     * @see Tag#getName() 标签名称
+     */
     @Schema(name = "tags", description = "标签")
-    private List<Long> tags = Lists.newArrayList();
+    private List<String> tags = Lists.newArrayList();
 
     /**
      * 获取所有参与者
