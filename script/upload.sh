@@ -27,8 +27,8 @@ delete_old_file_command="rm -rf ${TARGET_DIR}celib ${TARGET_DIR}config ${TARGET_
 
 echo $delete_old_file_command
 # 重启服务命令
-restart_command="sh ${TARGET_DIR}bin/wcs restart"
-echo $restart_command
+stop_command="sh ${TARGET_DIR}bin/wcs stop"
+start_command="sh ${TARGET_DIR}bin/wcs start"
 echc"开始准备对目标服务器 ${IP} 进行操作, 将本地的 ${DIR} 目录上传到 ${TARGET_DIR} 目录下"
 
 # 写一个用scp命令上传文件和文件夹的方法:
@@ -98,16 +98,16 @@ cd "$DIR" || exit
 echo "Files and directories in the target directory:"
 # 开始上传文件
 
-## 1. 上传启动脚本
+# 1. 上传启动脚本
 #scp_upload 'ju/bin'
-## 2. 上传非自己代码的依赖包
+# 2. 上传非自己代码的依赖包
 #scp_upload 'ju/lib'
 
-# 3. 上传自己的代码
+ 3. 上传自己的代码
 scp_upload 'ju/config'
-# 4. 上传自己的核心包
+ 4. 上传自己的核心包
 scp_upload 'ju/celib'
-# 5. 上传启动类
+ 5. 上传启动类
 for file in $(ls); do
   # 如果是 *.jar 就上传服务
   if [[ $file == app*.jar ]]; then
@@ -118,6 +118,7 @@ done
 echo "上传完成!"
 
 echo "开始准备重启服务"
-executorCommand "${restart_command}"
+executorCommand "${stop_command}"
+executorCommand "${start_command}"
 echo "重启完成"
 
