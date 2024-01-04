@@ -32,7 +32,7 @@ public class MurderMysteryApplyApplyServiceImpl
         implements MurderMysteryApplyService {
 
     @Override
-    public int invalidAll(Long gameId) {
+    public int invalidAll(Long gameId, String reason) {
         LOGGER.debug("invalid all MurderMysteryApply, id: {}", gameId);
         MurderMysteryApplyReq req = new MurderMysteryApplyReq();
         req.setGameId(gameId);
@@ -47,6 +47,7 @@ public class MurderMysteryApplyApplyServiceImpl
                 mma.setApplyStatus(ApplyStatus.INVALID);
                 mma.setLastModifiedBy(systemProvider.getCurrentUserId());
                 mma.setUpdateTime(LocalDateTime.now());
+                mma.setRejectReason(reason);
             }
         }
         this.updateBatchById(mmaList);

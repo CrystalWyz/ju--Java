@@ -1,8 +1,6 @@
 package cn.wyz.murdermystery.service.impl;
 
-import cn.wyz.mapper.req.FiledQuery;
 import cn.wyz.mapper.service.impl.MapperServiceImpl;
-import cn.wyz.mapper.type.QueryType;
 import cn.wyz.murdermystery.bean.Tag;
 import cn.wyz.murdermystery.bean.dto.TagDTO;
 import cn.wyz.murdermystery.bean.request.TagRequest;
@@ -28,12 +26,7 @@ public class TagServiceImpl extends MapperServiceImpl<TagMapper, Tag, TagDTO> im
     @Transactional(rollbackFor = Exception.class)
     public int addTags(List<TagDTO> tags) {
         List<String> names = tags.stream().map(TagDTO::getName).toList();
-        TagRequest req = new TagRequest();
-        FiledQuery fq = new FiledQuery();
-        fq.setFiledName("name");
-        fq.setType(QueryType.IN);
-        fq.setValue(names);
-        req.getFiledQueries().add(fq);
+        TagRequest req = TagRequest.findInByNames(names);
         List<TagDTO> exitTags = this.queryAll(req);
         Set<String> exitTagNames = exitTags.stream().map(TagDTO::getName).collect(Collectors.toSet());
 

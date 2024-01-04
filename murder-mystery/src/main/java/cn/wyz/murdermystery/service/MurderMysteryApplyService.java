@@ -19,10 +19,11 @@ public interface MurderMysteryApplyService
      * 作废所有申请
      *
      * @param gameId 剧本杀id {@link cn.wyz.murdermystery.bean.MurderMystery#getId()}
+     * @param reason 作废原因
      * @return
      */
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
-    int invalidAll(Long gameId);
+    int invalidAll(Long gameId, String reason);
 
     /**
      * 作废申请

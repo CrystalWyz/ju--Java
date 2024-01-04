@@ -17,7 +17,7 @@ public interface MurderMysteryService extends MapperService<MurderMystery, Murde
     /**
      * 参加聚本杀: 包括申请加入和直接加入
      *
-     * @param req 参加剧本杀请求参数
+     * @param gameId 参加剧本杀请求参数
      */
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_COMMITTED)
     void join(Long gameId);

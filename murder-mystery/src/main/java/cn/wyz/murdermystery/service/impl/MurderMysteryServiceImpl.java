@@ -149,7 +149,8 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
             throw new BaseRuntimeException("当前游戏状态, 无法处理申请");
         }
         if (mm.isFull()) {
-            murderMysteryApplyService.invalidAll(mm.getId());
+            // 应该在游戏开始的时候, 就把所有的申请失效
+//            murderMysteryApplyService.invalidAll(mm.getId(), "人数已满, 无法处理申请");
             throw new BaseRuntimeException("人数已满, 无法处理申请");
         }
         if (mm.getApplyParticipant().remove(req.getApplyId())) {
@@ -212,7 +213,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         mm.setStatus(GameStatus.DISMISS);
         // 失效所有申请
         if (!CollectionUtils.isEmpty(mm.getApplyParticipant())) {
-            murderMysteryApplyService.invalidAll(id);
+            murderMysteryApplyService.invalidAll(id, "游戏已经解散");
         }
         this.update(mm);
     }
@@ -240,7 +241,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
 
         // FIXME 将下面的逻辑应该通过事件实现解偶
         // 将多余的申请失效
-        murderMysteryApplyService.invalidAll(id);
+        murderMysteryApplyService.invalidAll(id, "人数已满, 无法处理申请");
 
         // 给所有的用户增加游戏常数
         List<Long> allParticipant = mm.getAllParticipant();
