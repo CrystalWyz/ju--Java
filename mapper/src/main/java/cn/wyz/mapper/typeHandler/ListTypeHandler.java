@@ -1,8 +1,11 @@
 package cn.wyz.mapper.typeHandler;
 
+import cn.hutool.json.JSONUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeException;
+import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 import java.util.Arrays;
@@ -13,6 +16,7 @@ import java.util.stream.Collectors;
 /**
  * @author wnx
  */ // 这个 BaseTypeHandler 里的泛型就是你真实要使用的数组类型，这里写成 List<Object> 能少写几个 typeHandler
+@Slf4j
 public class ListTypeHandler extends BaseTypeHandler<List<Object>> {
 
     /**
@@ -86,7 +90,11 @@ public class ListTypeHandler extends BaseTypeHandler<List<Object>> {
             Object[] objects = (Object[]) array.getArray();
             array.free();
             return Arrays.stream(objects).collect(Collectors.toList());
+        } catch (PSQLException e) {
+            // TODO 临时解决方案
+            return JSONUtil.toList(array.toString(), Object.class);
         } catch (Exception ignored) {
+            LOGGER.error("error", ignored);
         }
         return null;
     }

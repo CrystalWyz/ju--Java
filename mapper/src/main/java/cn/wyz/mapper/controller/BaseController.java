@@ -48,9 +48,9 @@ public abstract class BaseController
      * @param page 分页参数
      * @return 分页结果
      */
-    @GetMapping(value = {"/page", ""})
+    @GetMapping({"", "/page"})
     @ResponseStatus(HttpStatus.PARTIAL_CONTENT)
-    public PageResultVO<DTO> list(Query page) {
+    public PageResultVO<DTO> page(Query page) {
         // 为了安全起见, 查询所有的时候还是限制一千条
         if (page.getSize() == null) {
             page.setSize(sizeLimit);

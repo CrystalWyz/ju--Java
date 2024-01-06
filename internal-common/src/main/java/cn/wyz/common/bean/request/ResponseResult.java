@@ -4,11 +4,13 @@ import cn.wyz.common.constant.CommonStatusEnum;
 import cn.wyz.common.exception.Code;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author wangnanxiang
  */
 @Data
-public class ResponseResult<T> {
+public class ResponseResult<T> implements Serializable {
 
     private int code;
 

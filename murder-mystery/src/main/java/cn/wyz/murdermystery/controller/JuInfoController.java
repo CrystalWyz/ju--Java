@@ -9,14 +9,16 @@ import cn.wyz.murdermystery.service.JuInfoService;
 import cn.wyz.user.context.LoginContext;
 import cn.wyz.user.holder.SecurityContextHolder;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author wyzZzz
  * @since 2023-03-12 10:52:41
  */
-@RestController
-@RequestMapping("/api/v1/murderMystery/juInfos")
+//@RestController
+//@RequestMapping("/api/v1/murderMystery/juInfos")
 @Tag(name = "聚接口样例", description = "聚接口样例")
 public class JuInfoController
         extends BaseController<JuInfo, JuInfoDTO, JuInfoRequest, JuInfoService> {

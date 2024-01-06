@@ -1,7 +1,5 @@
 package cn.wyz.mapper.bean.dto;
 
-import com.alibaba.fastjson.serializer.ToStringSerializer;
-import com.alibaba.fastjson2.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;

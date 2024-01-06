@@ -39,7 +39,7 @@
     </logger>
 
     <!-- 定义 cn.wyz 下的日志记录器 -->
-    <logger name="cn.wyz" level="DEBUG" additivity="false">
+    <logger name="cn.wyz" level="TRACE" additivity="false">
         <appender-ref ref="FILE"/>
         <appender-ref ref="CONSOLE"/>
     </logger>

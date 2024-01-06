@@ -68,3 +68,6 @@ Cookie: Authorization={{token-test}}
 PATCH {{host}}murderMysteries/prepare/10
 Cookie: Authorization={{token}}
 
+### 10. 分页查询
+GET {{host}}murderMysteries/page
+Cookie: Authorization={{token}}

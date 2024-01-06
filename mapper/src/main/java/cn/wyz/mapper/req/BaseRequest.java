@@ -29,14 +29,14 @@ public class BaseRequest extends ExtensibleProperties implements Serializable {
     private static final long serialVersionUID = -5829984477493358777L;
 
     /**
-     * 页码
+     * 页码, 默认第一页
      */
-    protected Integer page;
+    protected Integer page = 1;
 
     /**
-     * 每页几条数据
+     * 每页几条数据, 默认 10个
      */
-    protected Integer size;
+    protected Integer size = 10;
 
     /**
      * 排序列表

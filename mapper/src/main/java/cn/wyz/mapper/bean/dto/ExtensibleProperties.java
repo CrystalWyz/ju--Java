@@ -1,6 +1,5 @@
 package cn.wyz.mapper.bean.dto;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -43,7 +42,7 @@ public class ExtensibleProperties implements Serializable {
     @JsonIgnore
     private final HashMap<String, Object> extraProperties = new HashMap<>();
 
-    @JsonAnyGetter
+    //    @JsonAnyGetter
     public Map<String, Object> extraProperties() {
         return extraProperties;
     }
