@@ -98,4 +98,14 @@ public interface MurderMysteryService extends MapperService<MurderMystery, Murde
     @Deprecated
     MurderMysteryDTO tryGetConflictGame(Long userId, Long gameId);
 
+    @Override
+    default MurderMysteryDTO newDTO() {
+        return new MurderMysteryDTO();
+    }
+
+    @Override
+    default MurderMystery newEntity() {
+        return new MurderMystery();
+    }
+
 }

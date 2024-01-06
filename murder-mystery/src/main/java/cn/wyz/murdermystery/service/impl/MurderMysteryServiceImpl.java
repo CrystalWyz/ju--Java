@@ -71,8 +71,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         tryAddPerson(dto, context.getUserId(), context.getGender());
         dto.setStatus(GameStatus.NEW);
         MurderMysteryDTO res = super.add(dto);
-        List<String> tagNames = dto.getTags();
-        tryAddTag(tagNames);
+        tryAddTag(dto);
         return res;
     }
 
@@ -82,24 +81,17 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         MurderMystery entity = getEntity(id);
 
         // TODO 判断修改的属性, 在当前的游戏状态下能否修改
-
         copyProperties(dto, entity);
 
         entity.setUpdateTime(LocalDateTime.now());
         entity.setLastModifiedBy(systemProvider.getCurrentUserId());
-
+        // 修改标签
+        tryAddTag(dto);
 
         boolean update = this.updateById(entity);
         return update
                 ? toDTO(entity)
                 : null;
-    }
-
-    private void timeConflictCheck(LoginContext userInfo, LocalDateTime startTime) {
-        MurderMystery murderMystery = baseMapper.getUserConflictJoined(userInfo, startTime);
-        if (ObjectUtils.isNotEmpty(murderMystery)) {
-            throw new AppException(CommonStatusEnum.FAIL, "时间冲突:" + murderMystery.getTitle());
-        }
     }
 
     @Override
@@ -392,17 +384,15 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         return null;
     }
 
-    @Override
-    public MurderMysteryDTO newDTO() {
-        return new MurderMysteryDTO();
+    private void timeConflictCheck(LoginContext userInfo, LocalDateTime startTime) {
+        MurderMystery murderMystery = baseMapper.getUserConflictJoined(userInfo, startTime);
+        if (ObjectUtils.isNotEmpty(murderMystery)) {
+            throw new AppException(CommonStatusEnum.FAIL, "时间冲突:" + murderMystery.getTitle());
+        }
     }
 
-    @Override
-    public MurderMystery newEntity() {
-        return new MurderMystery();
-    }
-
-    private int tryAddTag(List<String> tagNames) {
+    private int tryAddTag(MurderMysteryDTO dto) {
+        List<String> tagNames = dto.getTags();
         List<TagDTO> tags = tagNames.stream()
                 .map(tagName -> new TagDTO(tagName, 1, ServiceType.MurderMystery))
                 .toList();
