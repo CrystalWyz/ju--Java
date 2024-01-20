@@ -27,7 +27,7 @@ import java.util.Objects;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class MurderMysteryApplyApplyServiceImpl
+public class MurderMysteryApplyServiceImpl
         extends MapperServiceImpl<MurderMysteryApplyMapper, MurderMysteryApply, MurderMysteryApplyDTO>
         implements MurderMysteryApplyService {
 

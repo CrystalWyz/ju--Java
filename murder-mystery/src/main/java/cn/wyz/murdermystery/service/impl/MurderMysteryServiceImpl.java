@@ -10,10 +10,8 @@ import cn.wyz.mapper.req.FiledQuery;
 import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import cn.wyz.mapper.type.QueryType;
 import cn.wyz.murdermystery.bean.MurderMystery;
-import cn.wyz.murdermystery.bean.dto.BlemishDetailDTO;
-import cn.wyz.murdermystery.bean.dto.MurderMysteryApplyDTO;
-import cn.wyz.murdermystery.bean.dto.MurderMysteryDTO;
-import cn.wyz.murdermystery.bean.dto.TagDTO;
+import cn.wyz.murdermystery.bean.MurderMysteryUser;
+import cn.wyz.murdermystery.bean.dto.*;
 import cn.wyz.murdermystery.bean.request.HandleApplyGameReq;
 import cn.wyz.murdermystery.bean.request.MurderMysteryRequest;
 import cn.wyz.murdermystery.bo.MurderMysteryJoinBO;
@@ -25,6 +23,7 @@ import cn.wyz.murdermystery.type.ApplyStatus;
 import cn.wyz.murdermystery.type.BlemishDetailType;
 import cn.wyz.murdermystery.type.GameStatus;
 import cn.wyz.murdermystery.type.ServiceType;
+import cn.wyz.user.bean.User;
 import cn.wyz.user.bean.dto.UserDTO;
 import cn.wyz.user.constant.Gender;
 import cn.wyz.user.context.LoginContext;
@@ -33,13 +32,17 @@ import cn.wyz.user.service.UserService;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author wyz
@@ -466,5 +469,63 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         mm.getApplyParticipant().add(ja.getGameId());
     }
 
+    @Override
+    public MurderMysteryDTO get(Long id) {
 
+        // 获取剧本杀详情
+        MurderMystery murderMystery = getById(id);
+        MurderMysteryDTO murderMysteryDTO = toDTO(murderMystery);
+
+        // 获取用户信息
+        Collection<Long> participants = CollectionUtils.union(murderMystery.getBoyParticipant(), murderMystery.getGirlParticipant());
+        // 用户主表查询
+        Map<Long, User> userMap = userService.listByIds(participants)
+                .stream()
+                .collect(Collectors.toMap(User::getId, Function.identity()));
+        // 剧本杀用户表查询
+        Map<Long, MurderMysteryUser> murderMysteryUserMap = murderMysteryUserService.listByIds(participants)
+                .stream()
+                .collect(Collectors.toMap(MurderMysteryUser::getId, Function.identity()));
+
+        // 信息组装
+        List<MurderMysteryUserDTO> boyParticipants = murderMystery.getBoyParticipant().stream()
+                .map(userId -> {
+                    User user = userMap.get(userId);
+                    MurderMysteryUser murderMysteryUser = murderMysteryUserMap.get(userId);
+
+                    MurderMysteryUserDTO murderMysteryUserDTO = new MurderMysteryUserDTO();
+                    murderMysteryUserDTO.setUserId(userId);
+                    murderMysteryUserDTO.setUsername(user.getUsername());
+                    murderMysteryUserDTO.setGender(user.getGender());
+                    if (ObjectUtils.isNotEmpty(murderMysteryUser)) {
+                        murderMysteryUserDTO.setGrade(murderMysteryUser.getGrade());
+                        murderMysteryUserDTO.setCount(murderMysteryUser.getCount());
+                        murderMysteryUserDTO.setBlemishCount(murderMysteryUser.getBlemishCount());
+                    }
+
+
+                    return murderMysteryUserDTO;
+                }).toList();
+        List<MurderMysteryUserDTO> girlParticipants = murderMystery.getGirlParticipant().stream()
+                .map(userId -> {
+                    User user = userMap.get(userId);
+                    MurderMysteryUser murderMysteryUser = murderMysteryUserMap.get(userId);
+
+                    MurderMysteryUserDTO murderMysteryUserDTO = new MurderMysteryUserDTO();
+                    murderMysteryUserDTO.setUserId(userId);
+                    murderMysteryUserDTO.setUsername(user.getUsername());
+                    murderMysteryUserDTO.setGender(user.getGender());
+                    if (ObjectUtils.isNotEmpty(murderMysteryUser)) {
+                        murderMysteryUserDTO.setGrade(murderMysteryUser.getGrade());
+                        murderMysteryUserDTO.setCount(murderMysteryUser.getCount());
+                        murderMysteryUserDTO.setBlemishCount(murderMysteryUser.getBlemishCount());
+                    }
+
+                    return murderMysteryUserDTO;
+                }).toList();
+        murderMysteryDTO.setBoyParticipants(boyParticipants);
+        murderMysteryDTO.setGirlParticipants(girlParticipants);
+
+        return murderMysteryDTO;
+    }
 }

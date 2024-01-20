@@ -95,6 +95,12 @@ public class MurderMysteryDTO extends BaseDTO {
     @Schema(name = "tags", description = "标签")
     private List<String> tags = Lists.newArrayList();
 
+    @Schema(name = "boyParticipants", description = "男生参与者信息")
+    private List<MurderMysteryUserDTO> boyParticipants;
+
+    @Schema(name = "girlParticipants", description = "女生参与者信息")
+    private List<MurderMysteryUserDTO> girlParticipants;
+
     /**
      * 获取所有参与者
      *

@@ -3,10 +3,7 @@ package cn.wyz.murdermystery.bean.dto;
 import cn.wyz.mapper.bean.dto.BaseDTO;
 import cn.wyz.murdermystery.bean.MurderMystery;
 import cn.wyz.murdermystery.type.ApplyStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * 剧本杀申请记录
@@ -14,6 +11,7 @@ import lombok.NoArgsConstructor;
  * @author zhouzhitong
  * @since 2023-11-06
  **/
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
