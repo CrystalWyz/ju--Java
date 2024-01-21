@@ -488,6 +488,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
                 .collect(Collectors.toMap(MurderMysteryUser::getId, Function.identity()));
 
         // 信息组装
+        murderMysteryDTO.setCreateUsername(userMap.get(murderMysteryDTO.getCreatedBy()).getUsername());
         List<MurderMysteryUserDTO> boyParticipants = murderMystery.getBoyParticipant().stream()
                 .map(userId -> {
                     User user = userMap.get(userId);

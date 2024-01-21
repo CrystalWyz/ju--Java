@@ -101,6 +101,9 @@ public class MurderMysteryDTO extends BaseDTO {
     @Schema(name = "girlParticipants", description = "女生参与者信息")
     private List<MurderMysteryUserDTO> girlParticipants;
 
+    @Schema(name = "createUsername", description = "创建人")
+    private String createUsername;
+
     /**
      * 获取所有参与者
      *
