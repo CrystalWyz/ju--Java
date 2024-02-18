@@ -69,5 +69,5 @@ PATCH {{host}}murderMysteries/prepare/10
 Cookie: Authorization={{token}}
 
 ### 10. 分页查询
-GET {{host}}murderMysteries/page?size=2&page=1
+GET {{host}}murderMysteries?page=2&size=8
 Cookie: Authorization={{token}}

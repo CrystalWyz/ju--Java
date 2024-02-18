@@ -74,8 +74,7 @@ public class BaseRequest extends ExtensibleProperties implements Serializable {
      * @return 分页对象
      */
     public <Entity> Page<Entity> buildPage() {
-//        return new Page<>(page - 1, size, true);
-        return new Page<>((long) page * size, size, true);
+        return new Page<>(page, size, true);
     }
 
     public void setSorts(String sorts) {
