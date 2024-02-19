@@ -10,8 +10,8 @@ import cn.wyz.mapper.req.BaseRequest;
 import cn.wyz.mapper.service.MapperService;
 import cn.wyz.mapper.vo.PageResultVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,14 +47,12 @@ public abstract class MapperServiceImpl
     public <Query extends BaseRequest> PageResultVO<DTO> page(Query query) {
         LOGGER.trace("page request: {}", query);
         QueryWrapper<Entity> wrapper = buildQuery(query);
-        Page<Entity> objectPage = query.buildPage();
-        List<Entity> records;
         // 在查询之前调用 PageHelper.startPage() 方法设置分页参数
-        page(objectPage, wrapper);
-        records = objectPage.getRecords();
+        com.github.pagehelper.Page<Entity> objectPage = PageHelper.startPage(query.getPage(), query.getSize());
+        List<Entity> list = list(wrapper);
 
         PageInfo pageInfo = new PageInfo(objectPage.getTotal(), query.size(), query.page());
-        List<DTO> dtoList = records.stream().map(this::toDTO).toList();
+        List<DTO> dtoList = list.stream().map(this::toDTO).toList();
         return PageResultVO.ok(dtoList, pageInfo);
     }
 
