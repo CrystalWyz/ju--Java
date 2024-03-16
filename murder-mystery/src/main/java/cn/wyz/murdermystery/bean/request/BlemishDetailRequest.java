@@ -11,4 +11,10 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 public class BlemishDetailRequest extends BaseRequest {
+
+    /**
+     * 用户id
+     */
+    private Long userId;
+
 }

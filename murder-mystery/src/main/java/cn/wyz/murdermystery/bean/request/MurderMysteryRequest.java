@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * @author wyz
  */
@@ -17,6 +19,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @Schema(name = "MurderMysteryPageRequest", description = "剧本杀分页查询请求")
 public class MurderMysteryRequest extends BaseRequest {
+
+    /**
+     * 游戏编号 id
+     */
+    private Long id;
 
     /**
      * 创建人
@@ -32,4 +39,26 @@ public class MurderMysteryRequest extends BaseRequest {
      * 剧本杀标题
      */
     private String title;
+
+    /**
+     * 操作人
+     */
+    private Long userId;
+
+    /**
+     * 是否满员
+     */
+    private boolean full = false;
+
+    /**
+     * 缺席人员
+     */
+    private List<Long> absentees;
+
+    /**
+     * 到场人员
+     */
+    private List<Long> attendees;
+
+
 }

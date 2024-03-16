@@ -2,7 +2,7 @@
 GET {{host}}murderMysteries/current/page?size=10&page=0
 
 
-### 新增实体 murderMystery
+### 新增实体 murderMysteries
 POST {{host}}murderMysteries
 Content-Type: application/json;charset=UTF-8
 Cookie: Authorization={{token}}
@@ -19,7 +19,7 @@ Cookie: Authorization={{token}}
 }
 
 ### 修改实体 JuInfo
-PUT {{host}}murderMystery/1
+PUT {{host}}murderMysteries/1
 Content-Type: application/json;charset=UTF-8
 Cookie: Authorization={{token}}
 
@@ -36,13 +36,13 @@ Cookie: Authorization={{token}}
 }
 
 ### 3. 删除实体 JuInfo
-DELETE {{host}}murderMystery/1
+DELETE {{host}}murderMysteries/1
 
 ### 4. 查询实体
-GET {{host}}murderMystery/1
+GET {{host}}murderMysteries/10
 
-### 5. 查询murderMystery列表
-GET {{host}}murderMystery
+### 5. 查询murderMysteries列表
+GET {{host}}murderMysteries
 Cookie: Authorization={{token}}
 
 ### 6. 加入剧本杀

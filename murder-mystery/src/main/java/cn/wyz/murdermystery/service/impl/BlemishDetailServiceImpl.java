@@ -3,11 +3,14 @@ package cn.wyz.murdermystery.service.impl;
 import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import cn.wyz.murdermystery.bean.BlemishDetail;
 import cn.wyz.murdermystery.bean.dto.BlemishDetailDTO;
+import cn.wyz.murdermystery.bean.request.BlemishDetailRequest;
 import cn.wyz.murdermystery.mapper.BlemishDetailMapper;
 import cn.wyz.murdermystery.service.BlemishDetailService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -25,12 +28,11 @@ public class BlemishDetailServiceImpl
         implements BlemishDetailService {
 
     @Override
-    public BlemishDetailDTO newDTO() {
-        return new BlemishDetailDTO();
+    public List<BlemishDetailDTO> getByUserId(Long userId) {
+        LOGGER.debug("query blemish detail by userId {}", userId);
+        BlemishDetailRequest req = new BlemishDetailRequest();
+        req.setUserId(userId);
+        return queryAll(req);
     }
 
-    @Override
-    public BlemishDetail newEntity() {
-        return new BlemishDetail();
-    }
 }

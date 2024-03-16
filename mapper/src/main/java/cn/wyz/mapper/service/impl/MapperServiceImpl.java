@@ -37,7 +37,7 @@ public abstract class MapperServiceImpl
 
     @Override
     public <Query extends BaseRequest> List<DTO> queryAll(Query query) {
-        LOGGER.trace("queryAll request: {}", query);
+        LOGGER.debug("queryAll request: {}", query);
         QueryWrapper<Entity> wrapper = buildQuery(query);
         List<Entity> list = this.list(wrapper);
         return list.stream().map(this::toDTO).toList();
@@ -45,7 +45,7 @@ public abstract class MapperServiceImpl
 
     @Override
     public <Query extends BaseRequest> PageResultVO<DTO> page(Query query) {
-        LOGGER.trace("page request: {}", query);
+        LOGGER.debug("page request: {}", query);
         QueryWrapper<Entity> wrapper = buildQuery(query);
         // 在查询之前调用 PageHelper.startPage() 方法设置分页参数
         com.github.pagehelper.Page<Entity> objectPage = PageHelper.startPage(query.getPage(), query.getSize());
@@ -113,13 +113,13 @@ public abstract class MapperServiceImpl
 
     @Override
     public <Query extends BaseRequest> long count(Query query) {
-        LOGGER.trace("count request: {}", query);
+        LOGGER.debug("count request: {}", query);
         return this.count(buildQuery(query));
     }
 
     @Override
     public DTO get(Long id) {
-        LOGGER.trace("get request: {}", id);
+        LOGGER.debug("get request: {}", id);
         Entity entity = getEntity(id);
         if (entity == null) {
             throw new NotFoundResourceException();

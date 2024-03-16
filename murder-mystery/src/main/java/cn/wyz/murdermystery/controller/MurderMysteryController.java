@@ -122,9 +122,19 @@ public class MurderMysteryController
      */
     @Idempotence
     @PatchMapping("/start/{juInfoId}")
-    public ResponseResult<Void> start(@PathVariable("juInfoId") Long juInfoId) {
+    public ResponseResult<Void> start(@PathVariable("juInfoId") Long juInfoId, @RequestBody MurderMysteryRequest req) {
+        if (req == null) {
+            req = new MurderMysteryRequest();
+        }
         LoginContext context = SecurityContextHolder.getContext();
         Long userId = context.getUserId();
+        req.setId(juInfoId);
+        req.setUserId(userId);
+
+        // TODO
+        // TODO
+        // TODO
+
         service().startGame(juInfoId, userId);
         return ResponseResult.success();
     }
@@ -136,7 +146,7 @@ public class MurderMysteryController
      */
     @Idempotence
     @PatchMapping("/finish/{juInfoId}")
-    public ResponseResult<Void> finish(@PathVariable("juInfoId") Long juInfoId) {
+    public ResponseResult<Void> finish(@PathVariable("juInfoId") Long juInfoId, @RequestBody MurderMysteryRequest req) {
         LoginContext context = SecurityContextHolder.getContext();
         Long userId = context.getUserId();
         service().finishGame(juInfoId, userId);

@@ -4,6 +4,8 @@ import cn.wyz.mapper.service.MapperService;
 import cn.wyz.murdermystery.bean.BlemishDetail;
 import cn.wyz.murdermystery.bean.dto.BlemishDetailDTO;
 
+import java.util.List;
+
 /**
  * <p>
  * 服务类
@@ -14,5 +16,24 @@ import cn.wyz.murdermystery.bean.dto.BlemishDetailDTO;
  */
 public interface BlemishDetailService
         extends MapperService<BlemishDetail, BlemishDetailDTO> {
+
+    /**
+     * 根据
+     *
+     * @param userId
+     * @return
+     */
+    List<BlemishDetailDTO> getByUserId(Long userId);
+
+
+    @Override
+    default BlemishDetailDTO newDTO() {
+        return new BlemishDetailDTO();
+    }
+
+    @Override
+    default BlemishDetail newEntity() {
+        return new BlemishDetail();
+    }
 
 }
