@@ -1,7 +1,11 @@
 spring:
   profiles:
     include: jdbc, ju
-map:
+  #  mvc:
+  #    static-path-pattern: /static/**
+  #  resources:
+  #    static-locations: classpath:/static/
+  #    add-mappings: false
   api-key:
     - 608d75903d29ad471362f8c58c550daf # 高德地图api key
     - 1bca1463cddb6a7c6906aae053e256ad # 自己的高德地图api key

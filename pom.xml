@@ -49,6 +49,7 @@
         <module>service-user</module>
         <module>app</module>
         <module>mapper</module>
+        <module>service-file</module>
     </modules>
 
     <dependencies>
@@ -133,6 +134,11 @@
             <dependency>
                 <groupId>cn.wyz</groupId>
                 <artifactId>murder-mystery</artifactId>
+                <version>${reversion}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.wyz</groupId>
+                <artifactId>service-file</artifactId>
                 <version>${reversion}</version>
             </dependency>
             <dependency>

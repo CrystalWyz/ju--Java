@@ -4,6 +4,7 @@ ju:
     logoutUrl: '/**/logout'
     ignoreUrls:
       - '/error'
+      - '/static/**'
       - '/swagger-ui/**'
       - '/v3/api-docs/**'
       - '/api/v1/authorities/oneClickLogin'
