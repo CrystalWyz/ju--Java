@@ -48,7 +48,7 @@ public class MurderMysteryRequest extends BaseRequest {
     /**
      * 是否满员
      */
-    private boolean full = false;
+//    private boolean full = false;
 
     /**
      * 缺席人员
