@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName
+@TableName(value = "murder_mystery_user_game_attribute")
 public class MurderMysteryUserGameAttribute extends BaseEntity {
 
     private Long userId;

@@ -11,12 +11,14 @@ $!{define.vm}
 #setPackageSuffix("service")
 
 import cn.wyz.mapper.service.MapperService;
-import $!{tableInfo.savePackageName}.entity.$!tableInfo.name;
+import $!{tableInfo.savePackageName}.bean.$!tableInfo.name;
 import $!{tableInfo.savePackageName}.dto.$!{tableInfo.name}DTO;
 
-##表注释（宏定义）
-#tableComment("表服务接口")
+    ##表注释（宏定义）
+    #tableComment("表服务接口")
 public interface $!{tableName}
-extends MapperService<$!tableInfo.name, $!{tableInfo.name}DTO> {
+extends MapperService
 
-        }
+<$!tableInfo.name, $!{tableInfo.name}DTO> {
+
+}

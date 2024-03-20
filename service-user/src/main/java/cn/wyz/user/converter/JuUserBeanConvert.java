@@ -1,7 +1,7 @@
 package cn.wyz.user.converter;
 
-import cn.wyz.user.bean.dto.UserTokenDTO;
-import cn.wyz.user.bean.vo.UserTokenVO;
+import cn.wyz.user.dto.UserTokenDTO;
+import cn.wyz.user.vo.UserTokenVO;
 import org.mapstruct.Mapper;
 
 /**

@@ -11,10 +11,12 @@ $!{define.vm}
 #setPackageSuffix("mapper")
 
 import cn.wyz.mapper.mapper.CrudMapper;
-import $!{tableInfo.savePackageName}.entity.$!tableInfo.name;
+import $!{tableInfo.savePackageName}.bean .$!tableInfo.name;
 
-##表注释（宏定义）
-#tableComment("表数据库访问层")
-public interface $!{tableName} extends CrudMapper<$!tableInfo.name> {
+    ##表注释（宏定义）
+    #tableComment("表数据库访问层")
+public interface $!{tableName} extends CrudMapper
 
-        }
+<$!tableInfo.name> {
+
+}

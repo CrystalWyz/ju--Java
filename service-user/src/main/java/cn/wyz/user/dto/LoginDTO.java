@@ -1,4 +1,4 @@
-package cn.wyz.user.bean.dto;
+package cn.wyz.user.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

@@ -5,22 +5,26 @@ import cn.wyz.mapper.gen.config.FieldTypeMap;
 import cn.wyz.mapper.gen.config.GenDdlConfig;
 import cn.wyz.mapper.gen.utils.PackageUtil;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Description;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
 
 /**
  * @author zhouzhitong
@@ -31,14 +35,21 @@ import java.util.List;
 public class DdlSqlCreateService {
     private final GenDdlConfig config = new GenDdlConfig();
 
-    @Value("${ju.ddl-create.genFilePath: /config/ddl.sql}")
+    @Value("${ju.ddl-create.genFilePath: /config/}")
     private String ddlSqlPath;
 
     @Value("${ju.ddl-create.isCreateAllDdlSql: false}")
     private Boolean isCreateAllDdlSql;
 
+    @Autowired
+    private DataSource dataSource;
+
+    private Statement statement;
+
+
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
+        statement = dataSource.getConnection().createStatement();
         if (!isCreateAllDdlSql) {
             LOGGER.info("自动生成DDL SQL功能未开启. 如果需要该功能, 请添加配置 'ju.ddl-create.isCreateAllDdlSql: true'");
             return;
@@ -49,25 +60,34 @@ public class DdlSqlCreateService {
         if (!ddlSqlPath.startsWith("/")) {
             userDir += "/";
         }
-        String filePath = userDir + ddlSqlPath;
+        String filePath = userDir + ddlSqlPath + "create_ddl.sql";
+        String updateFilePath = userDir + ddlSqlPath + "update_ddl.sql";
 
         BufferedWriter bw = getFileOutputStream(filePath);
+        BufferedWriter updateBw = getFileOutputStream(updateFilePath);
 
 
         List<Class<?>> subClasses = PackageUtil.getSubClasses(BaseEntity.class);
         for (Class<?> subClass : subClasses) {
+            LOGGER.info("开始生成: {}", subClass.getName());
             String ddlSql = createDdlSql((Class<? extends BaseEntity>) subClass);
-            try {
-                bw.write("-- " + subClass.getName() + "\n");
-                bw.write(ddlSql);
-                bw.write("\n\n");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            String updateDdlSql = updateDdl((Class<? extends BaseEntity>) subClass);
+            bw.write("-- " + subClass.getName() + "\n");
+            bw.write(ddlSql);
+            bw.write("\n");
+
+            if (updateDdlSql != null) {
+                updateBw.write("-- " + subClass.getName() + "\n");
+                updateBw.write(updateDdlSql);
+                updateBw.write("\n");
             }
+
         }
         try {
             bw.flush();
             bw.close();
+            updateBw.flush();
+            updateBw.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -82,11 +102,76 @@ public class DdlSqlCreateService {
         }
     }
 
+    private String updateDdl(Class<? extends BaseEntity> target) throws SQLException {
+        String tableName = getTableName(target);
+        // 去掉 tableName 的引号
+        String tableNameSub = tableName.substring(1, tableName.length() - 1);
+
+        // 判断表是否存在
+        String sql = "SELECT * FROM information_schema.tables WHERE table_name = '" + tableNameSub + "';";
+
+        ResultSet rs = statement.executeQuery(sql);
+        if (!rs.next()) {
+            return null;
+        }
+
+        // 此时表存在, 开始获取表的字段信息
+        sql = "SELECT column_name, data_type, column_default, is_nullable FROM information_schema.columns WHERE table_name = '" + tableNameSub + "';";
+        rs = statement.executeQuery(sql);
+        // 存放数据库中的字段信息
+        Map<String, String> dbFieldMap = new HashMap<>();
+        while (rs.next()) {
+            String columnName = rs.getString("column_name");
+            String dataType = rs.getString("data_type");
+            dbFieldMap.put(columnName, dataType);
+        }
+
+        // 获取实体类的字段信息
+        List<Field> allFields = getAllFieldsAndBase(target);
+        StringBuilder sqlBuilder = new StringBuilder();
+        // 遍历所有字段, 处理新增字段
+        for (Field field : allFields) {
+            String fieldName = getUnderlineName(field.getName());
+            if (!dbFieldMap.containsKey(fieldName)) {
+                // 新增字段
+                Class<?> type = field.getType();
+                FieldTypeMap fieldTypeMap = config.get(type);
+                if (fieldTypeMap == null) {
+                    throw new RuntimeException("未知的字段类型: " + type);
+                }
+                Class<?> subType = getGenericTypeName(field);
+
+                String typeStr = fieldTypeMap.getType(subType);
+                if (typeStr == null) {
+                    throw new RuntimeException("未知的子字段类型: " + type + " subType: " + subType);
+                }
+                sqlBuilder.append("ALTER TABLE ").append(tableName).append(" ADD COLUMN ").append(fieldName).append(" ").append(typeStr).append(";\n");
+            }
+        }
+
+        // 遍历所有字段, 处理删除字段
+        for (String fieldName : dbFieldMap.keySet()) {
+            boolean isExist = false;
+            for (Field field : allFields) {
+                String name = getUnderlineName(field.getName());
+                if (name.equals(fieldName)) {
+                    isExist = true;
+                    break;
+                }
+            }
+            if (!isExist) {
+                sqlBuilder.append("ALTER TABLE ").append(tableName).append(" DROP COLUMN ").append(fieldName).append(";\n");
+            }
+        }
+
+        return sqlBuilder.toString();
+    }
+
     public String createDdlSql(Class<? extends BaseEntity> c) {
         StringBuilder sql = new StringBuilder();
 
         String tableName = getTableName(c);
-        sql.append("CREATE TABLE ").append(tableName).append(" (").append("\n");
+        sql.append("CREATE TABLE  IF NOT EXISTS ").append(tableName).append(" (").append("\n");
         sql.append(genBaseDdlSql());
 
         List<Field> allFields = getAllFields(c);
@@ -119,16 +204,6 @@ public class DdlSqlCreateService {
         }
         // 开始添加注释
         sql.append(genBaseDdlSqlComment(tableName));
-
-        // TODO 字段注释, 从字段的注释中获取
-//        for (Field allField : allFields) {
-//            String fieldName = getUnderlineName(allField.getName());
-//            String comment = allField.getAnnotation(TableField.class).value();
-//            if (!comment.isBlank()) {
-//                sql.append("comment on column ").append(tableName).append(".").append(fieldName).append(" is '").append(comment).append("';").append("\n");
-//            }
-//        }
-
         return sql.toString();
     }
 
@@ -143,11 +218,7 @@ public class DdlSqlCreateService {
     }
 
     private String genBaseDdlSqlComment(String tableName) {
-        return "comment on column " + tableName + ".id is '主键';" + "\n" +
-                "comment on column " + tableName + ".create_time is '创建时间';" + "\n" +
-                "comment on column " + tableName + ".update_time is '更新时间';" + "\n" +
-                "comment on column " + tableName + ".created_by is '创建人';" + "\n" +
-                "comment on column " + tableName + ".last_modified_by is '最后修改人';" + "\n";
+        return "comment on column " + tableName + ".id is '主键';" + "\n" + "comment on column " + tableName + ".create_time is '创建时间';" + "\n" + "comment on column " + tableName + ".update_time is '更新时间';" + "\n" + "comment on column " + tableName + ".created_by is '创建人';" + "\n" + "comment on column " + tableName + ".last_modified_by is '最后修改人';" + "\n";
     }
 
     private String getTableComment(Class<? extends BaseEntity> c) {
@@ -159,14 +230,26 @@ public class DdlSqlCreateService {
     }
 
     private String getTableName(Class<? extends BaseEntity> c) {
+        String tableName = null;
         TableName annotation = c.getAnnotation(TableName.class);
         if (annotation == null || StringUtils.isBlank(annotation.value())) {
             // 类名的驼峰转下划线
             String name = c.getSimpleName();
-            return getUnderlineName(name);
+            tableName = getUnderlineName(name);
+        } else {
+            tableName = annotation.value();
         }
 
-        return annotation.value();
+
+        tableName = tableName.trim();
+        // 填充 "" 防止表名为关键字
+        if (!tableName.startsWith("\"")) {
+            tableName = "\"" + tableName;
+        }
+        if (!tableName.endsWith("\"")) {
+            tableName = tableName + "\"";
+        }
+        return tableName;
     }
 
     private List<Field> getAllFields(Class<?> c) {
@@ -174,6 +257,23 @@ public class DdlSqlCreateService {
         while (c != BaseEntity.class) {
             Field[] fields = c.getDeclaredFields();
             allFields.addAll(Arrays.asList(fields));
+            c = c.getSuperclass();
+        }
+        return allFields;
+    }
+
+    protected List<Field> getAllFieldsAndBase(Class<?> c) {
+        List<Field> allFields = new LinkedList<>();
+        while (c != Model.class && c != Object.class) {
+            Field[] fields = c.getDeclaredFields();
+
+            for (Field field : fields) {
+                // 过滤掉静态字段
+                if (field.isSynthetic() || field.getName().contains("serialVersionUID")) {
+                    continue;
+                }
+                allFields.add(field);
+            }
             c = c.getSuperclass();
         }
         return allFields;

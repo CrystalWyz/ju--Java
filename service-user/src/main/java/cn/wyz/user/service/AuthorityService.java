@@ -1,10 +1,10 @@
 package cn.wyz.user.service;
 
 import cn.wyz.common.bean.response.TokenResponseDTO;
-import cn.wyz.user.bean.dto.LoginDTO;
-import cn.wyz.user.bean.dto.OneClickLoginDTO;
-import cn.wyz.user.bean.dto.UserTokenDTO;
-import cn.wyz.user.bean.vo.UserInfoVO;
+import cn.wyz.user.dto.LoginDTO;
+import cn.wyz.user.dto.OneClickLoginDTO;
+import cn.wyz.user.dto.UserTokenDTO;
+import cn.wyz.user.vo.UserInfoVO;
 
 /**
  * 登录服务: 登录、刷新token、退出登录

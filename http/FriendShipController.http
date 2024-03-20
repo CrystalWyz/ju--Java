@@ -1,0 +1,32 @@
+### 1. 新增 friendShip 实体
+POST {{host}}friendShips
+Content-Type: application/json;charset=UTF-8
+
+{
+  "userIdFrom": Long,
+  "userIdTo": Long,
+  "friendType": Integer,
+  "nickName": String
+}
+
+### 2. 修改 friendShip 实体
+PUT {{host}}friendShips/1
+Content-Type: application/json;charset=UTF-8
+
+{
+  "userIdFrom": Long,
+  "userIdTo": Long,
+  "friendType": Integer,
+  "nickName": String,
+}
+
+### 3. 删除 friendShip 实体
+DELETE {{host}}friendShips/1
+
+###4. 查询 friendShip 实体
+GET {{host}}friendShips/1
+
+### 5. 查询 friendShip 实体列表
+GET {{host}}friendShips?page=2&size=1&sorts=id desc
+Content-Type: text/plain
+

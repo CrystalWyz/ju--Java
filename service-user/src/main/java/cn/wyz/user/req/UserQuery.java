@@ -1,4 +1,4 @@
-package cn.wyz.user.bean.req;
+package cn.wyz.user.req;
 
 import cn.wyz.mapper.req.BaseRequest;
 import cn.wyz.mapper.req.FiledQuery;

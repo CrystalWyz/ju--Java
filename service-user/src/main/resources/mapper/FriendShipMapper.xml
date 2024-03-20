@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wyz.user.mapper.FriendShipMapper">
+    <resultMap type="cn.wyz.user.bean.FriendShip" id="FriendShipMap">
+        <result property="id" column="id"
+                jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time"
+                jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time"
+                jdbcType="TIMESTAMP"/>
+        <result property="createdBy" column="created_by"
+                jdbcType="VARCHAR"/>
+        <result property="lastModifiedBy" column="last_modified_by"
+                jdbcType="VARCHAR"/>
+        <result property="userIdFrom" column="user_id_from"
+                jdbcType="INTEGER"/>
+        <result property="userIdTo" column="user_id_to"
+                jdbcType="INTEGER"/>
+        <result property="friendType" column="friend_type"
+                jdbcType="INTEGER"/>
+        <result property="nickName" column="nick_name"
+                jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="column">
+        `id`,
+ 
+ `create_time`,
+ 
+ `update_time`,
+ 
+ `created_by`,
+ 
+ `last_modified_by`,
+ 
+ `user_id_from`,
+ 
+ `user_id_to`,
+ 
+ `friend_type`,
+ 
+ `nick_name`
+    </sql>
+
+    <sql id="where">
+        <where>
+            <if test="id != null">
+                and `id` = #{id}
+            </if>
+            <if test="createTime != null">
+                and `create_time` = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and `update_time` = #{updateTime}
+            </if>
+            <if test="createdBy != null">
+                and `created_by` = #{createdBy}
+            </if>
+            <if test="lastModifiedBy != null">
+                and `last_modified_by` = #{lastModifiedBy}
+            </if>
+            <if test="userIdFrom != null">
+                and `user_id_from` = #{userIdFrom}
+            </if>
+            <if test="userIdTo != null">
+                and `user_id_to` = #{userIdTo}
+            </if>
+            <if test="friendType != null">
+                and `friend_type` = #{friendType}
+            </if>
+            <if test="nickName != null">
+                and `nick_name` = #{nickName}
+            </if>
+            <if test="sorts != null and sorts.size > 0)">
+                order by
+                <foreach collection="sorts" item="sort" separator=", ">
+                    `#{sort.column}` #{sort.sort}
+                </foreach>
+            </if>
+
+            <if test="size != null and current != null">
+                limit #{current},#{size}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 软删除 -->
+    <delete id="remove">
+        update ju.friend_ship
+        set `deleted` = 1
+        <include refid="where"/>
+    </delete>
+
+    <!-- 分页查询 -->
+    <select id="pageQuery" resultMap="FriendShipMap">
+        select
+        <include refid="column"/>
+        from friend_ship
+        <include refid="where"/>
+    </select>
+</mapper>
+

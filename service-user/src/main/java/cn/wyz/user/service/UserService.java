@@ -2,7 +2,7 @@ package cn.wyz.user.service;
 
 import cn.wyz.mapper.service.MapperService;
 import cn.wyz.user.bean.User;
-import cn.wyz.user.bean.dto.UserDTO;
+import cn.wyz.user.dto.UserDTO;
 
 import java.util.Collection;
 import java.util.Map;

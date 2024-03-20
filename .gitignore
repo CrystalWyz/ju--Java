@@ -38,7 +38,7 @@ build/
 logs/
 
 ### 自动创建的文件或文件夹 ###
-config/ddl.sql
+**/*ddl.sql
 */target
 
 ### Mac 系统文件 ###

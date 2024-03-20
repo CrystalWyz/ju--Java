@@ -3,10 +3,14 @@ $!{mybatisSupport.vm}
 
 ##设置保存名称与保存位置
 $!callback.setFileName($tool.append($!{tableInfo.name}, "Controller.http"))
-    $!callback.setSavePath($tool.append($modulePath, "/../http/"))
+$!callback.setSavePath($tool.append($modulePath, "/../http/"))
 
-\#\#\# 新增实体 $!{tableInfo.obj.name}
-POST {{host}}$!{tableInfo.name}s
+#set($comment = $tool.append("#", "#", "#"))
+
+#set($tableName = $tool.firstLowerCase($!{tableInfo.get}))
+
+$!{comment} 1. 新增 $!{tableName} 实体
+POST {{host}}$!{tableName}s
 Content-Type: application/json;charset=UTF-8
 
 {
@@ -28,34 +32,32 @@ Content-Type: application/json;charset=UTF-8
 
 }
 
-### 2. 修改实体 $!{tableInfo.obj.name}
-PUT {{host}}$!{tableInfo.name}s/1
+$!{comment} 2. 修改 $!{tableName} 实体
+PUT {{host}}$!{tableName}s/1
 Content-Type: application/json;charset=UTF-8
 
 {
-#foreach($column in $tableInfo.fullColumn)
-    #if(${column.name} == "id"
-    ||$!{column.name} == "createTime"
-    ||${column.name} == "updateTime"
-    ||${column.name} == "createdBy"
-    ||${column.name} == "locale"
-    ||${column.name} == "lastModifiedBy"
-    ||${column.name} == "version"
-    ||${column.name} == "deleted")
-    #else
-        #if(!(${column.name} == "no" && ${isLocale}))
-        "$!{column.name}": $!{tool.getClsNameByFullName($column.type)},
-        #end
-    #end
-#end
+  "name": "test-1",
+  "description": "权限描述",
+  "type": 1,
+  "url": "权限url-adasd",
+  "sequence": 100,
+  "display": "1",
+  "version": 2,
+  "authorities": [
+    {
+      "method": "GET",
+      "url": "/api/v1/permissions/{id}"
+    }
+  ]
 }
 
-\#\#\# 3. 删除实体 $!{tableInfo.name}
-DELETE {{host}}$!{tableInfo.name}s/1
+$!{comment} 3. 删除 $!{tableName} 实体
+DELETE {{host}}$!{tableName}s/1
 
-\#\#\# 4. 查询实体
-GET {{host}}$!{tableInfo.name}s/1
+$!{comment}4. 查询 $!{tableName} 实体
+GET {{host}}$!{tableName}s/1
 
-\#\#\# 5. 查询$!{tableInfo.name}列表
-GET {{host}}$!{tableInfo.name}s?page=2&size=1&sorts=id desc
+$!{comment} 5. 查询 $!{tableName} 实体列表
+GET {{host}}$!{tableName}s?page=2&size=1&sorts=id desc
 Content-Type: text/plain
