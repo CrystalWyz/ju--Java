@@ -2,6 +2,7 @@ package cn.wyz.user.controller;
 
 import cn.wyz.common.bean.request.ResponseResult;
 import cn.wyz.user.bean.dto.UserDetailDTO;
+import cn.wyz.user.holder.SecurityContextHolder;
 import cn.wyz.user.service.PersonalCenterService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -24,8 +25,21 @@ public class PersonalCenterController {
 
     private final PersonalCenterService personalCenterService;
 
+
     /**
      * 个人中心查询
+     *
+     * @return 用户详情
+     */
+    @GetMapping
+    public ResponseResult<UserDetailDTO> getUserDetail() {
+        Long userId = SecurityContextHolder.getContext().getUserId();
+        UserDetailDTO detail = personalCenterService.getUserDetail(userId);
+        return ResponseResult.success(detail);
+    }
+
+    /**
+     * 他人查询个人中心查询
      *
      * @param userId 用户ID
      * @return 用户详情

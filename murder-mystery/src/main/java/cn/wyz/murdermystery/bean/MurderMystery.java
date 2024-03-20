@@ -140,4 +140,20 @@ public class MurderMystery extends BaseEntity {
      */
     @TableField(typeHandler = ListTypeHandler.class)
     private List<String> tags;
+
+    /**
+     * 活动图片地址
+     */
+    private String imagePath;
+
+    /**
+     * 距离 TODO
+     */
+    private Double dist;
+
+    /**
+     * 查看次数
+     */
+    private Long reviews;
+
 }

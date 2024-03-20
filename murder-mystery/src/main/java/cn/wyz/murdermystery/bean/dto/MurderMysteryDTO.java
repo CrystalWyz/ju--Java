@@ -105,6 +105,24 @@ public class MurderMysteryDTO extends BaseDTO {
     private String createUsername;
 
     /**
+     * 活动图片地址
+     */
+    @Schema(name = "imagePath", description = "活动图片地址")
+    private String imagePath;
+
+    /**
+     * 距离 TODO
+     */
+    @Schema(name = "dist", description = "距离")
+    private Double dist;
+
+    /**
+     * 查看次数
+     */
+    @Schema(name = "views", description = "查看次数")
+    private Long reviews;
+
+    /**
      * 获取所有参与者
      *
      * @return 所有参与者

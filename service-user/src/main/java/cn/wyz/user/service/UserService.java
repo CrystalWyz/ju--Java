@@ -4,6 +4,9 @@ import cn.wyz.mapper.service.MapperService;
 import cn.wyz.user.bean.User;
 import cn.wyz.user.bean.dto.UserDTO;
 
+import java.util.Collection;
+import java.util.Map;
+
 /**
  * <p>
  * 服务类
@@ -31,6 +34,14 @@ public interface UserService extends MapperService<User, UserDTO> {
      * @return 用户信息
      */
     UserDTO register(String phone);
+
+    /**
+     * 根据id 获取用户信息
+     *
+     * @param ids
+     * @return
+     */
+    Map<Long, User> getAllByIds(Collection<Long> ids);
 
 
 }

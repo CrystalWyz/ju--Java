@@ -36,6 +36,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -59,6 +60,8 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
     private final BlemishDetailService blemishDetailService;
 
     private final MurderMysteryUserService murderMysteryUserService;
+
+    private final MurderMysteryCacheService murderMysteryCacheService;
 
     private final EventPublisher eventPublisher;
 
@@ -471,17 +474,19 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
 
     @Override
     public MurderMysteryDTO get(Long id) {
-
+        Long reviewUserId = SecurityContextHolder.getContext().getUserId();
         // 获取剧本杀详情
         MurderMystery murderMystery = getById(id);
         MurderMysteryDTO murderMysteryDTO = toDTO(murderMystery);
 
+        // 增加浏览次数
+        murderMysteryCacheService.addReview(id, reviewUserId);
+
         // 获取用户信息
         Collection<Long> participants = CollectionUtils.union(murderMystery.getBoyParticipant(), murderMystery.getGirlParticipant());
         // 用户主表查询
-        Map<Long, User> userMap = userService.listByIds(participants)
-                .stream()
-                .collect(Collectors.toMap(User::getId, Function.identity()));
+        Map<Long, User> userMap = userService.getAllByIds(participants);
+
         // 剧本杀用户表查询
         Map<Long, MurderMysteryUser> murderMysteryUserMap = murderMysteryUserService.listByIds(participants)
                 .stream()
@@ -529,4 +534,12 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
 
         return murderMysteryDTO;
     }
+
+    @Override
+    public MurderMystery getById(Serializable id) {
+        MurderMystery mm = super.getById(id);
+        mm.setReviews(murderMysteryCacheService.getReviewCount(id));
+        return mm;
+    }
+
 }
