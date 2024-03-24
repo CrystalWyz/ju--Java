@@ -34,6 +34,8 @@ public class GenDdlConfig {
         fieldTypeMap.put(String.class, new FieldTypeMap(String.class, "varchar(64)"));
         fieldTypeMap.put(LocalDateTime.class, new FieldTypeMap(LocalDateTime.class, "timestamp(3)"));
         fieldTypeMap.put(Boolean.class, new FieldTypeMap(Boolean.class, "boolean"));
+        fieldTypeMap.put(Double.class, new FieldTypeMap(Double.class, "double precision"));
+
         FieldTypeMap list = new FieldTypeMap(List.class, "jsonb");
         list.add(Long.class, "bigint[]");
         list.add(Integer.class, "int[]");
