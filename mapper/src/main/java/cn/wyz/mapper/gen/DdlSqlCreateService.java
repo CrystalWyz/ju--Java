@@ -44,8 +44,12 @@ public class DdlSqlCreateService {
     @Autowired
     private DataSource dataSource;
 
+    private Statement statement;
+
+
     @PostConstruct
     public void init() throws Exception {
+        statement = dataSource.getConnection().createStatement();
         if (!isCreateAllDdlSql) {
             LOGGER.info("自动生成DDL SQL功能未开启. 如果需要该功能, 请添加配置 'ju.ddl-create.isCreateAllDdlSql: true'");
             return;
@@ -65,6 +69,7 @@ public class DdlSqlCreateService {
 
         List<Class<?>> subClasses = PackageUtil.getSubClasses(BaseEntity.class);
         for (Class<?> subClass : subClasses) {
+            LOGGER.info("开始生成: {}", subClass.getName());
             String ddlSql = createDdlSql((Class<? extends BaseEntity>) subClass);
             String updateDdlSql = updateDdl((Class<? extends BaseEntity>) subClass);
             bw.write("-- " + subClass.getName() + "\n");
@@ -102,7 +107,7 @@ public class DdlSqlCreateService {
 
         // 判断表是否存在
         String sql = "SELECT * FROM information_schema.tables WHERE table_name = '" + tableName + "';";
-        Statement statement = dataSource.getConnection().createStatement();
+
         ResultSet rs = statement.executeQuery(sql);
         if (!rs.next()) {
             return null;
@@ -164,8 +169,7 @@ public class DdlSqlCreateService {
         StringBuilder sql = new StringBuilder();
 
         String tableName = getTableName(c);
-        sql.append("CREATE TABLE  IF NOT EXISTS ")
-                .append(tableName).append(" (").append("\n");
+        sql.append("CREATE TABLE  IF NOT EXISTS ").append(tableName).append(" (").append("\n");
         sql.append(genBaseDdlSql());
 
         List<Field> allFields = getAllFields(c);
@@ -212,11 +216,7 @@ public class DdlSqlCreateService {
     }
 
     private String genBaseDdlSqlComment(String tableName) {
-        return "comment on column " + tableName + ".id is '主键';" + "\n" +
-                "comment on column " + tableName + ".create_time is '创建时间';" + "\n" +
-                "comment on column " + tableName + ".update_time is '更新时间';" + "\n" +
-                "comment on column " + tableName + ".created_by is '创建人';" + "\n" +
-                "comment on column " + tableName + ".last_modified_by is '最后修改人';" + "\n";
+        return "comment on column " + tableName + ".id is '主键';" + "\n" + "comment on column " + tableName + ".create_time is '创建时间';" + "\n" + "comment on column " + tableName + ".update_time is '更新时间';" + "\n" + "comment on column " + tableName + ".created_by is '创建人';" + "\n" + "comment on column " + tableName + ".last_modified_by is '最后修改人';" + "\n";
     }
 
     private String getTableComment(Class<? extends BaseEntity> c) {
@@ -228,14 +228,26 @@ public class DdlSqlCreateService {
     }
 
     private String getTableName(Class<? extends BaseEntity> c) {
+        String tableName = null;
         TableName annotation = c.getAnnotation(TableName.class);
         if (annotation == null || StringUtils.isBlank(annotation.value())) {
             // 类名的驼峰转下划线
             String name = c.getSimpleName();
-            return getUnderlineName(name);
+            tableName = getUnderlineName(name);
+        } else {
+            tableName = annotation.value();
         }
 
-        return annotation.value();
+
+        tableName = tableName.trim();
+        // 填充 "" 防止表名为关键字
+        if (!tableName.startsWith("\"")) {
+            tableName = "\"" + tableName;
+        }
+        if (!tableName.endsWith("\"")) {
+            tableName = tableName + "\"";
+        }
+        return tableName;
     }
 
     private List<Field> getAllFields(Class<?> c) {
