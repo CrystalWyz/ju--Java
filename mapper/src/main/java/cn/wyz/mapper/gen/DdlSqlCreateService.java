@@ -164,7 +164,8 @@ public class DdlSqlCreateService {
         StringBuilder sql = new StringBuilder();
 
         String tableName = getTableName(c);
-        sql.append("CREATE TABLE ").append(tableName).append(" (").append("\n");
+        sql.append("CREATE TABLE  IF NOT EXISTS ")
+                .append(tableName).append(" (").append("\n");
         sql.append(genBaseDdlSql());
 
         List<Field> allFields = getAllFields(c);
