@@ -1,6 +1,7 @@
 package cn.wyz.user.req;
 
 import cn.wyz.mapper.req.BaseRequest;
+import cn.wyz.user.type.GroupRole;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,7 +21,8 @@ public class GroupMemberQuery extends BaseRequest {
 
     private Long groupId;
     private Long userId;
-    private Integer roleType;
+    private String nickname;
+    private GroupRole roleType;
     private Integer status;
     private LocalDateTime joinedAt;
 }

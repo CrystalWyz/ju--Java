@@ -1,6 +1,7 @@
 package cn.wyz.user.bean;
 
 import cn.wyz.mapper.bean.BaseEntity;
+import cn.wyz.user.type.GroupRole;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -27,9 +28,14 @@ public class GroupMember extends BaseEntity {
     private Long userId;
 
     /**
-     * 用户昵称
+     * 群内用户昵称
      */
-    private Integer roleType;
+    private String nickname;
+
+    /**
+     * 角色类型
+     */
+    private GroupRole roleType;
 
     /**
      * 群组成员状态

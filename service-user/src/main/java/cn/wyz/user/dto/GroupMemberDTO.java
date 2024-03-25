@@ -2,6 +2,7 @@ package cn.wyz.user.dto;
 
 
 import cn.wyz.mapper.bean.dto.BaseDTO;
+import cn.wyz.user.type.GroupRole;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,7 +22,8 @@ public class GroupMemberDTO extends BaseDTO {
 
     private Long groupId;
     private Long userId;
-    private Integer roleType;
+    private String nickname;
+    private GroupRole roleType;
     private Integer status;
     private LocalDateTime joinedAt;
 }
