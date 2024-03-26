@@ -33,7 +33,7 @@
                 #{tags, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler}, #{status},
                 #{applyParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},
                 #{signInParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler}, #{createdBy},
-                #{lastModifiedBy})
+                #{lastModifiedBy}, #{location})
     </insert>
 
     <!--    <select id="list" resultMap="CompleteResultMap">-->

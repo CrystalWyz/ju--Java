@@ -123,6 +123,12 @@ public class MurderMysteryDTO extends BaseDTO {
     private Long reviews;
 
     /**
+     * 查看次数
+     */
+    @Schema(name = "location", description = "地点(集合点)")
+    private String location;
+
+    /**
      * 获取所有参与者
      *
      * @return 所有参与者

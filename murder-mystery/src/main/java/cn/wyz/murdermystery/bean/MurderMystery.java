@@ -156,4 +156,5 @@ public class MurderMystery extends BaseEntity {
      */
     private Long reviews;
 
+    private String location;
 }

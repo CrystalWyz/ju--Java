@@ -1,4 +1,4 @@
-package cn.wyz.murdermystery.bo;
+package cn.wyz.murdermystery.bean.bo;
 
 import cn.wyz.mapper.bean.bo.BaseBO;
 import lombok.AllArgsConstructor;

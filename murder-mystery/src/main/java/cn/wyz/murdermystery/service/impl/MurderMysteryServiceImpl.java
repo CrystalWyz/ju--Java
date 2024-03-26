@@ -14,7 +14,7 @@ import cn.wyz.murdermystery.bean.MurderMysteryUser;
 import cn.wyz.murdermystery.bean.dto.*;
 import cn.wyz.murdermystery.bean.request.HandleApplyGameReq;
 import cn.wyz.murdermystery.bean.request.MurderMysteryRequest;
-import cn.wyz.murdermystery.bo.MurderMysteryJoinBO;
+import cn.wyz.murdermystery.bean.bo.MurderMysteryJoinBO;
 import cn.wyz.murdermystery.constant.MurderMysteryConstant;
 import cn.wyz.murdermystery.event.MurderMysteryPrepareEvent;
 import cn.wyz.murdermystery.mapper.MurderMysteryMapper;
