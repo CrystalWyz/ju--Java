@@ -1,4 +1,4 @@
-package cn.wyz.user.bean.dto;
+package cn.wyz.user.dto;
 
 import cn.wyz.mapper.bean.dto.BaseDTO;
 import cn.wyz.user.constant.Gender;
@@ -26,9 +26,6 @@ public class UserDTO extends BaseDTO {
     @Schema(name = "性别")
     private Gender gender;
 
-    @Schema(name = "身份")
-    private Integer identity;
-
     @Schema(name = "账户名")
     private String username;
 
@@ -44,9 +41,6 @@ public class UserDTO extends BaseDTO {
 
     @Schema(name = "手机号")
     private String phone;
-
-    @Schema(name = "区号")
-    private String phoneArea;
 
     /**
      * 是否是超级管理员

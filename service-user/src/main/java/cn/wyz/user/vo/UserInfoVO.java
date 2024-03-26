@@ -1,4 +1,4 @@
-package cn.wyz.user.bean.vo;
+package cn.wyz.user.vo;
 
 import lombok.Data;
 

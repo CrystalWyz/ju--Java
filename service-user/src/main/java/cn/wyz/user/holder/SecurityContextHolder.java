@@ -31,6 +31,10 @@ public class SecurityContextHolder implements Serializable {
         return loginContext;
     }
 
+    public static Long getCurUserId() {
+        return getContext().getUserId();
+    }
+
     public static void clearContext() {
         CONTEXT_HOLDER.remove();
     }

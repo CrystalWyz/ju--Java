@@ -16,7 +16,7 @@ import org.apache.ibatis.type.JdbcType;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName(value = "ju_user", resultMap = "JuUserMap")
+@TableName(value = "ju_user", autoResultMap = true)
 public class User extends BaseEntity {
 
     /**
@@ -37,16 +37,6 @@ public class User extends BaseEntity {
     private Gender gender;
 
     /**
-     * 身份
-     */
-    private Integer identity;
-
-    /**
-     * 污点
-     */
-    private Integer blemish;
-
-    /**
      * 账户名
      */
     private String username;
@@ -65,12 +55,7 @@ public class User extends BaseEntity {
     /**
      * 手机号
      */
+    @Deprecated // 不应该在这里, to UserProfile
     private String phone;
-
-    /**
-     * 区号
-     */
-    private String phoneArea;
-
 
 }

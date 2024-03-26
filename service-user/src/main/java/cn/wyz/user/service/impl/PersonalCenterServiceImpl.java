@@ -1,8 +1,8 @@
 package cn.wyz.user.service.impl;
 
 import cn.hutool.core.lang.Pair;
-import cn.wyz.user.bean.dto.UserDTO;
-import cn.wyz.user.bean.dto.UserDetailDTO;
+import cn.wyz.user.dto.UserDTO;
+import cn.wyz.user.dto.UserDetailDTO;
 import cn.wyz.user.handler.UserDetailHandler;
 import cn.wyz.user.service.PersonalCenterService;
 import cn.wyz.user.service.UserService;

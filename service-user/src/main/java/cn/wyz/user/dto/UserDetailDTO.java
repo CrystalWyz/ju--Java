@@ -1,4 +1,4 @@
-package cn.wyz.user.bean.dto;
+package cn.wyz.user.dto;
 
 import cn.wyz.common.util.BeanUtils;
 import io.swagger.v3.oas.annotations.media.Schema;

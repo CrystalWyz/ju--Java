@@ -1,0 +1,32 @@
+### 1. 新增 friendApplyNote 实体
+POST {{host}}friendApplyNotes
+Content-Type: application/json;charset=UTF-8
+
+{
+  "targetUserId": Long,
+  "message": String,
+  "status": Integer,
+  "passNickName": String
+}
+
+### 2. 修改 friendApplyNote 实体
+PUT {{host}}friendApplyNotes/1
+Content-Type: application/json;charset=UTF-8
+
+{
+  "targetUserId": Long,
+  "message": String,
+  "status": Integer,
+  "passNickName": String,
+}
+
+### 3. 删除 friendApplyNote 实体
+DELETE {{host}}friendApplyNotes/1
+
+###4. 查询 friendApplyNote 实体
+GET {{host}}friendApplyNotes/1
+
+### 5. 查询 friendApplyNote 实体列表
+GET {{host}}friendApplyNotes?page=2&size=1&sorts=id desc
+Content-Type: text/plain
+

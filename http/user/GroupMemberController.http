@@ -1,0 +1,42 @@
+### 1. 新增 groupMember 实体
+POST {{host}}groupMembers
+Content-Type: application/json;charset=UTF-8
+
+{
+  "groupId": Long,
+  "userId": Long,
+  "roleType": Integer,
+  "status": Integer,
+  "joinedAt": LocalDateTime
+}
+
+### 2. 修改 groupMember 实体
+PUT {{host}}groupMembers/1
+Content-Type: application/json;charset=UTF-8
+
+{
+  "name": "test-1",
+  "description": "权限描述",
+  "type": 1,
+  "url": "权限url-adasd",
+  "sequence": 100,
+  "display": "1",
+  "version": 2,
+  "authorities": [
+    {
+      "method": "GET",
+      "url": "/api/v1/permissions/{id}"
+    }
+  ]
+}
+
+### 3. 删除 groupMember 实体
+DELETE {{host}}groupMembers/1
+
+###4. 查询 groupMember 实体
+GET {{host}}groupMembers/1
+
+### 5. 查询 groupMember 实体列表
+GET {{host}}groupMembers?page=2&size=1&sorts=id desc
+Content-Type: text/plain
+

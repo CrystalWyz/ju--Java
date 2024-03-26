@@ -1,7 +1,7 @@
 package cn.wyz.user.controller;
 
 import cn.wyz.common.bean.request.ResponseResult;
-import cn.wyz.user.bean.dto.UserDetailDTO;
+import cn.wyz.user.dto.UserDetailDTO;
 import cn.wyz.user.holder.SecurityContextHolder;
 import cn.wyz.user.service.PersonalCenterService;
 import lombok.AllArgsConstructor;

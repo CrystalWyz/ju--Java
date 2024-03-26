@@ -1,6 +1,6 @@
 package cn.wyz.user.service;
 
-import cn.wyz.user.bean.dto.UserDetailDTO;
+import cn.wyz.user.dto.UserDetailDTO;
 
 /**
  * 个人中心服务

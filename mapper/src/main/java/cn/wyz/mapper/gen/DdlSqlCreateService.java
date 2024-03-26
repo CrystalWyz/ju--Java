@@ -105,8 +105,11 @@ public class DdlSqlCreateService {
     private String updateDdl(Class<? extends BaseEntity> target) throws SQLException {
         String tableName = getTableName(target);
 
+        // 去掉 tableName 的引号
+        String tableNameSub = tableName.substring(1, tableName.length() - 1);
+
         // 判断表是否存在
-        String sql = "SELECT * FROM information_schema.tables WHERE table_name = '" + tableName + "';";
+        String sql = "SELECT * FROM information_schema.tables WHERE table_name = '" + tableNameSub + "';";
 
         ResultSet rs = statement.executeQuery(sql);
         if (!rs.next()) {
@@ -114,7 +117,7 @@ public class DdlSqlCreateService {
         }
 
         // 此时表存在, 开始获取表的字段信息
-        sql = "SELECT column_name, data_type, column_default, is_nullable FROM information_schema.columns WHERE table_name = '" + tableName + "';";
+        sql = "SELECT column_name, data_type, column_default, is_nullable FROM information_schema.columns WHERE table_name = '" + tableNameSub + "';";
         rs = statement.executeQuery(sql);
         // 存放数据库中的字段信息
         Map<String, String> dbFieldMap = new HashMap<>();

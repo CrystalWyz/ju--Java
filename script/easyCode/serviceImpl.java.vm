@@ -11,7 +11,7 @@ $!{define.vm}
 #setPackageSuffix("service.impl")
 import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import $!{tableInfo.savePackageName}.mapper.$!{tableInfo.name}Mapper;
-import $!{tableInfo.savePackageName}.entity.$!{tableInfo.name};
+import $!{tableInfo.savePackageName}.bean.$!{tableInfo.name};
 import $!{tableInfo.savePackageName}.dto.$!{tableInfo.name}DTO;
 import $!{tableInfo.savePackageName}.service.$!{tableInfo.name}Service;
 import org.springframework.stereotype.Service;
@@ -21,16 +21,18 @@ import org.springframework.stereotype.Service;
 @Service("$!tool.firstLowerCase($tableInfo.name)Service")
 public class $!{tableName}
 extends MapperServiceImpl<$!{tableInfo.name}Mapper, $!{tableInfo.name},$!{tableInfo.name}DTO>
-    implements $!{tableInfo.name}Service{
+    implements
 
-@Override
-public $!{tableInfo.name}DTO newDTO(){
+    $!{tableInfo.name}Service {
+
+    @Override
+    public $!{tableInfo.name}DTO newDTO () {
         return new $!{tableInfo.name}DTO();
-        }
+    }
 
 @Override
-public $!{tableInfo.name} newEntity(){
+public $!{tableInfo.name} newEntity() {
         return new $!{tableInfo.name}();
-        }
+    }
 
-        }
+}

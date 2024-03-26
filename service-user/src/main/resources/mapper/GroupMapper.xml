@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wyz.user.mapper.GroupMapper">
+    <resultMap type="cn.wyz.user.bean.Group" id="GroupMap">
+        <result property="id" column="id"
+                jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time"
+                jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time"
+                jdbcType="TIMESTAMP"/>
+        <result property="createdBy" column="created_by"
+                jdbcType="VARCHAR"/>
+        <result property="lastModifiedBy" column="last_modified_by"
+                jdbcType="VARCHAR"/>
+        <result property="name" column="name"
+                jdbcType="VARCHAR"/>
+        <result property="description" column="description"
+                jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar"
+                jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="column">
+        `id`,
+ 
+ `create_time`,
+ 
+ `update_time`,
+ 
+ `created_by`,
+ 
+ `last_modified_by`,
+ 
+ `name`,
+ 
+ `description`,
+ 
+ `avatar`
+    </sql>
+
+    <sql id="where">
+        <where>
+            <if test="id != null">
+                and `id` = #{id}
+            </if>
+            <if test="createTime != null">
+                and `create_time` = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and `update_time` = #{updateTime}
+            </if>
+            <if test="createdBy != null">
+                and `created_by` = #{createdBy}
+            </if>
+            <if test="lastModifiedBy != null">
+                and `last_modified_by` = #{lastModifiedBy}
+            </if>
+            <if test="name != null">
+                and `name` = #{name}
+            </if>
+            <if test="description != null">
+                and `description` = #{description}
+            </if>
+            <if test="avatar != null">
+                and `avatar` = #{avatar}
+            </if>
+            <if test="sorts != null and sorts.size > 0)">
+                order by
+                <foreach collection="sorts" item="sort" separator=", ">
+                    `#{sort.column}` #{sort.sort}
+                </foreach>
+            </if>
+
+            <if test="size != null and current != null">
+                limit #{current},#{size}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 软删除 -->
+    <delete id="remove">
+        update ju.group
+        set `deleted` = 1
+        <include refid="where"/>
+    </delete>
+
+    <!-- 分页查询 -->
+    <select id="pageQuery" resultMap="GroupMap">
+        select
+        <include refid="column"/>
+        from group
+        <include refid="where"/>
+    </select>
+</mapper>
+

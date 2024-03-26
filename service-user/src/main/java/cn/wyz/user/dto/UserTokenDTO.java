@@ -1,10 +1,6 @@
-package cn.wyz.user.bean.vo;
+package cn.wyz.user.dto;
 
-import cn.wyz.user.constant.Gender;
 import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * 用户登录成功后返回的信息
@@ -13,10 +9,7 @@ import java.io.Serializable;
  * @since 2023/5/21
  */
 @Data
-public class UserTokenVO implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class UserTokenDTO {
 
     /**
      * 用户名
@@ -39,7 +32,8 @@ public class UserTokenVO implements Serializable {
     private String location;
 
     /**
-     * 性别
+     * 用户信息
      */
-    private Gender gender;
+    private Object user;
+
 }
