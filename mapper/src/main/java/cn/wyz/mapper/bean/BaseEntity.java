@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class BaseEntity extends Model<BaseEntity> implements Serializable {
 
     @Serial
@@ -83,9 +82,10 @@ public class BaseEntity extends Model<BaseEntity> implements Serializable {
         return this.id;
     }
 
-    public long getAndIncrementVersion() {
-        return 1L;
+    // 不要以get开头命名方法，jackson解析有问题 或者在类上添加注解@JsonIgnoreProperties(ignoreUnknown = true)
+//    public long getAndIncrementVersion() {
+//        return 1L;
 //        return ++version;
-    }
+//    }
 
 }

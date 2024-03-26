@@ -154,7 +154,7 @@ public interface MapperService<
      */
     default Entity copyProperties(DTO dto, Entity entity) {
         BeanUtils.copy(dto, entity);
-        entity.getAndIncrementVersion();
+//        entity.getAndIncrementVersion();
         return entity;
     }
 
@@ -166,7 +166,7 @@ public interface MapperService<
      */
     default Entity copyAllowNullProperties(DTO dto, Entity entity) {
         BeanUtils.copyForUpdate(dto, entity);
-        entity.getAndIncrementVersion();
+//        entity.getAndIncrementVersion();
         return entity;
     }
 
