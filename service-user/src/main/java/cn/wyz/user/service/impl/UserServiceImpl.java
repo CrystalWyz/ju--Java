@@ -10,16 +10,18 @@ import cn.wyz.user.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -32,7 +34,7 @@ public class UserServiceImpl
         extends MapperServiceImpl<UserMapper, User, UserDTO>
         implements UserService {
 
-    private final StringRedisTemplate stringRedisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     private static final String USER_KEY = "user";
 
@@ -48,14 +50,14 @@ public class UserServiceImpl
     @Override
     public UserDTO get(Long id) {
         LOGGER.trace("get: {}", id);
-        User user = (User) stringRedisTemplate.opsForHash().get(USER_KEY, id);
+        User user = (User) redisTemplate.opsForHash().get(USER_KEY, String.valueOf(id));
         if (ObjectUtils.isEmpty(user)) {
             user = this.getById(id);
             if (ObjectUtils.isEmpty(user)) {
                 return null;
             }
             LOGGER.debug("cache user: {}", user);
-            stringRedisTemplate.opsForHash().put(USER_KEY, id, user);
+            redisTemplate.opsForHash().put(USER_KEY, String.valueOf(id), user);
         }
         return toDTO(user);
     }
@@ -63,8 +65,9 @@ public class UserServiceImpl
     @Override
     public Map<Long, User> getAllByIds(Collection<Long> ids) {
         LOGGER.trace("getAllByIds: {}", ids);
-        HashOperations<String, Long, User> operations = stringRedisTemplate.opsForHash();
-        List<User> users = operations.multiGet(USER_KEY, ids);
+        HashOperations<String, String, User> operations = redisTemplate.opsForHash();
+
+        List<User> users = operations.multiGet(USER_KEY, CollectionUtils.collect(ids, Object::toString));
         Map<Long, User> map = null;
         if (ObjectUtils.isEmpty(users)) {
             users = this.listByIds(ids);
@@ -72,7 +75,7 @@ public class UserServiceImpl
                 return null;
             }
             LOGGER.debug("cache users: {}", users);
-            operations.putAll(USER_KEY, users.stream().collect(Collectors.toMap(User::getId, user -> user)));
+            operations.putAll(USER_KEY, users.stream().collect(Collectors.toMap(user -> String.valueOf(user.getId()), Function.identity())));
             map = users.stream().collect(Collectors.toMap(User::getId, user -> user));
         }
 

@@ -24,6 +24,6 @@ public interface MurderMysteryCacheService {
      * @param gameId 剧本杀Id
      * @return 浏览次数
      */
-    Long getReviewCount(Serializable gameId);
+    Integer getReviewCount(Serializable gameId);
 
 }
