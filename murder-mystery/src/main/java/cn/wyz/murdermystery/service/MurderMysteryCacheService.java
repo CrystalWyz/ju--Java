@@ -14,9 +14,8 @@ public interface MurderMysteryCacheService {
      * 新增剧本杀浏览记录
      *
      * @param gameId 剧本杀Id
-     * @param userId 用户Id
      */
-    void addReview(Serializable gameId, Long userId);
+    void addReview(Serializable gameId);
 
     /**
      * 获取剧本杀浏览次数

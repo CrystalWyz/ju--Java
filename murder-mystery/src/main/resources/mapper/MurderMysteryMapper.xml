@@ -56,4 +56,10 @@
         </where>
         LIMIT 1
     </select>
+
+    <update id="addReview">
+        UPDATE murder_mystery
+        SET reviews = reviews + 1
+    </update>
+
 </mapper>

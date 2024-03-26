@@ -485,7 +485,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
         MurderMysteryDTO murderMysteryDTO = toDTO(murderMystery);
 
         // 增加浏览次数
-        murderMysteryCacheService.addReview(id, reviewUserId);
+        murderMysteryCacheService.addReview(id);
 
         // 获取用户信息
         Collection<Long> participants = CollectionUtils.union(murderMystery.getBoyParticipant(), murderMystery.getGirlParticipant());
