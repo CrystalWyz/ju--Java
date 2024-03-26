@@ -20,21 +20,6 @@
     <!--        <result column="address" property="address"/>-->
     <!--        <result column="shop_name" property="shopName"/>-->
     <!--    </resultMap>-->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO murder_mystery
-        VALUES (DEFAULT, #{title}, #{beginExpected}, #{finishExpected}, #{createTime}, #{description}, #{updateTime},
-                #{scale},
-                #{girlParticipantNum}, #{boyParticipantNum},
-                #{config, typeHandler=cn.wyz.mapper.typeHandler.JsonbTypeHandler},
-                #{girlParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},
-                #{boyParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},
-                #{area, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler}, #{address}, #{shopName}, #{beginActual},
-                #{finishActual},
-                #{tags, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler}, #{status},
-                #{applyParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},
-                #{signInParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler}, #{createdBy},
-                #{lastModifiedBy}, #{location})
-    </insert>
 
     <!--    <select id="list" resultMap="CompleteResultMap">-->
     <!--        SELECT id,-->

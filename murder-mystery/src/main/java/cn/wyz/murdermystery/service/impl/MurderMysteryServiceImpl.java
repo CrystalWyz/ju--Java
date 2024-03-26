@@ -399,6 +399,10 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
 
     private int tryAddTag(MurderMysteryDTO dto) {
         List<String> tagNames = dto.getTags();
+        if (CollectionUtils.isEmpty(tagNames)) {
+            return 0;
+        }
+
         List<TagDTO> tags = tagNames.stream()
                 .map(tagName -> new TagDTO(tagName, 1, ServiceType.MurderMystery))
                 .toList();
