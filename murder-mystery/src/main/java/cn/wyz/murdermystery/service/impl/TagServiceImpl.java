@@ -6,6 +6,7 @@ import cn.wyz.murdermystery.bean.dto.TagDTO;
 import cn.wyz.murdermystery.bean.request.TagRequest;
 import cn.wyz.murdermystery.mapper.TagMapper;
 import cn.wyz.murdermystery.service.TagService;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,11 @@ public class TagServiceImpl extends MapperServiceImpl<TagMapper, Tag, TagDTO> im
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int addTags(List<TagDTO> tags) {
-        List<String> names = tags.stream().map(TagDTO::getName).toList();
+        LOGGER.info("addTags request: {}", tags);
+        if (CollectionUtils.isEmpty(tags)) {
+            return 0;
+        }
+        List<String> names = tags.stream().map(TagDTO::getName).collect(Collectors.toList());
         TagRequest req = TagRequest.findInByNames(names);
         List<TagDTO> exitTags = this.queryAll(req);
         Set<String> exitTagNames = exitTags.stream().map(TagDTO::getName).collect(Collectors.toSet());

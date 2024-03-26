@@ -12,7 +12,7 @@ import lombok.Data;
  * @since 2024-03-20
  **/
 @Data
-@TableName(value = "friend_ship", resultMap = "UserProfileMap")
+@TableName(value = "friend_ship", autoResultMap = true)
 public class FriendShip extends BaseEntity {
 
     /**

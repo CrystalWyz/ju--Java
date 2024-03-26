@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -61,7 +62,13 @@ public class MybatisPlusWrapperUtils {
                 case LT -> wrapper.lt(fieldName, value);
                 case LE -> wrapper.le(fieldName, value);
                 case LIKE -> wrapper.like(fieldName, value);
-                case IN -> wrapper.in(fieldName, value);
+                case IN -> {
+                    if (value instanceof Collection<?>) {
+                        wrapper.in(fieldName, (Collection<?>) value);
+                    } else {
+                        throw new AppException();
+                    }
+                }
                 case NOT_IN -> wrapper.notIn(fieldName, value);
                 case IS_NULL -> wrapper.isNull(fieldName);
                 case IS_NOT_NULL -> wrapper.isNotNull(fieldName);

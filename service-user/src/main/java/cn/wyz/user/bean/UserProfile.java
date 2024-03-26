@@ -13,7 +13,7 @@ import java.util.Date;
  * @since 2024-03-20
  **/
 @Data
-@TableName(value = "user_profile", resultMap = "UserProfileMap")
+@TableName(value = "user_profile", autoResultMap = true)
 public class UserProfile extends BaseDTO {
 
     /**

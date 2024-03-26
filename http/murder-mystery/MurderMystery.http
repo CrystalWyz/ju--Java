@@ -8,13 +8,18 @@ Content-Type: application/json;charset=UTF-8
 Cookie: Authorization={{token}}
 
 {
-  "title": "第4个剧本杀测试",
-  "beginExpected": "2023-11-17 00:00",
-  "finishExpected": "2023-11-17 01:00",
-  "description": "String",
-  "scale": 2,
+  "title": "ad",
+  "location": "ad",
+  "description": 1,
+  "boyParticipantNum": 1,
+  "girlParticipantNum": 1,
+  "tags": [
+    "吃饭",
+    "睡觉",
+    "打呼噜"
+  ],
   "config": {
-    "enableApply": true
+    "audit": true
   }
 }
 

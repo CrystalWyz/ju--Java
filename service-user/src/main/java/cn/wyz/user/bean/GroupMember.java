@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * @since 2024-03-20
  **/
 @Data
-@TableName(value = "group_member", resultMap = "GroupMemberMap")
+@TableName(value = "group_member", autoResultMap = true)
 public class GroupMember extends BaseEntity {
 
     /**

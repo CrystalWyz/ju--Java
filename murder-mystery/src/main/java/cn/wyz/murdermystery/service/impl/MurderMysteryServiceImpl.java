@@ -11,10 +11,10 @@ import cn.wyz.mapper.service.impl.MapperServiceImpl;
 import cn.wyz.mapper.type.QueryType;
 import cn.wyz.murdermystery.bean.MurderMystery;
 import cn.wyz.murdermystery.bean.MurderMysteryUser;
+import cn.wyz.murdermystery.bean.bo.MurderMysteryJoinBO;
 import cn.wyz.murdermystery.bean.dto.*;
 import cn.wyz.murdermystery.bean.request.HandleApplyGameReq;
 import cn.wyz.murdermystery.bean.request.MurderMysteryRequest;
-import cn.wyz.murdermystery.bean.bo.MurderMysteryJoinBO;
 import cn.wyz.murdermystery.constant.MurderMysteryConstant;
 import cn.wyz.murdermystery.event.MurderMysteryPrepareEvent;
 import cn.wyz.murdermystery.mapper.MurderMysteryMapper;
@@ -69,6 +69,7 @@ public class MurderMysteryServiceImpl extends MapperServiceImpl<MurderMysteryMap
 
     @Override
     public MurderMysteryDTO add(MurderMysteryDTO dto) {
+        LOGGER.info("add request: {}", dto);
         LoginContext context = SecurityContextHolder.getContext();
 
         // 时间冲突检查

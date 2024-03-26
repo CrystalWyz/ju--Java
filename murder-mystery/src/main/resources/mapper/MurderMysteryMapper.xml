@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.wyz.murdermystery.mapper.MurderMysteryMapper">
-    <!--    <resultMap id="CompleteResultMap" type="cn.wyz.murdermystery.bean.MurderMystery">-->
-    <!--        <id column="id" property="id"/>-->
-    <!--        <result column="create_time" property="createTime"/>-->
-    <!--        <result column="description" property="description"/>-->
-    <!--        <result column="update_time" property="updateTime"/>-->
-    <!--        <result column="create_by" property="createdBy"/>-->
-    <!--        <result column="title" property="title"/>-->
-    <!--        <result column="scale" property="scale"/>-->
-    <!--        <result column="girl_participant_num" property="girlParticipantNum"/>-->
-    <!--        <result column="boy_participant_num" property="boyParticipantNum"/>-->
-    <!--        <result column="config" property="config" typeHandler="cn.wyz.mapper.typeHandler.JsonTypeHandler"/>-->
-    <!--        <result column="girl_participant" property="girlParticipant"-->
-    <!--                typeHandler="cn.wyz.mapper.typeHandler.ListTypeHandler"/>-->
-    <!--        <result column="boy_participant" property="boyParticipant"-->
-    <!--                typeHandler="cn.wyz.mapper.typeHandler.ListTypeHandler"/>-->
-    <!--        <result column="area" property="area" typeHandler="cn.wyz.mapper.typeHandler.ListTypeHandler"/>-->
-    <!--        <result column="address" property="address"/>-->
-    <!--        <result column="shop_name" property="shopName"/>-->
-    <!--    </resultMap>-->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO murder_mystery
-        VALUES (DEFAULT, #{title}, #{beginExpected}, #{finishExpected}, #{createTime}, #{description}, #{updateTime},
-                #{scale},
-                #{girlParticipantNum}, #{boyParticipantNum},
-                #{config, typeHandler=cn.wyz.mapper.typeHandler.JsonbTypeHandler},
-                #{girlParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},
-                #{boyParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},
-                #{area, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler}, #{address}, #{shopName}, #{beginActual},
-                #{finishActual},
-                #{tags, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler}, #{status},
-                #{applyParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},
-                #{signInParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler}, #{createdBy},
-                #{lastModifiedBy}, #{location})
-    </insert>
+    <!--        <resultMap id="CompleteResultMap" type="cn.wyz.murdermystery.bean.MurderMystery">-->
+    <!--            <id column="id" property="id"/>-->
+    <!--            <result column="create_time" property="createTime"/>-->
+    <!--            <result column="description" property="description"/>-->
+    <!--            <result column="update_time" property="updateTime"/>-->
+    <!--            <result column="create_by" property="createdBy"/>-->
+    <!--            <result column="title" property="title"/>-->
+    <!--            <result column="scale" property="scale"/>-->
+    <!--            <result column="girl_participant_num" property="girlParticipantNum"/>-->
+    <!--            <result column="boy_participant_num" property="boyParticipantNum"/>-->
+    <!--            <result column="config" property="config" typeHandler="cn.wyz.mapper.typeHandler.JsonTypeHandler"/>-->
+    <!--            <result column="girl_participant" property="girlParticipant"-->
+    <!--                    typeHandler="cn.wyz.mapper.typeHandler.ListTypeHandler"/>-->
+    <!--            <result column="boy_participant" property="boyParticipant"-->
+    <!--                    typeHandler="cn.wyz.mapper.typeHandler.ListTypeHandler"/>-->
+    <!--            <result column="area" property="area" typeHandler="cn.wyz.mapper.typeHandler.ListTypeHandler"/>-->
+    <!--            <result column="address" property="address"/>-->
+    <!--            <result column="shop_name" property="shopName"/>-->
+    <!--        </resultMap>-->
+    <!--    <insert id="insert" useGeneratedKeys="true" keyProperty="id">-->
+    <!--        INSERT INTO murder_mystery-->
+    <!--        VALUES (DEFAULT, #{title}, #{beginExpected}, #{finishExpected}, #{createTime}, #{description}, #{updateTime},-->
+    <!--                #{scale},-->
+    <!--                #{girlParticipantNum}, #{boyParticipantNum},-->
+    <!--                #{config, typeHandler=cn.wyz.mapper.typeHandler.JsonbTypeHandler},-->
+    <!--                #{girlParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},-->
+    <!--                #{boyParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},-->
+    <!--                #{area, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler}, #{address}, #{shopName}, #{beginActual},-->
+    <!--                #{finishActual},-->
+    <!--                #{tags, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler}, #{status},-->
+    <!--                #{applyParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler},-->
+    <!--                #{signInParticipant, typeHandler=cn.wyz.mapper.typeHandler.ListTypeHandler}, #{createdBy},-->
+    <!--                #{lastModifiedBy}, #{location})-->
+    <!--    </insert>-->
 
     <!--    <select id="list" resultMap="CompleteResultMap">-->
     <!--        SELECT id,-->
